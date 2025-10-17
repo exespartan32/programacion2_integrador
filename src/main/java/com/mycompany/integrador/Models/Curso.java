@@ -21,8 +21,7 @@ public class Curso {
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
 
-    public Curso(Long idCurso, String nombreCurso, int mesesDuracion, Long idProfesor, Long idAlumno, LocalDate fechaCreacion) {
-        this.idCurso = idCurso;
+    public Curso(String nombreCurso, int mesesDuracion, Long idProfesor, Long idAlumno, LocalDate fechaCreacion) {
         this.nombreCurso = nombreCurso;
         this.mesesDuracion = mesesDuracion;
         this.idProfesor = idProfesor;

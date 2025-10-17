@@ -28,7 +28,7 @@ public class PersonaServiceImplement implements PersonaService {
         String sql = "INSERT INTO Persona (DNI, nombres, apellidoMaterno, edad, apellidoPaterno, fechaCreacion, tipoPersona) values (?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement ps = conn.conectarBB().prepareStatement(sql);
+            PreparedStatement ps = conn.conectarDB().prepareStatement(sql);
             ps.setString(1, persona.getDNI());
             ps.setString(2, persona.getNombres());
             ps.setString(3, persona.getApellidoMaterno());
@@ -67,7 +67,7 @@ public class PersonaServiceImplement implements PersonaService {
         String sql = "SELECT * FROM Persona WHERE DNI = (?)";
 
         try {
-            PreparedStatement ps = conn.conectarBB().prepareStatement(sql);
+            PreparedStatement ps = conn.conectarDB().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Persona persona = new Persona(rs.getString("DNI"), rs.getString("nombres"), rs.getString("apellidoMaterno"), rs.getString("apellidoPaterno"), rs.getInt("edad"), rs.getDate("fechaCreacion").toLocalDate(), TipoPersona.valueOf(rs.getString("tipoPersona")));

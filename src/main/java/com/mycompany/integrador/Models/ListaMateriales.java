@@ -23,8 +23,7 @@ public class ListaMateriales {
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
 
-    public ListaMateriales(Long idLista, Long idMaterial, LocalDate fechaCreacion) {
-        this.idLista = idLista;
+    public ListaMateriales(Long idMaterial, LocalDate fechaCreacion) {
         this.idMaterial = idMaterial;
         this.idAlumno = null;
         this.prestado = false;

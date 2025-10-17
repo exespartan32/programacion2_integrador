@@ -16,11 +16,13 @@ public interface UsuarioService {
 
     public void guardarUsuario(Usuario usuario);
 
-    public void modificarUsuario(Long id, Usuario usuario);
+    public void modificarUsuario(int id, Usuario usuario);
 
-    public void eliminarUsuario(Long id);
+    public void eliminarUsuario(int id);
 
     public ArrayList<Usuario> buscarTodasLosUsuarios();
 
-    public Optional<Usuario> buscarUsuario(Long id);
+    public Usuario buscarUsuario(int id);
+
+    public Usuario buscarUsuario(String nombreUsuario);
 }

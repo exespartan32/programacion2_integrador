@@ -20,8 +20,7 @@ public class ValorCurso {
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
 
-    public ValorCurso(Long idValorCurso, Long idCurso, String nombreMes, int precioMes, LocalDate fechaCreacion) {
-        this.idValorCurso = idValorCurso;
+    public ValorCurso(Long idCurso, String nombreMes, int precioMes, LocalDate fechaCreacion) {
         this.idCurso = idCurso;
         this.nombreMes = nombreMes;
         this.precioMes = precioMes;

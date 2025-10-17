@@ -4,8 +4,10 @@
  */
 package com.mycompany.integrador;
 
-import com.mycompany.integrador.Configurations.ConexionDB;
 import com.mycompany.integrador.Controllers.Persona_Controller;
+import com.mycompany.integrador.Controllers.Alumno_Controller;
+import com.mycompany.integrador.Controllers.Profesor_Controller;
+import com.mycompany.integrador.Controllers.Usuario_Controller;
 
 /**
  *
@@ -20,7 +22,15 @@ public class Integrador {
 //        conn.desconetarDB();
 
         Persona_Controller persona_Controller = new Persona_Controller();
+        Alumno_Controller alumno_Controller = new Alumno_Controller();
+        Profesor_Controller profesor_Controller = new Profesor_Controller();
+        Usuario_Controller usuario_Controller = new Usuario_Controller();
+
+        //profesor_Controller.nuevoProfesor();
+        usuario_Controller.nuevoUsuario();
+        //alumno_Controller.nuevoAlumno();
         //persona_Controller.crearNuevaPersona();
-        persona_Controller.buscarPersona();
+        //persona_Controller.buscarPersona();
+
     }
 }

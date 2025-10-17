@@ -18,8 +18,7 @@ public class Usuario {
     private String nombreUsuario;
     private String contrasenia;
 
-    public Usuario(Long idUsuario, String email, String nombreUsuario, String contrasenia) {
-        this.idUsuario = idUsuario;
+    public Usuario(String email, String nombreUsuario, String contrasenia) {
         this.email = email;
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;

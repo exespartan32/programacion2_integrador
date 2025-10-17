@@ -22,8 +22,7 @@ public class Material {
     private LocalDate fechaModificacion;
     private LocalDate fechaEliinacion;
 
-    public Material(Long idMaterial, String nombre, String color, String marca, int precio, String descripcion, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliinacion) {
-        this.idMaterial = idMaterial;
+    public Material(String nombre, String color, String marca, int precio, String descripcion, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliinacion) {
         this.nombre = nombre;
         this.color = color;
         this.marca = marca;

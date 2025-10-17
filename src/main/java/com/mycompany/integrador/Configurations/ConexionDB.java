@@ -16,7 +16,7 @@ public class ConexionDB {
     String db = "DB_ProyectoIntegrador.db";
     String conector = "jdbc:sqlite:" + db;
 
-    public Connection conectarBB() {
+    public Connection conectarDB() {
         Connection conn = null;
 
         try {

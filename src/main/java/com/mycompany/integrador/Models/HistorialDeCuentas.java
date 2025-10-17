@@ -11,7 +11,6 @@ import java.time.LocalDate;
  * @author exequiel
  */
 public class HistorialDeCuentas {
-
     private Long idHistorialCuenta  ;
     private Long idAlumno;
     private Long idCurso;
@@ -23,8 +22,7 @@ public class HistorialDeCuentas {
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
 
-    public HistorialDeCuentas(Long idHistorialCuenta, Long idAlumno, Long idCurso, Long idValorCurso, int pagoActual, int saldoAlumno, String descripcion, LocalDate fechaCreacion) {
-        this.idHistorialCuenta = idHistorialCuenta;
+    public HistorialDeCuentas(Long idAlumno, Long idCurso, Long idValorCurso, int pagoActual, int saldoAlumno, String descripcion, LocalDate fechaCreacion) {
         this.idAlumno = idAlumno;
         this.idCurso = idCurso;
         this.idValorCurso = idValorCurso;

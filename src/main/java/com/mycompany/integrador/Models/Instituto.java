@@ -19,8 +19,7 @@ public class Instituto {
     private ListaMateriales materiales;
     private ArrayList<Profesor> profesores;
 
-    public Instituto(Long idInstituto, String razonSocial, ArrayList<Curso> cursos, ArrayList<Alumno> alumnos, ListaMateriales materiales, ArrayList<Profesor> profesores) {
-        this.idInstituto = idInstituto;
+    public Instituto(String razonSocial, ArrayList<Curso> cursos, ArrayList<Alumno> alumnos, ListaMateriales materiales, ArrayList<Profesor> profesores) {
         this.razonSocial = razonSocial;
         this.cursos = cursos;
         this.alumnos = alumnos;
