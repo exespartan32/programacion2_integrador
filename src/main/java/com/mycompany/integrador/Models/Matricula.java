@@ -10,42 +10,37 @@ import java.time.LocalDate;
  *
  * @author exequiel
  */
-public class Curso {
-    private String nombreCurso;
-    private int mesesDuracion;
+public class Matricula {
+
+    private int idMatricula;
+    private String DNIAlumno;
     private LocalDate fechaCreacion;
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
-    private String dniProfesor;
+    private String nombreCurso;
 
-    public Curso(String nombreCurso, int mesesDuracion, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion) {
-        this.nombreCurso = nombreCurso;
-        this.mesesDuracion = mesesDuracion;
+    public Matricula(String DNIAlumno, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion, String nombreCurso) {
+        this.DNIAlumno = DNIAlumno;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.fechaEliminacion = fechaEliminacion;
+        this.nombreCurso = nombreCurso;
     }
 
-    public Curso(String nombreCurso, int mesesDuracion, LocalDate fechaModificacion) {
-        this.nombreCurso = nombreCurso;
-        this.mesesDuracion = mesesDuracion;
+    public Matricula(int idMatricula, String DNIAlumno, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion, String nombreCurso) {
+        this.idMatricula = idMatricula;
+        this.DNIAlumno = DNIAlumno;
+        this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-    }
-
-    public String getNombreCurso() {
-        return nombreCurso;
-    }
-
-    public void setNombreCurso(String nombreCurso) {
+        this.fechaEliminacion = fechaEliminacion;
         this.nombreCurso = nombreCurso;
     }
+    
+    
 
-    public int getMesesDuracion() {
-        return mesesDuracion;
-    }
-
-    public void setMesesDuracion(int mesesDuracion) {
-        this.mesesDuracion = mesesDuracion;
+    public Matricula(String DNIAlumno, LocalDate fechaModificacion) {
+        this.DNIAlumno = DNIAlumno;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public LocalDate getFechaCreacion() {
@@ -72,10 +67,21 @@ public class Curso {
         this.fechaEliminacion = fechaEliminacion;
     }
 
+    public int getIdMatricula() {
+        return idMatricula;
+    }
+
+    public String getDNIAlumno() {
+        return DNIAlumno;
+    }
+
+    public String getNombreCurso() {
+        return nombreCurso;
+    }
+
     @Override
     public String toString() {
-        return "Curso{" + "nombreCurso=" + nombreCurso + ", mesesDuracion=" + mesesDuracion + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", fechaEliminacion=" + fechaEliminacion + '}';
+        return "Matricula{" + "idMatricula=" + idMatricula + ", DNIAlumno=" + DNIAlumno + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", fechaEliminacion=" + fechaEliminacion + ", nombreCurso=" + nombreCurso + '}';
     }
-    
-    
+
 }

@@ -16,11 +16,11 @@ public interface ProfesorService {
 
     public void guardarProfesor(Profesor profesor);
 
-    public void modificarProfesor(Long id, Profesor profesor);
+    public void modificarProfesor(String dni, Profesor profesor);
 
-    public void eliminarProfesor(Long id);
+    public void eliminarProfesor(String dni);
 
-    public ArrayList<Profesor> buscarTodasLosProfesor();
+    public ArrayList<Profesor> buscarProfesor();
 
-    public Optional<Profesor> buscarProfesor(Long id);
+    public Profesor buscarProfesor(String dni);
 }

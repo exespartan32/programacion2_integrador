@@ -5,14 +5,15 @@
 package com.mycompany.integrador.Service;
 
 import com.mycompany.integrador.Configurations.ConexionDB;
+import com.mycompany.integrador.Enums.TipoPersona;
 import com.mycompany.integrador.Interface.ProfesorService;
 import com.mycompany.integrador.Models.Profesor;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,23 +97,182 @@ public class ProfesorServiceImplement implements ProfesorService {
     }
 
     @Override
-    public void modificarProfesor(Long id, Profesor profesor) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void modificarProfesor(String dni, Profesor profesorModificado) {
+        Profesor profesor1 = buscarProfesor(dni);
+        if (profesor1 == profesorModificado) {
+            System.out.println("no se modificaran datos");
+        } else {
+            try ( Connection connectC = conn.conectarDB()) {
+                String sqlPersona = "UPDATE Persona\n"
+                        + "   SET nombres = ?,\n"
+                        + "       apellidoMaterno = ?,\n"
+                        + "       edad = ?,\n"
+                        + "       apellidoPaterno = ?,\n"
+                        + "       fechaModificacion = ?\n"
+                        + "WHERE DNI = ?";
+
+                try ( PreparedStatement psPersona = connectC.prepareStatement(sqlPersona)) {
+                    psPersona.setString(1, profesorModificado.getNombres());
+                    psPersona.setString(2, profesorModificado.getApellidoMaterno());
+                    psPersona.setInt(3, profesorModificado.getEdad());
+                    psPersona.setString(4, profesorModificado.getApellidoPaterno());
+                    DateTimeFormatter formatterEs = DateTimeFormatter
+                            .ofLocalizedDate(FormatStyle.SHORT)
+                            .withLocale(new Locale("es", "ES"));
+                    String fechaString = profesorModificado.getFechaModificacion().format(formatterEs);
+                    psPersona.setString(5, fechaString);
+                    psPersona.setString(6, dni);
+                    psPersona.execute();
+
+                } catch (SQLException e) {
+                    System.out.println("no se pudo modificar la tabla personas");
+                    System.out.println("" + e.toString());
+                }
+
+                String sqlProfesor = "UPDATE Profesor\n"
+                        + "    SET sueldo  = ?,\n"
+                        + "        presentismo  = ?\n"
+                        + "WHERE DNIProfesor = ?";
+
+                try ( PreparedStatement psProfesor = connectC.prepareStatement(sqlProfesor)) {
+                    psProfesor.setInt(1, profesorModificado.getSueldo());
+                    psProfesor.setString(2, String.valueOf(profesorModificado.isPresentismo()));
+                    psProfesor.setString(3, dni);
+                    psProfesor.execute();
+                } catch (SQLException e) {
+                    System.out.println("no se pudo modificar la tabla profesor");
+                    System.out.println(e.toString());
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al ejecutar la consulta: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
-    public void eliminarProfesor(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void eliminarProfesor(String dni) {
+        String sql = "DELETE FROM Profesor WHERE DNI = ?";
+        Connection connect = conn.conectarDB();
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            habilitarClavesForaneas(connect);
+            ps.setString(1, dni);
+
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                System.out.println("profesor eliminado correctamente");
+            } else {
+                System.out.println("No se encontro un profesor con el DNI " + dni);
+            }
+
+        } catch (Exception e) {
+            System.out.println("error al eliminar el profesor");
+            System.out.println("ERROR: " + e.toString());
+        }
     }
 
     @Override
-    public ArrayList<Profesor> buscarTodasLosProfesor() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ArrayList<Profesor> buscarProfesor() {
+        ArrayList<Profesor> listaProfesores = new ArrayList<>();
+        Connection connectC = conn.conectarDB();
+
+        String sql = "SELECT p.DNI, \n"
+                + "	p.nombres, \n"
+                + "	p.apellidoMaterno, \n"
+                + "	p.edad, \n"
+                + "	p.apellidoPaterno, \n"
+                + "	p.fechaCreacion, \n"
+                + "	p.fechaModificacion, \n"
+                + "	p.fechaEliminacion, \n"
+                + "	p.tipoPersona, \n"
+                + "	pr.sueldo,\n"
+                + "	pr.presentismo\n"
+                + "FROM Persona p\n"
+                + "INNER JOIN Profesor pr ON p.DNI = pr.DNIProfesor \n";
+
+        try ( PreparedStatement psProfesor = connectC.prepareStatement(sql)) {
+            ResultSet rs = psProfesor.executeQuery();
+
+            while (rs.next()) {
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaEliminacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                Profesor profesor = new Profesor(
+                        rs.getInt("sueldo"),
+                        Boolean.parseBoolean(rs.getString("presentismo")),
+                        rs.getString("DNI"),
+                        rs.getString("nombres"),
+                        rs.getString("apellidoMaterno"),
+                        rs.getString("apellidoPaterno"),
+                        rs.getInt("edad"),
+                        LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy")),
+                        fechaModificacion,
+                        fechaEliminacion,
+                        TipoPersona.PROFESOR);
+                listaProfesores.add(profesor);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return listaProfesores;
     }
 
     @Override
-    public Optional<Profesor> buscarProfesor(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Profesor buscarProfesor(String dni) {
+        String sql = "SELECT p.DNI, \n"
+                + "	p.nombres, \n"
+                + "	p.apellidoMaterno, \n"
+                + "	p.edad, \n"
+                + "	p.apellidoPaterno, \n"
+                + "	p.fechaCreacion, \n"
+                + "	p.fechaModificacion, \n"
+                + "	p.fechaEliminacion, \n"
+                + "	p.tipoPersona, \n"
+                + "	pr.sueldo,\n"
+                + "	pr.presentismo\n"
+                + "FROM Persona p\n"
+                + "INNER JOIN Profesor pr ON p.DNI = pr.DNIProfesor \n"
+                + "WHERE p.DNI = ? ";
+        Profesor profesor = null;
+
+        try ( Connection connectC = conn.conectarDB()) {
+            try ( PreparedStatement psProfesor = connectC.prepareStatement(sql)) {
+
+                psProfesor.setString(1, dni);
+                ResultSet rs = psProfesor.executeQuery();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), formatter);
+
+                profesor = new Profesor(
+                        rs.getInt("sueldo"),
+                        Boolean.parseBoolean(rs.getString("presentismo")),
+                        rs.getString("DNI"),
+                        rs.getString("nombres"),
+                        rs.getString("apellidoMaterno"),
+                        rs.getString("apellidoPaterno"),
+                        rs.getInt("edad"),
+                        fechaCreacion,
+                        TipoPersona.PROFESOR);
+
+            } catch (SQLException e) {
+                System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al ejecutar la consulta: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        return profesor;
     }
 
     private static void habilitarClavesForaneas(Connection conn) throws SQLException {

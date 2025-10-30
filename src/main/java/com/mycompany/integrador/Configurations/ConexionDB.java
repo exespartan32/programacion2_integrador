@@ -24,7 +24,7 @@ public class ConexionDB {
             conn = DriverManager.getConnection(conector);
 
             if (conn != null) {
-                System.out.println("se pudo conectar a base de datos");
+                //System.out.println("se pudo conectar a base de datos");
             } else {
                 System.out.println("ERROR! no se pudo conectar a base de datos");
             }

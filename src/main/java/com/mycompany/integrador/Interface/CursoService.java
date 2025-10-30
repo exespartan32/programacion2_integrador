@@ -5,7 +5,6 @@
 package com.mycompany.integrador.Interface;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import com.mycompany.integrador.Models.Curso;
 
 /**
@@ -16,11 +15,14 @@ public interface CursoService {
 
     public void guardarCurso(Curso curso);
 
-    public void modificarCurso(Long id, Curso curso);
+    public void modificarCurso(String nombreCurso, Curso curso);
 
-    public void eliminarCurso(Long id);
+    public void eliminarCurso(String nombreCurso);
 
-    public ArrayList<Curso> buscarTodosLosCursos();
+    public ArrayList<Curso> buscarCurso();
 
-    public Optional<Curso> buscarCurso(Long id);
+    public Curso buscarCurso(String nombreCurso);
+
+    public boolean existeCurso(String nombreCurso);
+
 }

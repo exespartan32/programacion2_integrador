@@ -16,11 +16,11 @@ public interface AlumnoService {
 
     public void guardarAlumno(Alumno alumno);
 
-    public void modificarALumno(Long id, Alumno alumno);
+    public void modificarALumno(String dni, Alumno alumno);
 
-    public void borrarAlumno(Long id);
+    public void borrarAlumno(String dni);
 
-    public ArrayList<Alumno> buscarTodosLosAlumnos();
+    public ArrayList<Alumno> buscarAlumno();
 
-    public Optional<Alumno> buscarAlumno(Long id);
+    public Alumno buscarAlumno(String dni);
 }

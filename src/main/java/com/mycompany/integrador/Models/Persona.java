@@ -36,6 +36,27 @@ public class Persona {
         this.tipoPersona = tipoPersona;
     }
 
+    public Persona(String DNI, String nombres, String apellidoMaterno, String apellidoPaterno, int edad, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion, TipoPersona tipoPersona) {
+        this.DNI = DNI;
+        this.nombres = nombres;
+        this.apellidoMaterno = apellidoMaterno;
+        this.apellidoPaterno = apellidoPaterno;
+        this.edad = edad;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
+        this.fechaEliminacion = fechaEliminacion;
+        this.tipoPersona = tipoPersona;
+    }
+    
+    public Persona(String nombres, String apellidoMaterno, String apellidoPaterno, int edad, LocalDate fechaModificacion) {
+        this.nombres = nombres;
+        this.apellidoMaterno = apellidoMaterno;
+        this.apellidoPaterno = apellidoPaterno;
+        this.edad = edad;
+        this.fechaModificacion = fechaModificacion;
+    }
+    
+
     public String getNombres() {
         return nombres;
     }
