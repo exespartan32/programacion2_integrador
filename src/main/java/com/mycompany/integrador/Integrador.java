@@ -39,8 +39,7 @@ public class Integrador {
 //        System.out.println("1 - Matricula");
 //        System.out.println("1 - Pagos");
         //historialCuenta_Controller.pagarCurso();;
-        
-        
+        //historialCuenta_Controller.verTodosLosPagos();
         //valorCurso_Controller.buscarPrecioDeCurso();
         //valorCurso_Controller.nuevoValorCurso();
         //valorCurso_Controller.buscarPrecioPorId();
@@ -65,7 +64,9 @@ public class Integrador {
         //profesor_Controller.buscarProfesor();
         //profesor_Controller.buscarTodosProfesores();
         //profesor_Controller.nuevoProfesor();
-        //usuario_Controller.nuevoUsuario();
         //alumno_Controller.nuevoAlumno();
+
+        usuario_Controller.nuevoUsuario();
+
     }
 }

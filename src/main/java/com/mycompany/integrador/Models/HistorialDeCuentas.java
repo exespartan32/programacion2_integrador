@@ -24,6 +24,9 @@ public class HistorialDeCuentas {
     private int saldoAlumno;
     private String descripcionPago;
 
+    public HistorialDeCuentas() {
+    }
+
     public HistorialDeCuentas(int idHistorialCuenta, String dniAlumno, String nombreCurso, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion, boolean pagado, int monto, int pago, int saldoAlumno, String descripcionPago) {
         this.idHistorialCuenta = idHistorialCuenta;
         this.dniAlumno = dniAlumno;

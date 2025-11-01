@@ -194,7 +194,6 @@ public class ProfesorServiceImplement implements ProfesorService {
 
         try ( PreparedStatement psProfesor = connectC.prepareStatement(sql)) {
             ResultSet rs = psProfesor.executeQuery();
-
             while (rs.next()) {
                 LocalDate fechaModificacion = null;
                 if (rs.getString("fechaModificacion") != null) {
@@ -242,28 +241,26 @@ public class ProfesorServiceImplement implements ProfesorService {
                 + "FROM Persona p\n"
                 + "INNER JOIN Profesor pr ON p.DNI = pr.DNIProfesor \n"
                 + "WHERE p.DNI = ? ";
-        Profesor profesor = null;
+        Profesor profesor = new Profesor();
 
         try ( Connection connectC = conn.conectarDB()) {
             try ( PreparedStatement psProfesor = connectC.prepareStatement(sql)) {
-
                 psProfesor.setString(1, dni);
                 ResultSet rs = psProfesor.executeQuery();
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), formatter);
-
-                profesor = new Profesor(
-                        rs.getInt("sueldo"),
-                        Boolean.parseBoolean(rs.getString("presentismo")),
-                        rs.getString("DNI"),
-                        rs.getString("nombres"),
-                        rs.getString("apellidoMaterno"),
-                        rs.getString("apellidoPaterno"),
-                        rs.getInt("edad"),
-                        fechaCreacion,
-                        TipoPersona.PROFESOR);
-
+                while (rs.next()) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+                    LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), formatter);
+                    profesor = new Profesor(
+                            rs.getInt("sueldo"),
+                            Boolean.parseBoolean(rs.getString("presentismo")),
+                            rs.getString("DNI"),
+                            rs.getString("nombres"),
+                            rs.getString("apellidoMaterno"),
+                            rs.getString("apellidoPaterno"),
+                            rs.getInt("edad"),
+                            fechaCreacion,
+                            TipoPersona.PROFESOR);
+                }
             } catch (SQLException e) {
                 System.out.println("Error al ejecutar la consulta: " + e.getMessage());
                 e.printStackTrace();

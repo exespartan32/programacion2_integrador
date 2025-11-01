@@ -166,7 +166,7 @@ public class CursoServiceImplement implements CursoService {
     public Curso buscarCurso(String nombreCurso) {
         Connection connect = conn.conectarDB();
         String sql = "SELECT * FROM Curso WHERE = ?";
-        Curso curso = null;
+        Curso curso = new Curso();
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, nombreCurso);

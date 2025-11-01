@@ -20,7 +20,7 @@ public interface UsuarioService {
 
     public void eliminarUsuario(int id);
 
-    public ArrayList<Usuario> buscarTodasLosUsuarios();
+    public ArrayList<Usuario> buscarUsuario();
 
     public Usuario buscarUsuario(int id);
 

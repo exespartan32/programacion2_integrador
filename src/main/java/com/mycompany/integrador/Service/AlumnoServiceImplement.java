@@ -33,11 +33,8 @@ public class AlumnoServiceImplement implements AlumnoService {
         if (existeDni(alumno.getDNI())) {
             System.out.println("ERROR: El DNI " + alumno.getDNI() + " ya esta registrado. No se permite la insercion duplicada.");
         } else {
-
             String sqlPersona = "insert into Persona (DNI, nombres, apellidoMaterno, apellidoPaterno, edad, fechaCreacion, tipoPersona) VALUES (?,?,?,?,?,?,?)";
             String sqlAlumno = "insert into Alumno (DNIAlumno, anioIngreso, mesIngreso) VALUES (?,?,?)";
-
-            //Connection connect = conn.conectarDB();
             try ( Connection connectC = conn.conectarDB()) {
                 habilitarClavesForaneas(connectC);
                 connectC.setAutoCommit(false);
@@ -133,19 +130,15 @@ public class AlumnoServiceImplement implements AlumnoService {
                     String fechaString = alumnoModificado.getFechaModificacion().format(formatterEs);
                     psPersona.setString(5, fechaString);
                     psPersona.setString(6, dni);
-
                     psPersona.execute();
-
                 } catch (SQLException e) {
                     System.out.println("no se pudo modificar la tabla personas");
                     System.out.println("" + e.toString());
                 }
-
                 String sqlAlumno = "UPDATE Alumno\n"
                         + "    SET anioIngreso  = ?,\n"
                         + "        mesIngreso  = ?\n"
                         + "WHERE DNIAlumno = ?";
-
                 try ( PreparedStatement psAlumno = connectC.prepareStatement(sqlAlumno)) {
                     psAlumno.setString(1, alumnoModificado.getAnioIngreso());
                     psAlumno.setString(2, alumnoModificado.getMesIngreso());
@@ -253,33 +246,33 @@ public class AlumnoServiceImplement implements AlumnoService {
                 + "INNER JOIN Alumno a ON p.DNI = a.DNIAlumno \n"
                 + "WHERE p.DNI = ? ";
 
-        Alumno alumno = null;
+        Alumno alumno = new Alumno();
         try ( Connection connectC = conn.conectarDB()) {
             try ( PreparedStatement psAlumno = connectC.prepareStatement(sqlAlumno)) {
                 psAlumno.setString(1, dni);
                 ResultSet rs = psAlumno.executeQuery();
-
-                LocalDate fechaModificacion = null;
-                if (rs.getString("fechaModificacion") != null) {
-                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                while (rs.next()) {
+                    LocalDate fechaModificacion = null;
+                    if (rs.getString("fechaModificacion") != null) {
+                        fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    LocalDate fechaEliminacion = null;
+                    if (rs.getString("fechaEliminacion") != null) {
+                        fechaEliminacion = LocalDate.parse(rs.getString("fechaEliminacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    alumno = new Alumno(
+                            rs.getString("anioIngreso"),
+                            rs.getString("mesIngreso"),
+                            rs.getString("DNI"),
+                            rs.getString("nombres"),
+                            rs.getString("apellidoMaterno"),
+                            rs.getString("apellidoPaterno"),
+                            rs.getInt("edad"),
+                            LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy")),
+                            fechaModificacion,
+                            fechaEliminacion,
+                            TipoPersona.ALUMNO);
                 }
-                LocalDate fechaEliminacion = null;
-                if (rs.getString("fechaEliminacion") != null) {
-                    fechaEliminacion = LocalDate.parse(rs.getString("fechaEliminacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-                }
-                alumno = new Alumno(
-                        rs.getString("anioIngreso"),
-                        rs.getString("mesIngreso"),
-                        rs.getString("DNI"),
-                        rs.getString("nombres"),
-                        rs.getString("apellidoMaterno"),
-                        rs.getString("apellidoPaterno"),
-                        rs.getInt("edad"),
-                        LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy")),
-                        fechaModificacion,
-                        fechaEliminacion,
-                        TipoPersona.ALUMNO);
-                //connectC.commit();
             } catch (Exception e) {
                 System.out.println("ERROR " + e.toString());
             }

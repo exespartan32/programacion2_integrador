@@ -18,6 +18,9 @@ public class Curso {
     private LocalDate fechaEliminacion;
     private String dniProfesor;
 
+    public Curso() {
+    }
+
     public Curso(String nombreCurso, int mesesDuracion, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion) {
         this.nombreCurso = nombreCurso;
         this.mesesDuracion = mesesDuracion;

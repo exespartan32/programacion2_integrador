@@ -18,6 +18,9 @@ public class Instituto {
     private ArrayList<Alumno> alumnos;
     private ArrayList<Profesor> profesores;
 
+    public Instituto() {
+    }
+
     public Instituto(String razonSocial, ArrayList<Curso> cursos, ArrayList<Alumno> alumnos, ArrayList<Profesor> profesores) {
         this.razonSocial = razonSocial;
         this.cursos = cursos;

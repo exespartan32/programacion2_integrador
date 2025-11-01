@@ -34,6 +34,9 @@ public class Alumno extends Persona {
         this.mesIngreso = mesIngreso;
     }
 
+    public Alumno() {
+    }
+
     public String getAnioIngreso() {
         return anioIngreso;
     }

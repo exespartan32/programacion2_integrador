@@ -99,7 +99,6 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     @Override
     public ArrayList<Matricula> buscarMatriculaCurso() {
         ArrayList<Matricula> listaMatriculas = new ArrayList<>();
-
         Connection connect = conn.conectarDB();
         String sql = "SELECT * FROM Matricula";
         try {
@@ -171,7 +170,6 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     @Override
     public ArrayList<Matricula> buscarMatriculaCurso(Alumno alumno) {
         ArrayList<Matricula> listaMatriculas = new ArrayList<>();
-
         Connection connect = conn.conectarDB();
         String sql = "SELECT * FROM Matricula WHERE TRIM(DNIAlumno) = ?";
         try {
@@ -209,31 +207,29 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     public Matricula buscarMatriculaCurso(Alumno alumno, Curso curso) {
         Connection connect = conn.conectarDB();
         String sql = "SELECT * FROM Matricula WHERE TRIM(DNIAlumno) = ? AND TRIM(nombreCurso) = ?";
-
-        Matricula matricula = null;
-
+        Matricula matricula = new Matricula();
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, alumno.getDNI());
             ps.setString(2, curso.getNombreCurso());
-
             ResultSet rs = ps.executeQuery();
-            LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-            LocalDate fechaModificacion = null;
-            if (rs.getString("fechaModificacion") != null) {
-                fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                matricula = new Matricula(
+                        alumno.getDNI(),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        curso.getNombreCurso());
             }
-            LocalDate fechaEliminacion = null;
-            if (rs.getString("fechaEliminacion") != null) {
-                fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-            }
-            matricula = new Matricula(
-                    alumno.getDNI(),
-                    fechaCreacion,
-                    fechaModificacion,
-                    fechaEliminacion,
-                    curso.getNombreCurso());
-
         } catch (SQLException e) {
             System.out.println("error al ejecutar la consulta" + e.getMessage());
             e.printStackTrace();

@@ -155,8 +155,7 @@ public class ValorCursoServiceImplement implements ValorCursoService {
     @Override
     public ValorCurso buscarValorCursos(String nombreCurso) {
         String sql = "SELECT * FROM valorCurso WHERE nombreCurso = ?";
-        ValorCurso valorCurso = null;
-
+        ValorCurso valorCurso = new ValorCurso();
         try ( Connection connect = conn.conectarDB()) {
             habilitarClavesForaneas(connect);
             connect.setAutoCommit(false);
@@ -192,44 +191,49 @@ public class ValorCursoServiceImplement implements ValorCursoService {
         } catch (SQLException ex) {
             Logger.getLogger(ValorCursoServiceImplement.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return valorCurso;
     }
 
     @Override
-    public ValorCurso buscarValorCursos(int id
-    ) {
-        ValorCurso valorCurso = null;
+    public ValorCurso buscarValorCursos(int id) {
+        ValorCurso valorCurso = new ValorCurso();
         String sql = "SELECT * FROM valorCurso WHERE idValorCurso = ?";
-        Connection connect = conn.conectarDB();
-        try {
-            PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+        try ( Connection connect = conn.conectarDB()) {
+            habilitarClavesForaneas(connect);
+            connect.setAutoCommit(false);
+            try {
+                PreparedStatement ps = connect.prepareStatement(sql);
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                while (rs.next()) {
+                    LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
 
-                LocalDate fechaModificacion = null;
-                if (rs.getString("fechaModificacion") != null) {
-                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    LocalDate fechaModificacion = null;
+                    if (rs.getString("fechaModificacion") != null) {
+                        fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    LocalDate fechaEliminacion = null;
+                    if (rs.getString("fechaEliminacion") != null) {
+                        fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    valorCurso = new ValorCurso(
+                            id,
+                            rs.getString("nombreCurso"),
+                            rs.getInt("precioCurso"),
+                            fechaCreacion,
+                            fechaModificacion,
+                            fechaEliminacion);
+                    connect.commit();
                 }
-                LocalDate fechaEliminacion = null;
-                if (rs.getString("fechaEliminacion") != null) {
-                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-                }
-                valorCurso = new ValorCurso(
-                        id,
-                        rs.getString("nombreCurso"),
-                        rs.getInt("precioCurso"),
-                        fechaCreacion,
-                        fechaModificacion,
-                        fechaEliminacion);
+            } catch (SQLException e) {
+                System.out.println("error al ejecutar la consulta" + e.getMessage());
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            System.out.println("error al ejecutar la consulta" + e.getMessage());
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(ValorCursoServiceImplement.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return valorCurso;
     }
 

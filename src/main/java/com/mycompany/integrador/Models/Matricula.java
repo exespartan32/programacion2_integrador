@@ -19,6 +19,9 @@ public class Matricula {
     private LocalDate fechaEliminacion;
     private String nombreCurso;
 
+    public Matricula() {
+    }
+
     public Matricula(String DNIAlumno, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion, String nombreCurso) {
         this.DNIAlumno = DNIAlumno;
         this.fechaCreacion = fechaCreacion;

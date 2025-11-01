@@ -33,26 +33,16 @@ public class HistorialCuentaServiceImplement implements HistorialCuentaService {
     @Override
     public void pagarCurso(HistorialDeCuentas hdc) {
         String sql = "insert into HistorialDeCuentas (DNIAlumno, nombreCurso, pagoAlumno, saldoAlumno, descripcion, fechaCreacion, pagado) values (?, ?, ?, ?, ?, ?, ?)";
-        //Connection connectC = conn.conectarDB();
-
         try ( Connection connectC = conn.conectarDB()) {
             habilitarClavesForaneas(connectC);
             connectC.setAutoCommit(false);
             try {
-
                 DateTimeFormatter formatterEs = DateTimeFormatter
                         .ofLocalizedDate(FormatStyle.SHORT)
                         .withLocale(new Locale("es", "ES"));
                 String fechaString = hdc.getFechaCreacion().format(formatterEs);
 
                 PreparedStatement ps = connectC.prepareStatement(sql);
-
-                System.out.println("dni alumno: " + hdc.getNombreCurso());
-                System.out.println("nombre curso: " + hdc.getNombreCurso());
-                System.out.println("pago: " + hdc.getPago());
-                System.out.println("saldo: " + hdc.getSaldo());
-                System.out.println("descripcion: " + hdc.getDescripcionPago());
-                System.out.println("fecha creacion: " + fechaString);
 
                 ps.setString(1, hdc.getDniAlumno());
                 ps.setString(2, hdc.getNombreCurso());
@@ -63,8 +53,7 @@ public class HistorialCuentaServiceImplement implements HistorialCuentaService {
                 int pagado = (hdc.isPagado()) ? 1 : 0;
                 ps.setInt(7, pagado);
 
-                //ps.execute();
-
+                ps.execute();
                 connectC.commit();
                 System.out.println("historial creado correcamente");
 
@@ -75,22 +64,140 @@ public class HistorialCuentaServiceImplement implements HistorialCuentaService {
         } catch (SQLException ex) {
             Logger.getLogger(HistorialCuentaServiceImplement.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     @Override
     public ArrayList<HistorialDeCuentas> buscarPago() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "SELECT * FROM HistorialDeCuentas";
+        ArrayList<HistorialDeCuentas> listaPagos = new ArrayList<>();
+        Connection connect = conn.conectarDB();
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                boolean pagado = rs.getInt("pagado") == 1;
+
+                ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(rs.getString("nombreCurso"));
+                int precioCurso = valorCurso.getPrecioCurso();
+
+                HistorialDeCuentas historialDeCuentas = new HistorialDeCuentas(
+                        rs.getInt("idHistorialCuenta"),
+                        rs.getString("DNIAlumno"),
+                        rs.getString("nombreCurso"),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        pagado,
+                        precioCurso,
+                        rs.getInt("pagoAlumno"),
+                        rs.getInt("saldoAlumno"),
+                        rs.getString("descripcionPago"));
+
+                listaPagos.add(historialDeCuentas);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return listaPagos;
     }
 
     @Override
     public HistorialDeCuentas buscarPago(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        HistorialDeCuentas historialDeCuentas = new HistorialDeCuentas();
+        String sql = "SELECT * FROM HistorialDeCuentas WHERE idHistorialCuenta = ? ORDER BY idHistorialCuenta DESC LIMIT 1";
+        Connection connect = conn.conectarDB();
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                boolean pagado = rs.getInt("pagado") == 1;
+
+                ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(rs.getString("nombreCurso"));
+                int precioCurso = valorCurso.getPrecioCurso();
+
+                historialDeCuentas = new HistorialDeCuentas(
+                        id,
+                        rs.getString("DNIAlumno"),
+                        rs.getString("nombreCurso"),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        pagado,
+                        precioCurso,
+                        rs.getInt("pagoAlumno"),
+                        rs.getInt("saldoAlumno"),
+                        rs.getString("descripcionPago"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return historialDeCuentas;
     }
 
     @Override
-    public HistorialDeCuentas buscarPago(String DNIAlumno) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ArrayList<HistorialDeCuentas> buscarPago(String DNIAlumno) {
+        ArrayList<HistorialDeCuentas> listaPagos = new ArrayList<>();
+        String sql = "SELECT * FROM HistorialDeCuentas WHERE DNIAlumno = ? ORDER BY idHistorialCuenta";
+        Connection connect = conn.conectarDB();
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, DNIAlumno);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                boolean pagado = rs.getInt("pagado") == 1;
+
+                ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(rs.getString("nombreCurso"));
+                int precioCurso = valorCurso.getPrecioCurso();
+
+                HistorialDeCuentas historialDeCuentas = new HistorialDeCuentas(
+                        rs.getInt("idHistorialCuenta"),
+                        DNIAlumno,
+                        rs.getString("nombreCurso"),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        pagado,
+                        precioCurso,
+                        rs.getInt("pagoAlumno"),
+                        rs.getInt("saldoAlumno"),
+                        rs.getString("descripcionPago"));
+                listaPagos.add(historialDeCuentas);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return listaPagos;
     }
 
     @Override
@@ -98,8 +205,8 @@ public class HistorialCuentaServiceImplement implements HistorialCuentaService {
         int saldo = 0;
         String sql = "SELECT * FROM HistorialDeCuentas WHERE DNIAlumno = ? ORDER BY idHistorialCuenta DESC LIMIT 1";
         // Usa try-with-resources para asegurar el cierre de los recursos
-        try ( Connection connect = conn.conectarDB();  PreparedStatement ps = connect.prepareStatement(sql);) {
-
+        try ( Connection connect = conn.conectarDB()) {
+            PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, DNIAlumno);
 
             try ( ResultSet rs = ps.executeQuery()) { // Usa try-with-resources para el ResultSet también
@@ -115,60 +222,61 @@ public class HistorialCuentaServiceImplement implements HistorialCuentaService {
     }
 
     @Override
-    public HistorialDeCuentas buscarPago(String nombreCurso, boolean pago) {
-        HistorialDeCuentas historialDeCuentas = null;
+    public ArrayList<HistorialDeCuentas> buscarPago(String nombreCurso, boolean pago) {
+        ArrayList<HistorialDeCuentas> listaPagos = new ArrayList<>();
         String sql = "SELECT * FROM HistorialDeCuentas WHERE nombreCurso = ? ORDER BY idHistorialCuenta DESC LIMIT 1";
         Connection connect = conn.conectarDB();
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, nombreCurso);
             ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                boolean pagado = rs.getInt("pagado") == 1;
 
-            LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-            LocalDate fechaModificacion = null;
-            if (rs.getString("fechaModificacion") != null) {
-                fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(nombreCurso);
+                int precioCurso = valorCurso.getPrecioCurso();
+
+                HistorialDeCuentas historialDeCuentas = new HistorialDeCuentas(
+                        rs.getInt("idHistorialCuenta"),
+                        rs.getString("dniAlumno"),
+                        nombreCurso,
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        pagado,
+                        precioCurso,
+                        rs.getInt("pagoAlumno"),
+                        rs.getInt("saldoAlumno"),
+                        rs.getString("descripcionPago"));
+                listaPagos.add(historialDeCuentas);
             }
-            LocalDate fechaEliminacion = null;
-            if (rs.getString("fechaEliminacion") != null) {
-                fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-            }
-            boolean pagado = rs.getInt("pagado") == 1;
-
-            ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(nombreCurso);
-            int precioCurso = valorCurso.getPrecioCurso();
-
-            historialDeCuentas = new HistorialDeCuentas(
-                    rs.getInt("idHistorialCuenta"),
-                    rs.getString("dniAlumno"),
-                    nombreCurso,
-                    fechaCreacion,
-                    fechaModificacion,
-                    fechaEliminacion,
-                    pagado,
-                    precioCurso,
-                    rs.getInt("pago"),
-                    rs.getInt("saldoAlumno"),
-                    rs.getString("descripcionPago"));
-
         } catch (SQLException e) {
             System.out.println("Error al ejecutar la consulta: " + e.getMessage());
             e.printStackTrace();
         }
-        return historialDeCuentas;
+        return listaPagos;
     }
 
     public boolean cursoPagado(String nombreCurso, String dniAlumno) {
         boolean pagado = false;
         String sql = "SELECT * FROM HistorialDeCuentas WHERE nombreCurso = ? AND DNIAlumno = ? ORDER BY idHistorialCuenta DESC LIMIT 1";
-        Connection connect = conn.conectarDB();
-        try {
-            PreparedStatement ps = connect.prepareStatement(sql);
+        try ( Connection connect = conn.conectarDB();  PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, nombreCurso);
             ps.setString(2, dniAlumno);
-            ResultSet rs = ps.executeQuery();
-            //connect.commit();
-            pagado = (rs.getInt("pagado")) == 1;
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    pagado = (rs.getInt("pagado")) == 1;
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Error al ejecutar la consulta: " + e.getMessage());
             e.printStackTrace();

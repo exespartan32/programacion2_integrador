@@ -19,6 +19,9 @@ public class ValorCurso {
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
 
+    public ValorCurso() {
+    }
+
     public ValorCurso(int idValorCurso, String nombreCurso, int precioCurso, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion) {
         this.idValorCurso = idValorCurso;
         this.nombreCurso = nombreCurso;

@@ -21,11 +21,11 @@ public interface HistorialCuentaService {
 
     public HistorialDeCuentas buscarPago(int id);
 
-    public HistorialDeCuentas buscarPago(String DNIAlumno);
+    public ArrayList<HistorialDeCuentas> buscarPago(String DNIAlumno);
     //public HistorialDeCuentas buscarPago();
 
     public int verSaldo(String DNIAlumno);
 
-    public HistorialDeCuentas buscarPago(String nombreCurso, boolean pago);
+    public ArrayList<HistorialDeCuentas> buscarPago(String nombreCurso, boolean pago);
 
 }

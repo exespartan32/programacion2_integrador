@@ -46,12 +46,10 @@ public class Matricula_Controller {
             System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
         }
         Scanner sc = new Scanner(System.in);
-        int i = sc.nextInt();
-        Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i);
+        int i_alumno = sc.nextInt();
+        Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno - 1);
         matriculaServiceImplement.buscarMatriculaCurso(alumno);
-
         ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
-
         System.out.println("datos encontrados:");
         for (int j = 0; j < listaMatriculas.size(); j++) {
             System.out.println("=> " + matriculaServiceImplement.buscarMatriculaCurso(alumno).get(j).toString());
@@ -66,10 +64,9 @@ public class Matricula_Controller {
             System.out.println("Elemento " + elemento + ": " + cursoServiceImplement.buscarCurso().get(i).toString());
         }
         Scanner sc = new Scanner(System.in);
-        int i = sc.nextInt();
-        Curso curso = cursoServiceImplement.buscarCurso().get(i);
+        int i_alumno = sc.nextInt();
+        Curso curso = cursoServiceImplement.buscarCurso().get(i_alumno - 1);
         ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(curso.getNombreCurso());
-
         System.out.println("datos encontrados:");
         for (int j = 0; j < listaMatriculas.size(); j++) {
             System.out.println("=> " + matriculaServiceImplement.buscarMatriculaCurso(curso.getNombreCurso()).get(j).toString());
@@ -92,7 +89,7 @@ public class Matricula_Controller {
         }
         Scanner sc = new Scanner(System.in);
         int i_alumno = sc.nextInt();
-        Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno);
+        Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno - 1);
         ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
 
         System.out.println("seleccione el curso del que quiere der de baja el alumno:");

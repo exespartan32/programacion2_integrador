@@ -15,6 +15,9 @@ public class Profesor extends Persona {
     private int sueldo;
     private boolean presentismo;
 
+    public Profesor() {
+    }
+
     public Profesor(int sueldo, boolean presentismo, String DNI, String nombres, String apellidoMaterno, String apellidoPaterno, int edad, LocalDate fechaCreacion, TipoPersona tipoPersona) {
         super(DNI, nombres, apellidoMaterno, apellidoPaterno, edad, fechaCreacion, tipoPersona);
         this.sueldo = sueldo;
