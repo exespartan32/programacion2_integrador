@@ -11,75 +11,52 @@ import java.time.LocalDate;
  * @author exequiel
  */
 public class HistorialDeCuentas {
-    private Long idHistorialCuenta  ;
-    private Long idAlumno;
-    private Long idCurso;
-    private Long idValorCurso;
-    private int pagoActual;
-    private int saldoAlumno;
-    private String descripcion;
+
+    private int idHistorialCuenta;
+    private String dniAlumno;
+    private String nombreCurso;
     private LocalDate fechaCreacion;
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
+    private boolean pagado;
+    private int monto;
+    private int pago;
+    private int saldoAlumno;
+    private String descripcionPago;
 
-    public HistorialDeCuentas(Long idAlumno, Long idCurso, Long idValorCurso, int pagoActual, int saldoAlumno, String descripcion, LocalDate fechaCreacion) {
-        this.idAlumno = idAlumno;
-        this.idCurso = idCurso;
-        this.idValorCurso = idValorCurso;
-        this.pagoActual = pagoActual;
-        this.saldoAlumno = saldoAlumno;
-        this.descripcion = descripcion;
+    public HistorialDeCuentas(int idHistorialCuenta, String dniAlumno, String nombreCurso, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion, boolean pagado, int monto, int pago, int saldoAlumno, String descripcionPago) {
+        this.idHistorialCuenta = idHistorialCuenta;
+        this.dniAlumno = dniAlumno;
+        this.nombreCurso = nombreCurso;
         this.fechaCreacion = fechaCreacion;
-        this.fechaModificacion = null;
-        this.fechaEliminacion = null;
-    }
-
-    public int getPagoActual() {
-        return pagoActual;
-    }
-
-    public void setPagoActual(int pagoActual) {
-        this.pagoActual = pagoActual;
-    }
-
-    public int getSaldoAlumno() {
-        return saldoAlumno;
-    }
-
-    public void setSaldoAlumno(int saldoAlumno) {
+        this.fechaModificacion = fechaModificacion;
+        this.fechaEliminacion = fechaEliminacion;
+        this.pagado = pagado;
+        this.monto = monto;
+        this.pago = pago;
         this.saldoAlumno = saldoAlumno;
+        this.descripcionPago = descripcionPago;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public HistorialDeCuentas(String dniAlumno, String nombreCurso, boolean pagado, int monto, int pago, int saldoAlumno, String descripcionPago) {
+        this.dniAlumno = dniAlumno;
+        this.nombreCurso = nombreCurso;
+        this.pagado = pagado;
+        this.monto = monto;
+        this.pago = pago;
+        this.saldoAlumno = saldoAlumno;
+        this.descripcionPago = descripcionPago;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public Long getIdHistorialCuenta() {
-        return idHistorialCuenta;
-    }
-
-    public Long getIdAlumno() {
-        return idAlumno;
-    }
-
-    public Long getIdCurso() {
-        return idCurso;
-    }
-
-    public Long getIdValorCurso() {
-        return idValorCurso;
-    }
-
-    public LocalDate getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDate fechaCreacion) {
+    public HistorialDeCuentas(String dniAlumno, String nombreCurso, LocalDate fechaCreacion, boolean pagado, int monto, int pago, int saldoAlumno, String descripcionPago) {
+        this.dniAlumno = dniAlumno;
+        this.nombreCurso = nombreCurso;
         this.fechaCreacion = fechaCreacion;
+        this.pagado = pagado;
+        this.monto = monto;
+        this.pago = pago;
+        this.saldoAlumno = saldoAlumno;
+        this.descripcionPago = descripcionPago;
     }
 
     public LocalDate getFechaModificacion() {
@@ -97,6 +74,74 @@ public class HistorialDeCuentas {
     public void setFechaEliminacion(LocalDate fechaEliminacion) {
         this.fechaEliminacion = fechaEliminacion;
     }
-    
-    
+
+    public boolean isPagado() {
+        return pagado;
+    }
+
+    public void setPagado(boolean pagado) {
+        this.pagado = pagado;
+    }
+
+    public int getMonto() {
+        return monto;
+    }
+
+    public void setMonto(int monto) {
+        this.monto = monto;
+    }
+
+    public int getPago() {
+        return pago;
+    }
+
+    public void setPago(int pago) {
+        this.pago = pago;
+    }
+
+    public int getSaldo() {
+        return saldoAlumno;
+    }
+
+    public void setSaldo(int saldoAlumno) {
+        this.saldoAlumno = saldoAlumno;
+    }
+
+    public int getIdHistorialCuenta() {
+        return idHistorialCuenta;
+    }
+
+    public String getDniAlumno() {
+        return dniAlumno;
+    }
+
+    public String getNombreCurso() {
+        return nombreCurso;
+    }
+
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public int getSaldoAlumno() {
+        return saldoAlumno;
+    }
+
+    public void setSaldoAlumno(int saldoAlumno) {
+        this.saldoAlumno = saldoAlumno;
+    }
+
+    public String getDescripcionPago() {
+        return descripcionPago;
+    }
+
+    public void setDescripcionPago(String descripcionPago) {
+        this.descripcionPago = descripcionPago;
+    }
+
+    @Override
+    public String toString() {
+        return "HistorialDeCuentas{" + "idHistorialCuenta=" + idHistorialCuenta + ", dniAlumno=" + dniAlumno + ", nombreCurso=" + nombreCurso + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", fechaEliminacion=" + fechaEliminacion + ", pagado=" + pagado + ", monto=" + monto + ", pago=" + pago + ", saldoAlumno=" + saldoAlumno + ", descripcionPago=" + descripcionPago + '}';
+    }
+
 }

@@ -12,21 +12,50 @@ import java.time.LocalDate;
  */
 public class ValorCurso {
 
-    private Long idValorCurso;
-    private Long idCurso;
-    private String nombreMes;
-    private int precioMes;
+    private int idValorCurso;
+    private String nombreCurso;
+    private int precioCurso;
     private LocalDate fechaCreacion;
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
 
-    public ValorCurso(Long idCurso, String nombreMes, int precioMes, LocalDate fechaCreacion) {
-        this.idCurso = idCurso;
-        this.nombreMes = nombreMes;
-        this.precioMes = precioMes;
+    public ValorCurso(int idValorCurso, String nombreCurso, int precioCurso, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion) {
+        this.idValorCurso = idValorCurso;
+        this.nombreCurso = nombreCurso;
+        this.precioCurso = precioCurso;
         this.fechaCreacion = fechaCreacion;
-        this.fechaModificacion = null;
-        this.fechaEliminacion = null;
+        this.fechaModificacion = fechaModificacion;
+        this.fechaEliminacion = fechaEliminacion;
+    }
+
+    public ValorCurso(String nombreCurso, int precioCurso, LocalDate fechaModificacion) {
+        this.nombreCurso = nombreCurso;
+        this.precioCurso = precioCurso;
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public ValorCurso(String nombreCurso, int precioCurso, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion) {
+        this.nombreCurso = nombreCurso;
+        this.precioCurso = precioCurso;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
+        this.fechaEliminacion = fechaEliminacion;
+    }
+
+    public int getIdValorCurso() {
+        return idValorCurso;
+    }
+
+    public String getNombreCurso() {
+        return nombreCurso;
+    }
+
+    public int getPrecioCurso() {
+        return precioCurso;
+    }
+
+    public void setPrecioCurso(int precioCurso) {
+        this.precioCurso = precioCurso;
     }
 
     public LocalDate getFechaCreacion() {
@@ -53,27 +82,9 @@ public class ValorCurso {
         this.fechaEliminacion = fechaEliminacion;
     }
 
-    public String getNombreMes() {
-        return nombreMes;
+    @Override
+    public String toString() {
+        return "ValorCurso{" + "idValorCurso=" + idValorCurso + ", nombreCurso=" + nombreCurso + ", precioCurso=" + precioCurso + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", fechaEliminacion=" + fechaEliminacion + '}';
     }
 
-    public void setNombreMes(String nombreMes) {
-        this.nombreMes = nombreMes;
-    }
-
-    public int getPrecioMes() {
-        return precioMes;
-    }
-
-    public void setPrecioMes(int precioMes) {
-        this.precioMes = precioMes;
-    }
-
-    public Long getIdValorCurso() {
-        return idValorCurso;
-    }
-
-    public Long getIdCurso() {
-        return idCurso;
-    }
 }

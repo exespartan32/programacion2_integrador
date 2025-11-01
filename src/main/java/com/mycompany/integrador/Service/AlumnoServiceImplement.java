@@ -203,7 +203,7 @@ public class AlumnoServiceImplement implements AlumnoService {
 
             try ( PreparedStatement psAlumno = connectC.prepareStatement(sqlAlumno)) {
                 ResultSet rs = psAlumno.executeQuery();
-
+                connectC.commit();
                 while (rs.next()) {
                     LocalDate fechaModificacion = null;
                     if (rs.getString("fechaModificacion") != null) {
@@ -279,6 +279,7 @@ public class AlumnoServiceImplement implements AlumnoService {
                         fechaModificacion,
                         fechaEliminacion,
                         TipoPersona.ALUMNO);
+                //connectC.commit();
             } catch (Exception e) {
                 System.out.println("ERROR " + e.toString());
             }

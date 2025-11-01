@@ -20,6 +20,11 @@ public class Alumno_Controller {
 
     public void nuevoAlumno() {
         LocalDate fechaActual = LocalDate.now();
+        
+        System.out.println("ingrese el año de ingreso del alumno ej:20XX");
+        System.out.println("ingrese el mes de ingreso del alumno ej: enero,febrero,....");
+        
+        
         //Persona persona = new Persona("43270183", "daniel exxequiel", "ortiz", "mayorga", 24, LocalDate.MIN, TipoPersona.ALUMNO);
         Alumno alumno = new Alumno("2025", "octubre", "43270183", "daniel exequiel", "ortiz", "mayorga", 24, fechaActual, TipoPersona.ALUMNO);
         alumnoServiceImplement.guardarAlumno(alumno);

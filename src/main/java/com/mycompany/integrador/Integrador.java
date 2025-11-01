@@ -4,12 +4,13 @@
  */
 package com.mycompany.integrador;
 
-import com.mycompany.integrador.Controllers.Persona_Controller;
 import com.mycompany.integrador.Controllers.Alumno_Controller;
 import com.mycompany.integrador.Controllers.Profesor_Controller;
 import com.mycompany.integrador.Controllers.Usuario_Controller;
 import com.mycompany.integrador.Controllers.Curso_Controller;
 import com.mycompany.integrador.Controllers.Matricula_Controller;
+import com.mycompany.integrador.Controllers.ValorCurso_Controller;
+import com.mycompany.integrador.Controllers.HistorialCuenta_Controller;
 
 /**
  *
@@ -23,27 +24,38 @@ public class Integrador {
 //        conn.conectarBB();
 //        conn.desconetarDB();
 
-        Persona_Controller persona_Controller = new Persona_Controller();
         Alumno_Controller alumno_Controller = new Alumno_Controller();
         Profesor_Controller profesor_Controller = new Profesor_Controller();
         Usuario_Controller usuario_Controller = new Usuario_Controller();
         Curso_Controller curso_Controller = new Curso_Controller();
         Matricula_Controller matricula_Controller = new Matricula_Controller();
-
+        ValorCurso_Controller valorCurso_Controller = new ValorCurso_Controller();
+        HistorialCuenta_Controller historialCuenta_Controller = new HistorialCuenta_Controller();
+//        System.out.println("ingrese una opcion");
+//        System.out.println("1 - Alumnos");
+//        System.out.println("1 - Profesorres");
+//        System.out.println("1 - Uusarios");
+//        System.out.println("1 - Cursos");
+//        System.out.println("1 - Matricula");
+//        System.out.println("1 - Pagos");
+        //historialCuenta_Controller.pagarCurso();;
+        
+        
+        //valorCurso_Controller.buscarPrecioDeCurso();
+        //valorCurso_Controller.nuevoValorCurso();
+        //valorCurso_Controller.buscarPrecioPorId();
+        //valorCurso_Controller.buscarPrecioPorCurso();
+        //valorCurso_Controller.modificarPrecio();
         //matricula_Controller.matricularAlumnoEnCurso();
         //matricula_Controller.buscarMatriculaDeAlumno();
         //matricula_Controller.buscarMatriculaDeCurso();
         //matricula_Controller.buscarTodasLasMatriculas();
         //matricula_Controller.darDeBajaAlumno();
-        
-        
-        
         //curso_Controller.nuevoCurso();
         //curso_Controller.buscarTodosLosCursos();
         //curso_Controller.buscarCurso();
         //curso_Controller.modificarCurso();
         //curso_Controller.eliminarCurso();
-
         //alumno_Controller.nuevoAlumno();
         //alumno_Controller.buscarAlumno();
         //alumno_Controller.modificarAlumno();
@@ -55,7 +67,5 @@ public class Integrador {
         //profesor_Controller.nuevoProfesor();
         //usuario_Controller.nuevoUsuario();
         //alumno_Controller.nuevoAlumno();
-        //persona_Controller.crearNuevaPersona();
-        //persona_Controller.buscarPersona();
     }
 }

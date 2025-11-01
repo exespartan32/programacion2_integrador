@@ -82,7 +82,7 @@ public class CursoServiceImplement implements CursoService {
                 + "       fechaModificacion = ?\n"
                 + "WHERE nombreCurso = ?";
         Connection connectC = conn.conectarDB();
-        
+
         try {
             PreparedStatement ps = connectC.prepareStatement(sql);
             ps.setString(1, curso.getNombreCurso());
@@ -115,7 +115,8 @@ public class CursoServiceImplement implements CursoService {
             ps.setString(1, nombreCurso);
 
             int filasAfectadas = ps.executeUpdate();
-
+            connect.commit();
+            
             if (filasAfectadas > 0) {
                 System.out.println("curso eliminado correctamente");
             } else {
@@ -125,6 +126,7 @@ public class CursoServiceImplement implements CursoService {
             System.out.println("error al ejecutar la consulta" + e.getMessage());
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -135,6 +137,7 @@ public class CursoServiceImplement implements CursoService {
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
+//            connect.commit();;
             while (rs.next()) {
                 LocalDate fechaModificacion = null;
                 if (rs.getString("fechaModificacion") != null) {
@@ -162,10 +165,11 @@ public class CursoServiceImplement implements CursoService {
     @Override
     public Curso buscarCurso(String nombreCurso) {
         Connection connect = conn.conectarDB();
-        String sql = "SELECT * FROM Curso";
+        String sql = "SELECT * FROM Curso WHERE = ?";
         Curso curso = null;
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, nombreCurso);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 LocalDate fechaModificacion = null;
@@ -177,7 +181,7 @@ public class CursoServiceImplement implements CursoService {
                     fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
                 }
                 curso = new Curso(
-                        rs.getString("nombreCurso"),
+                        nombreCurso,
                         rs.getInt("mesesDuracion"),
                         LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy")),
                         fechaModificacion,

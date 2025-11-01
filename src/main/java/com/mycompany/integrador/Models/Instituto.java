@@ -16,14 +16,12 @@ public class Instituto {
     private String razonSocial;
     private ArrayList<Curso> cursos;
     private ArrayList<Alumno> alumnos;
-    private ListaMateriales materiales;
     private ArrayList<Profesor> profesores;
 
-    public Instituto(String razonSocial, ArrayList<Curso> cursos, ArrayList<Alumno> alumnos, ListaMateriales materiales, ArrayList<Profesor> profesores) {
+    public Instituto(String razonSocial, ArrayList<Curso> cursos, ArrayList<Alumno> alumnos, ArrayList<Profesor> profesores) {
         this.razonSocial = razonSocial;
         this.cursos = cursos;
         this.alumnos = alumnos;
-        this.materiales = materiales;
         this.profesores = profesores;
     }
 
@@ -53,14 +51,6 @@ public class Instituto {
 
     public void setAlumnos(ArrayList<Alumno> alumnos) {
         this.alumnos = alumnos;
-    }
-
-    public ListaMateriales getMateriales() {
-        return materiales;
-    }
-
-    public void setMateriales(ListaMateriales materiales) {
-        this.materiales = materiales;
     }
 
     public ArrayList<Profesor> getProfesores() {

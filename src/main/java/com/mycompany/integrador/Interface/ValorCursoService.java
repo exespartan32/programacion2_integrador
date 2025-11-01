@@ -5,7 +5,6 @@
 package com.mycompany.integrador.Interface;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import com.mycompany.integrador.Models.ValorCurso;
 
 /**
@@ -14,13 +13,16 @@ import com.mycompany.integrador.Models.ValorCurso;
  */
 public interface ValorCursoService {
 
-    public void guardarValorCurso(ValorCurso valorCurso);
+    public void asignarPrecio(ValorCurso valorCurso);
 
-    public void modificarValorCurso(Long id, ValorCurso valorCurso);
+    public void modificarPrecio(int id, ValorCurso valorCurso);
 
-    public void eliminarValorCurso(Long id);
+    public void eliminarPrecio(int id);
 
-    public ArrayList<ValorCurso> buscarTodasLosUValoresCursos();
+    public ArrayList<ValorCurso> buscarValorCursos();
 
-    public Optional<ValorCurso> buscarValorCurso(Long id);
+    public ValorCurso buscarValorCursos(String nombreCurso);
+    
+    public ValorCurso buscarValorCursos(int id);
+    
 }

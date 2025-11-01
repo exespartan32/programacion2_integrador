@@ -5,7 +5,6 @@
 package com.mycompany.integrador.Interface;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import com.mycompany.integrador.Models.HistorialDeCuentas;
 
 /**
@@ -16,13 +15,17 @@ public interface HistorialCuentaService {
 
     public void pagarCurso(HistorialDeCuentas hdc);
 
-    public void modificarPago(Long id, HistorialDeCuentas hdc);
+    //public void modificarPago(int id, HistorialDeCuentas hdc);
+    //public void eliminarPago(int id);
+    public ArrayList<HistorialDeCuentas> buscarPago();
 
-    public void eliminarPago(Long id);
+    public HistorialDeCuentas buscarPago(int id);
 
-    public ArrayList<HistorialDeCuentas> buscarTodosLosPagos();
+    public HistorialDeCuentas buscarPago(String DNIAlumno);
+    //public HistorialDeCuentas buscarPago();
 
-    public Optional<HistorialDeCuentas> buscarPago(Long id);
-    
-    
+    public int verSaldo(String DNIAlumno);
+
+    public HistorialDeCuentas buscarPago(String nombreCurso, boolean pago);
+
 }

@@ -96,6 +96,7 @@ public class Matricula_Controller {
         ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
 
         System.out.println("seleccione el curso del que quiere der de baja el alumno:");
+        System.out.println("///////////////////////////////////////////////////////////////////");
         for (int j = 0; j < listaMatriculas.size(); j++) {
             int elemento = j + 1;
             System.out.println("Elemento " + elemento + ": " + matriculaServiceImplement.buscarMatriculaCurso(alumno).get(j).getNombreCurso());

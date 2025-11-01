@@ -105,7 +105,7 @@ public class MatriculaServiceImplement implements MatriculaInterface {
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-
+            connect.commit();
             while (rs.next()) {
                 LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
                 LocalDate fechaModificacion = null;
@@ -141,7 +141,7 @@ public class MatriculaServiceImplement implements MatriculaInterface {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, nombreCurso);
             ResultSet rs = ps.executeQuery();
-
+//            connect.commit();;
             while (rs.next()) {
                 LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
                 LocalDate fechaModificacion = null;
