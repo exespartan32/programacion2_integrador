@@ -38,35 +38,47 @@ public class Integrador {
 //        System.out.println("1 - Cursos");
 //        System.out.println("1 - Matricula");
 //        System.out.println("1 - Pagos");
-        //historialCuenta_Controller.pagarCurso();;
-        //historialCuenta_Controller.verTodosLosPagos();
+        //--------------------------------------------------------------------------------
+
         //valorCurso_Controller.buscarPrecioDeCurso();
         //valorCurso_Controller.nuevoValorCurso();
         //valorCurso_Controller.buscarPrecioPorId();
         //valorCurso_Controller.buscarPrecioPorCurso();
         //valorCurso_Controller.modificarPrecio();
+        //--------------------------------------------------------------------------------
         //matricula_Controller.matricularAlumnoEnCurso();
         //matricula_Controller.buscarMatriculaDeAlumno();
         //matricula_Controller.buscarMatriculaDeCurso();
         //matricula_Controller.buscarTodasLasMatriculas();
         //matricula_Controller.darDeBajaAlumno();
+        //--------------------------------------------------------------------------------
         //curso_Controller.nuevoCurso();
         //curso_Controller.buscarTodosLosCursos();
         //curso_Controller.buscarCurso();
         //curso_Controller.modificarCurso();
         //curso_Controller.eliminarCurso();
+        //--------------------------------------------------------------------------------
         //alumno_Controller.nuevoAlumno();
         //alumno_Controller.buscarAlumno();
         //alumno_Controller.modificarAlumno();
         //alumno_Controller.buscarTodosAlumnos();
         //alumno_Controller.eliminarAlumno();
+        //alumno_Controller.nuevoAlumno();
+        //--------------------------------------------------------------------------------
         //profesor_Controller.nuevoProfesor();
         //profesor_Controller.buscarProfesor();
         //profesor_Controller.buscarTodosProfesores();
         //profesor_Controller.nuevoProfesor();
-        //alumno_Controller.nuevoAlumno();
-
-        usuario_Controller.nuevoUsuario();
-
+        //--------------------------------------------------------------------------------
+        //usuario_Controller.nuevoUsuario();
+        //usuario_Controller.buscarUsuarioPorId();
+        //usuario_Controller.buscarUsuarioPorNombreUsuario();
+        //usuario_Controller.eliminarUsuario();
+        //usuario_Controller.modificarDatosUsuario();
+        //usuario_Controller.verTodosLosUsuario();
+        //--------------------------------------------------------------------------------
+        //historialCuenta_Controller.buscarPagoPorId();
+        //historialCuenta_Controller.pagarCurso();;
+        //historialCuenta_Controller.verTodosLosPagos();
     }
 }

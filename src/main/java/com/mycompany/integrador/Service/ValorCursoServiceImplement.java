@@ -125,7 +125,7 @@ public class ValorCursoServiceImplement implements ValorCursoService {
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            connect.commit();;
+            //connect.commit();;
             while (rs.next()) {
                 LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
                 LocalDate fechaModificacion = null;

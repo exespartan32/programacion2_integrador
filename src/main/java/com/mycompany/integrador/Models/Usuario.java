@@ -21,11 +21,20 @@ public class Usuario {
     private LocalDate fechaModificacion;
     private LocalDate fechaEliminacion;
 
-    public Usuario(String email, String nombreUsuario, String contrasenia, LocalDate fechaCreacion) {
+    public Usuario(String email, String nombreUsuario, String contrasenia, LocalDate fechaModificacion) {
+        this.email = email;
+        this.nombreUsuario = nombreUsuario;
+        this.contrasenia = contrasenia;
+        this.fechaModificacion = fechaModificacion;
+    }
+
+    public Usuario(String email, String nombreUsuario, String contrasenia, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion) {
         this.email = email;
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
         this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
+        this.fechaEliminacion = fechaEliminacion;
     }
 
     public Usuario(int idUsuario, String email, String nombreUsuario, String contrasenia, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion) {

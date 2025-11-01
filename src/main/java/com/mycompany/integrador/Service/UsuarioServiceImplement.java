@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -51,84 +53,95 @@ public class UsuarioServiceImplement implements UsuarioService {
 
     @Override
     public void modificarUsuario(int id, Usuario usuario) {
-        if (buscarUsuario(id) != null) {
-            String sql = "UPDATE Usuario\n"
-                    + "   SET email = ?,\n"
-                    + "       nombreUsuario = ?,\n"
-                    + "       fechaModificacion = ?\n"
-                    + "WHERE contrasenia = ?";
-            Connection connectC = conn.conectarDB();
-            try {
-                PreparedStatement ps = connectC.prepareStatement(sql);
+        String sql = "UPDATE Usuario\n"
+                + "   SET email = ?,\n"
+                + "       nombreUsuario = ?,\n"
+                + "       fechaModificacion = ?\n"
+                + "WHERE idUsuario = ?";
+
+        try ( Connection connectC = conn.conectarDB()) {
+            habilitarClavesForaneas(connectC);
+            configurarBusyTimeout(connectC, 5000);
+            connectC.setAutoCommit(false);
+            try ( PreparedStatement ps = connectC.prepareStatement(sql)) {
                 DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
-                String fechaString = usuario.getFechaCreacion().format(formatterEs);
+                String fechaString = usuario.getFechaModificacion() != null ? usuario.getFechaModificacion().format(formatterEs) : LocalDate.now().format(formatterEs);
+
                 ps.setString(1, usuario.getEmail());
                 ps.setString(2, usuario.getNombreUsuario());
                 ps.setString(3, fechaString);
+                ps.setInt(4, id);
+
                 int filasAfectadas = ps.executeUpdate();
                 if (filasAfectadas > 0) {
-                    System.out.println("precio actualizado correctamente");
+                    System.out.println("Usuario actualizado correctamente");
                 } else {
-                    System.out.println("No se encontro el registro");
+                    System.out.println("No se encontró el registro");
                 }
+                connectC.commit();
+
             } catch (SQLException e) {
-                System.out.println("error al ejecutar la consulta" + e.getMessage());
+                connectC.rollback(); // IMPORTANTE: hacer rollback en caso de error
+                System.out.println("Error al ejecutar la consulta: " + e.getMessage());
                 e.printStackTrace();
             }
-        } else {
-            System.out.println("no se encontro el registro seleccionado");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioServiceImplement.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     @Override
     public void eliminarUsuario(int id) {
-        if (buscarUsuario(id) != null) {
-            String sql = "DELETE FROM Curso WHERE nombreCurso = ?";
-            Connection connect = conn.conectarDB();
-            try {
-                PreparedStatement ps = connect.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery();
-
-                int filasAfectadas = ps.executeUpdate();
-
-                if (filasAfectadas > 0) {
-                    System.out.println("precio eliminado correctamente");
-                } else {
-                    System.out.println("No se encontro un el registro con id " + id);
-                }
-            } catch (SQLException e) {
-                System.out.println("error al ejecutar la consulta" + e.getMessage());
-                e.printStackTrace();
+        String sql = "DELETE FROM Usuario WHERE idUsuario = ?";
+        Connection connect = conn.conectarDB();
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, id);
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("usuario eliminado correctamente");
+            } else {
+                System.out.println("No se encontro un el registro con id " + id);
             }
-        } else {
-            System.out.println("no se encontro el registro seleccionado");
+        } catch (SQLException e) {
+            System.out.println("error al ejecutar la consulta" + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     @Override
     public ArrayList<Usuario> buscarUsuario() {
         String sql = "SELECT * FROM Usuario";
-        Connection connectC = conn.conectarDB();
-        PreparedStatement ps;
         ArrayList<Usuario> listaUsuarios = new ArrayList<>();
-        try {
-            ps = connectC.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-                Usuario usuario = new Usuario(
-                        rs.getString("email"),
-                        rs.getString("nombreUsuario"),
-                        rs.getString("contrasenia"),
-                        fechaCreacion
-                );
-                listaUsuarios.add(usuario);
-            } else {
-                System.out.println("no se encontro ningun usuario");
+        try ( Connection connectC = conn.conectarDB()) {
+            try ( PreparedStatement ps = connectC.prepareStatement(sql)) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    LocalDate fechaModificacion = null;
+                    if (rs.getString("fechaModificacion") != null) {
+                        fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    LocalDate fechaEliminacion = null;
+                    if (rs.getString("fechaEliminacion") != null) {
+                        fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    Usuario usuario = new Usuario(
+                            rs.getInt("idUsuario"),
+                            rs.getString("email"),
+                            rs.getString("nombreUsuario"),
+                            rs.getString("contrasenia"),
+                            fechaCreacion,
+                            fechaModificacion,
+                            fechaEliminacion
+                    );
+                    listaUsuarios.add(usuario);
+                }
             }
-        } catch (SQLException e) {
-            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioServiceImplement.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listaUsuarios;
     }
@@ -141,18 +154,30 @@ public class UsuarioServiceImplement implements UsuarioService {
         Usuario usuario = null;
         try {
             ps = connectC.prepareStatement(sql);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
             if (rs.next()) {
                 ps.setInt(1, id);
-                usuario = new Usuario(rs.getString(
-                        "email"),
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                usuario = new Usuario(
+                        rs.getInt("idUsuario"),
+                        rs.getString("email"),
                         rs.getString("nombreUsuario"),
                         rs.getString("contrasenia"),
-                        fechaCreacion
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion
                 );
             } else {
-                System.out.println("no se ecnotro el usuario");
+                System.out.println("no se encontro el usuario");
             }
         } catch (SQLException e) {
             System.out.println("Error al ejecutar la consulta: " + e.getMessage());
@@ -167,16 +192,27 @@ public class UsuarioServiceImplement implements UsuarioService {
         Usuario usuario = new Usuario();
 
         try ( Connection connectC = conn.conectarDB()) {
-            try ( PreparedStatement psUsuario = connectC.prepareStatement(sql)) {
-                psUsuario.setString(1, nombreUsuario);
-                ResultSet rs = psUsuario.executeQuery();
+            try ( PreparedStatement ps = connectC.prepareStatement(sql)) {
+                ps.setString(1, nombreUsuario);
+                ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    LocalDate fechaModificacion = null;
+                    if (rs.getString("fechaModificacion") != null) {
+                        fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    LocalDate fechaEliminacion = null;
+                    if (rs.getString("fechaEliminacion") != null) {
+                        fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
                     usuario = new Usuario(
+                            rs.getInt("idUsuario"),
                             rs.getString("email"),
                             rs.getString("nombreUsuario"),
                             rs.getString("contrasenia"),
-                            fechaCreacion
+                            fechaCreacion,
+                            fechaModificacion,
+                            fechaEliminacion
                     );
                 } else {
                     System.out.println("no se encontro el usuario");
@@ -191,4 +227,15 @@ public class UsuarioServiceImplement implements UsuarioService {
         return usuario;
     }
 
+    private static void habilitarClavesForaneas(Connection conn) throws SQLException {
+        try ( PreparedStatement stmt = conn.prepareStatement("PRAGMA foreign_keys = ON;")) {
+            stmt.execute();
+        }
+    }
+
+    private static void configurarBusyTimeout(Connection conn, int timeoutMs) throws SQLException {
+        try ( PreparedStatement stmt = conn.prepareStatement("PRAGMA busy_timeout = " + timeoutMs + ";")) {
+            stmt.execute();
+        }
+    }
 }

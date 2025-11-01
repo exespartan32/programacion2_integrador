@@ -6,6 +6,7 @@ package com.mycompany.integrador.Models;
 
 import com.mycompany.integrador.Enums.TipoPersona;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  *

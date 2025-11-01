@@ -196,7 +196,7 @@ public class AlumnoServiceImplement implements AlumnoService {
 
             try ( PreparedStatement psAlumno = connectC.prepareStatement(sqlAlumno)) {
                 ResultSet rs = psAlumno.executeQuery();
-                connectC.commit();
+                //connectC.commit();
                 while (rs.next()) {
                     LocalDate fechaModificacion = null;
                     if (rs.getString("fechaModificacion") != null) {
