@@ -37,10 +37,7 @@ public class ValorCursoServiceImplement implements ValorCursoService {
                 PreparedStatement ps = connectC.prepareStatement(sql);
                 ps.setString(1, valorCurso.getNombreCurso());
                 ps.setInt(2, valorCurso.getPrecioCurso());
-
-                DateTimeFormatter formatterEs = DateTimeFormatter
-                        .ofLocalizedDate(FormatStyle.SHORT)
-                        .withLocale(new Locale("es", "ES"));
+                DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                 String fechaString = LocalDate.now().format(formatterEs);
                 ps.setString(3, fechaString);
                 ps.execute();
@@ -65,10 +62,7 @@ public class ValorCursoServiceImplement implements ValorCursoService {
 
             try {
                 PreparedStatement ps = connectC.prepareStatement(sql);
-
-                DateTimeFormatter formatterEs = DateTimeFormatter
-                        .ofLocalizedDate(FormatStyle.SHORT)
-                        .withLocale(new Locale("es", "ES"));
+                DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                 String fechaString = valorCurso.getFechaModificacion().format(formatterEs);
 
                 ps.setInt(1, valorCurso.getPrecioCurso());

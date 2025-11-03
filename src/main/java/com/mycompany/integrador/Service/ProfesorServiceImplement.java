@@ -40,9 +40,7 @@ public class ProfesorServiceImplement implements ProfesorService {
                     int idGenerado = -1;
 
                     try ( PreparedStatement psPersona = connectC.prepareStatement(sqlPersona, PreparedStatement.RETURN_GENERATED_KEYS)) {
-                        DateTimeFormatter formatterEs = DateTimeFormatter
-                                .ofLocalizedDate(FormatStyle.SHORT)
-                                .withLocale(new Locale("es", "ES"));
+                        DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                         String fechaString = profesor.getFechaCreacion().format(formatterEs);
 
                         psPersona.setString(1, profesor.getDNI());
@@ -51,7 +49,7 @@ public class ProfesorServiceImplement implements ProfesorService {
                         psPersona.setString(4, profesor.getApellidoPaterno());
                         psPersona.setInt(5, profesor.getEdad());
                         psPersona.setString(6, fechaString);
-                        psPersona.setString(7, "ALUMNO");
+                        psPersona.setString(7, "PROFESOR");
 
                         psPersona.executeUpdate();
 
@@ -116,9 +114,7 @@ public class ProfesorServiceImplement implements ProfesorService {
                     psPersona.setString(2, profesorModificado.getApellidoMaterno());
                     psPersona.setInt(3, profesorModificado.getEdad());
                     psPersona.setString(4, profesorModificado.getApellidoPaterno());
-                    DateTimeFormatter formatterEs = DateTimeFormatter
-                            .ofLocalizedDate(FormatStyle.SHORT)
-                            .withLocale(new Locale("es", "ES"));
+                    DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                     String fechaString = profesorModificado.getFechaModificacion().format(formatterEs);
                     psPersona.setString(5, fechaString);
                     psPersona.setString(6, dni);

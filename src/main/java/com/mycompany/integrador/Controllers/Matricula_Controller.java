@@ -22,6 +22,7 @@ public class Matricula_Controller {
     MatriculaServiceImplement matriculaServiceImplement = new MatriculaServiceImplement();
     AlumnoServiceImplement alumnoServiceImplement = new AlumnoServiceImplement();
     CursoServiceImplement cursoServiceImplement = new CursoServiceImplement();
+    Scanner sc = new Scanner(System.in);
 
     public void matricularAlumnoEnCurso() {
         if (alumnoServiceImplement.buscarAlumno().size() <= 0) {
@@ -32,7 +33,6 @@ public class Matricula_Controller {
             for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
                 System.out.println("Elemento " + i + 1 + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
             }
-            Scanner sc = new Scanner(System.in);
             int i = sc.nextInt();
             matriculaServiceImplement.matricularAlumno(alumnoServiceImplement.buscarAlumno().get(i).getDNI());
         }
@@ -42,20 +42,23 @@ public class Matricula_Controller {
         if (alumnoServiceImplement.buscarAlumno().size() <= 0) {
             System.out.println("no hay alumnos para mostrar");
         } else {
-            System.out.println("seleccione el alumno del que quiete buscar la matricula");
-            System.out.println("///////////////////////////////////////////////////////////////////");
-            for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
-            }
-            Scanner sc = new Scanner(System.in);
-            int i_alumno = sc.nextInt();
-            Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno - 1);
-            matriculaServiceImplement.buscarMatriculaCurso(alumno);
-            ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
-            System.out.println("datos encontrados:");
-            for (int j = 0; j < listaMatriculas.size(); j++) {
-                System.out.println("=> " + matriculaServiceImplement.buscarMatriculaCurso(alumno).get(j).toString());
+            try {
+                System.out.println("seleccione el alumno del que quiete buscar la matricula");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
+                }
+                int i_alumno = sc.nextInt();
+                Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno - 1);
+                matriculaServiceImplement.buscarMatriculaCurso(alumno);
+                ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
+                System.out.println("datos encontrados:");
+                for (int j = 0; j < listaMatriculas.size(); j++) {
+                    System.out.println("=> " + matriculaServiceImplement.buscarMatriculaCurso(alumno).get(j).toString());
+                }
+            }catch (IndexOutOfBoundsException e) {
+                System.out.println("no existe el registro seleccionado");
             }
         }
     }
@@ -70,7 +73,6 @@ public class Matricula_Controller {
                 int elemento = i + 1;
                 System.out.println("Elemento " + elemento + ": " + cursoServiceImplement.buscarCurso().get(i).toString());
             }
-            Scanner sc = new Scanner(System.in);
             int i_alumno = sc.nextInt();
             Curso curso = cursoServiceImplement.buscarCurso().get(i_alumno - 1);
             ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(curso.getNombreCurso());
@@ -96,27 +98,30 @@ public class Matricula_Controller {
         if (alumnoServiceImplement.buscarAlumno().size() <= 0) {
             System.out.println("no hay alumnos para mostrar");
         } else {
-            System.out.println("seleccione el alumno del que quiete buscar la matricula");
-            System.out.println("///////////////////////////////////////////////////////////////////");
-            for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
-            }
-            Scanner sc = new Scanner(System.in);
-            int i_alumno = sc.nextInt();
-            Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno - 1);
-            ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
+            try {
+                System.out.println("seleccione el alumno del que quiete buscar la matricula");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
+                }
+                int i_alumno = sc.nextInt();
+                Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno - 1);
+                ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
 
-            System.out.println("seleccione el curso del que quiere der de baja el alumno:");
-            System.out.println("///////////////////////////////////////////////////////////////////");
-            for (int j = 0; j < listaMatriculas.size(); j++) {
-                int elemento = j + 1;
-                System.out.println("Elemento " + elemento + ": " + matriculaServiceImplement.buscarMatriculaCurso(alumno).get(j).getNombreCurso());
-            }
-            int i_curso = sc.nextInt();
-            Curso curso = cursoServiceImplement.buscarCurso().get(i_curso);
+                System.out.println("seleccione el curso del que quiere der de baja el alumno:");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                for (int j = 0; j < listaMatriculas.size(); j++) {
+                    int elemento = j + 1;
+                    System.out.println("Elemento " + elemento + ": " + matriculaServiceImplement.buscarMatriculaCurso(alumno).get(j).getNombreCurso());
+                }
+                int i_curso = sc.nextInt();
+                Curso curso = cursoServiceImplement.buscarCurso().get(i_curso);
 
-            matriculaServiceImplement.desvincularAlumno(alumno.getDNI(), curso.getNombreCurso());
+                matriculaServiceImplement.desvincularAlumno(alumno.getDNI(), curso.getNombreCurso());
+            }catch (IndexOutOfBoundsException e) {
+                System.out.println("no existe el registro seleccionado");
+            }
         }
     }
 }

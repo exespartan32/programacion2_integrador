@@ -9,6 +9,7 @@ import com.mycompany.integrador.Service.ProfesorServiceImplement;
 import java.time.LocalDate;
 import com.mycompany.integrador.Models.Profesor;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -17,11 +18,33 @@ import java.util.ArrayList;
 public class Profesor_Controller {
 
     ProfesorServiceImplement profesorServiceImplement = new ProfesorServiceImplement();
+    private final Scanner sc = new Scanner(System.in);
 
     public void nuevoProfesor() {
         LocalDate fechaActual = LocalDate.now();
-        Profesor profesor = new Profesor(1000000, true, "132123132", "juan", "otero", "jofre", 26, fechaActual, TipoPersona.PROFESOR);
-        profesorServiceImplement.guardarProfesor(profesor);
+        try {
+            System.out.println("--- Creando Nuevo Profesor ---");
+            System.out.print("Ingrese el DNI: ");
+            String dni = sc.nextLine();
+            System.out.print("Ingrese los Nombres: ");
+            String nombres = sc.nextLine();
+            System.out.print("Ingrese el Apellido Paterno: ");
+            String apellidoPaterno = sc.nextLine();
+            System.out.print("Ingrese el Apellido Materno: ");
+            String apellidoMaterno = sc.nextLine();
+            System.out.print("Ingrese la Edad: ");
+            int edad = Integer.parseInt(sc.nextLine());
+            System.out.print("Ingrese el Sueldo: ");
+            int sueldo = Integer.parseInt(sc.nextLine());
+            System.out.print("¿Tiene presentismo? (si/no): ");
+            boolean presentismo = sc.nextLine().equalsIgnoreCase("si");
+
+            Profesor profesor = new Profesor(sueldo, presentismo, dni, nombres, apellidoPaterno, apellidoMaterno, edad, fechaActual, TipoPersona.PROFESOR);
+            profesorServiceImplement.guardarProfesor(profesor);
+            System.out.println("¡Profesor " + nombres + " guardado con éxito!");
+        } catch (NumberFormatException e) {
+            System.out.println("Error: La edad y el sueldo deben ser números.");
+        }
     }
 
     public void buscarTodosProfesores() {
@@ -38,28 +61,69 @@ public class Profesor_Controller {
     }
 
     public void modificarDatosProfesor() {
-        String dniModificar = "43270183";
-        String nombresModificado = "nombre modificado";
-        int edadModificado = 0;
-        String apellidoPaternoModificado = "apellido paterno modificado";
-        String apellidoMaternoModificado = "apellido materno modificado";
-        LocalDate fechaModificacion = LocalDate.now();
-        int sueldoModificado = 1234;
-        boolean presentismoModificado = true;
+        try {
+            ArrayList<Profesor> listaProfesores = profesorServiceImplement.buscarProfesor();
+            if (listaProfesores.size() > 0) {
+                System.out.println("seleccione el profesor que desea modificar");
+                for (int j = 0; j < listaProfesores.size(); j++) {
+                    int elemento = j + 1;
+                    System.out.println("elemento " + elemento + " => " + listaProfesores.get(j).toString());
+                }
+                int i_profesor = sc.nextInt();
+                String dniProfesor = listaProfesores.get(i_profesor - 1).getDNI();
 
-        Profesor profesorModificado = new Profesor(sueldoModificado,
-                presentismoModificado,
-                nombresModificado,
-                apellidoMaternoModificado,
-                apellidoPaternoModificado,
-                edadModificado,
-                fechaModificacion
-        );
-        profesorServiceImplement.modificarProfesor(dniModificar, profesorModificado);
+                System.out.println("--- Ingrese los nuevos datos para " + listaProfesores.get(i_profesor - 1).getNombres() + " ---");
+                System.out.print("Nuevo Nombre: ");
+                String nombresModificado = sc.nextLine();
+                System.out.print("Nuevo Apellido Paterno: ");
+                String apellidoPaternoModificado = sc.nextLine();
+                System.out.print("Nuevo Apellido Materno: ");
+                String apellidoMaternoModificado = sc.nextLine();
+                System.out.print("Nueva Edad: ");
+                int edadModificado = Integer.parseInt(sc.nextLine());
+                System.out.print("Nuevo Sueldo: ");
+                int sueldoModificado = Integer.parseInt(sc.nextLine());
+                System.out.print("¿Tiene presentismo? (si/no): ");
+                boolean presentismoModificado = sc.nextLine().equalsIgnoreCase("si");
+                LocalDate fechaModificacion = LocalDate.now();
 
+                Profesor profesorModificado = new Profesor(sueldoModificado,
+                        presentismoModificado,
+                        nombresModificado,
+                        apellidoPaternoModificado,
+                        apellidoMaternoModificado,
+                        edadModificado,
+                        fechaModificacion
+                );
+                profesorServiceImplement.modificarProfesor(dniProfesor, profesorModificado);
+                System.out.println("¡Profesor modificado con éxito!");
+            } else {
+                System.out.println("no hay registros que mostrar");
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("no existe el registro seleccionado");
+        }
     }
 
     public void eliminarProfesor() {
-        profesorServiceImplement.eliminarProfesor("132123132");
+        ArrayList<Profesor> listaProfesores = profesorServiceImplement.buscarProfesor();
+        if (listaProfesores.size() > 0) {
+            try {
+                System.out.println("seleccione el profesor que desea eliminar");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                for (int j = 0; j < listaProfesores.size(); j++) {
+                    int elemento = j + 1;
+                    System.out.println("elemento " + elemento + " => " + listaProfesores.get(j).toString());
+                }
+                int i_profesor = sc.nextInt();
+                String dniProfesor = listaProfesores.get(i_profesor - 1).getDNI();
+                profesorServiceImplement.eliminarProfesor(dniProfesor);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("no existe el registro seleccionado");
+            }
+
+        } else {
+            System.out.println("no hay registros que mostrar");
+        }
     }
 }

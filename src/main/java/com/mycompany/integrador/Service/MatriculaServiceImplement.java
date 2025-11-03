@@ -39,9 +39,7 @@ public class MatriculaServiceImplement implements MatriculaInterface {
             try {
                 PreparedStatement ps = connectC.prepareStatement(sql);
                 ps.setString(1, DNIAlumno);
-                DateTimeFormatter formatterEs = DateTimeFormatter
-                        .ofLocalizedDate(FormatStyle.SHORT)
-                        .withLocale(new Locale("es", "ES"));
+                DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                 String fechaString = LocalDate.now().format(formatterEs);
                 ps.setString(2, fechaString);
 

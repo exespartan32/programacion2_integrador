@@ -40,9 +40,7 @@ public class CursoServiceImplement implements CursoService {
                 Connection connectC = conn.conectarDB();
                 try {
                     PreparedStatement ps = connectC.prepareStatement(sql);
-                    DateTimeFormatter formatterEs = DateTimeFormatter
-                            .ofLocalizedDate(FormatStyle.SHORT)
-                            .withLocale(new Locale("es", "ES"));
+                    DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                     String fechaString = curso.getFechaCreacion().format(formatterEs);
 
                     ps.setString(1, curso.getNombreCurso());
@@ -87,9 +85,7 @@ public class CursoServiceImplement implements CursoService {
             PreparedStatement ps = connectC.prepareStatement(sql);
             ps.setString(1, curso.getNombreCurso());
             ps.setInt(2, curso.getMesesDuracion());
-            DateTimeFormatter formatterEs = DateTimeFormatter
-                    .ofLocalizedDate(FormatStyle.SHORT)
-                    .withLocale(new Locale("es", "ES"));
+            DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
             String fechaString = curso.getFechaModificacion().format(formatterEs);
             ps.setString(3, fechaString);
             ps.setString(4, nombreCurso);
@@ -116,7 +112,7 @@ public class CursoServiceImplement implements CursoService {
 
             int filasAfectadas = ps.executeUpdate();
             connect.commit();
-            
+
             if (filasAfectadas > 0) {
                 System.out.println("curso eliminado correctamente");
             } else {

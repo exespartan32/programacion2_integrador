@@ -65,16 +65,21 @@ public class ValorCurso_Controller {
 
     public void buscarPrecioDeCurso() {
         if (valorCursoServiceImplement.buscarValorCursos().size() > 0) {
-            ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
-            System.out.println("seleccione el curso del que quiere ver el precio:");
-            System.out.println("///////////////////////////////////////////////////////////////////");
-            for (int i = 0; i < listaCursos.size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
+            try{
+                ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
+                System.out.println("seleccione el curso del que quiere ver el precio:");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                for (int i = 0; i < listaCursos.size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
+                }
+                int i_curso = sc.nextInt();
+                ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(listaCursos.get(i_curso - 1).getNombreCurso());
+                System.out.println(valorCurso.toString());
+            }catch (IndexOutOfBoundsException e) {
+                System.out.println("no existe el registro seleccionado");
             }
-            int i_curso = sc.nextInt();
-            ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(listaCursos.get(i_curso - 1).getNombreCurso());
-            System.out.println(valorCurso.toString());
+
         } else {
             System.out.println("no hay cursos que mostrar");
         }
@@ -83,24 +88,28 @@ public class ValorCurso_Controller {
 
     public void modificarPrecio() {
         if (valorCursoServiceImplement.buscarValorCursos().size() > 0) {
-            System.out.println("seleccione el curso del que quiere modificar el precio:");
-            System.out.println("///////////////////////////////////////////////////////////////////");
-            ArrayList<ValorCurso> listaPreciosCursos = valorCursoServiceImplement.buscarValorCursos();
+            try{
+                System.out.println("seleccione el curso del que quiere modificar el precio:");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                ArrayList<ValorCurso> listaPreciosCursos = valorCursoServiceImplement.buscarValorCursos();
 
-            for (int i = 0; i < listaPreciosCursos.size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + listaPreciosCursos.get(i));
-            }
-            int i_curso = sc.nextInt();
-            if (i_curso > listaPreciosCursos.size()) {
+                for (int i = 0; i < listaPreciosCursos.size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + listaPreciosCursos.get(i));
+                }
+                int i_curso = sc.nextInt();
+                if (i_curso > listaPreciosCursos.size()) {
+                    System.out.println("no existe el registro seleccionado");
+                } else {
+                    ValorCurso valorCurso = listaPreciosCursos.get(i_curso - 1);
+                    System.out.println("indique el nuevo precio del curso");
+                    int precioNuevo = sc.nextInt();
+                    valorCurso.setPrecioCurso(precioNuevo);
+                    valorCurso.setFechaModificacion(LocalDate.now());
+                    valorCursoServiceImplement.modificarPrecio(listaPreciosCursos.get(i_curso - 1).getIdValorCurso(), valorCurso);
+                }
+            }catch (IndexOutOfBoundsException e) {
                 System.out.println("no existe el registro seleccionado");
-            } else {
-                ValorCurso valorCurso = listaPreciosCursos.get(i_curso - 1);
-                System.out.println("indique el nuevo precio del curso");
-                int precioNuevo = sc.nextInt();
-                valorCurso.setPrecioCurso(precioNuevo);
-                valorCurso.setFechaModificacion(LocalDate.now());
-                valorCursoServiceImplement.modificarPrecio(listaPreciosCursos.get(i_curso - 1).getIdValorCurso(), valorCurso);
             }
         } else {
             System.out.println("no hay registros que buscar");

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -18,11 +19,23 @@ import java.util.ArrayList;
 public class Curso_Controller {
 
     CursoServiceImplement cursoServiceImplement = new CursoServiceImplement();
+    Scanner sc = new Scanner(System.in);
 
     public void nuevoCurso() {
-        LocalDate fechaActual = LocalDate.now();
-        Curso curso = new Curso("maquillaje", 10, fechaActual, null, null);
-        cursoServiceImplement.guardarCurso(curso);
+        try {
+            LocalDate fechaActual = LocalDate.now();
+            System.out.println("--- Creando Nuevo Curso ---");
+            System.out.print("Ingrese el Nombre del Curso: ");
+            String nombreCurso = sc.nextLine();
+            System.out.print("Ingrese la Duración en Meses: ");
+            int duracionMeses = Integer.parseInt(sc.nextLine());
+
+            Curso curso = new Curso(nombreCurso, duracionMeses, fechaActual, null, null);
+            cursoServiceImplement.guardarCurso(curso);
+            System.out.println("¡Curso " + nombreCurso + " guardado con éxito!");
+        } catch (NumberFormatException e) {
+            System.out.println("Error: La duración debe ser un número.");
+        }
     }
 
     public void buscarTodosLosCursos() {
@@ -38,14 +51,62 @@ public class Curso_Controller {
     }
 
     public void modificarCurso() {
-        String nombreCurso = "maquillaje";
-        Curso curso = new Curso("peluqueria 1", 6, LocalDate.now());
-        cursoServiceImplement.modificarCurso(nombreCurso, curso);
+        ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
+        if (listaCursos.size() > 0) {
+            try {
+                System.out.println("seleccione el curso que desea modificar");
+                System.out.println("////////////////////////////////////////////");
+                for (int i = 0; i < listaCursos.size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
+                }
+                int i_curso = sc.nextInt();
+                String nombreCurso = listaCursos.get(i_curso - 1).getNombreCurso();
+
+                System.out.println("--- Ingrese los nuevos datos ---");
+                System.out.print("Nuevo Nombre del Curso: ");
+                String nuevoNombre = sc.nextLine();
+                System.out.print("Nueva Duración en Meses: ");
+                int nuevaDuracion = Integer.parseInt(sc.nextLine());
+
+                Curso cursoModificado = new Curso(nuevoNombre, nuevaDuracion, LocalDate.now());
+                cursoServiceImplement.modificarCurso(nombreCurso, cursoModificado);
+                System.out.println("¡Curso modificado con éxito!");
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("no existe el registro seleccionado");
+            }
+        } else {
+            System.out.println("no hay registros que mostrar");
+        }
     }
 
     public void eliminarCurso() {
-        String nombreCurso = "peluqueria";
-        cursoServiceImplement.eliminarCurso(nombreCurso);
+        ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
+        if (listaCursos.size() > 0) {
+            try {
+                System.out.println("seleccione el curso que desea eliminar");
+                System.out.println("////////////////////////////////////////////");
+                for (int i = 0; i < listaCursos.size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
+                }
+                int i_curso = sc.nextInt();
+                String nombreCurso = listaCursos.get(i_curso - 1).getNombreCurso();
+
+                System.out.print("¿Está seguro que desea eliminar el curso " + nombreCurso + "? (si/no): ");
+                String confirmacion = sc.nextLine();
+                if (confirmacion.equalsIgnoreCase("si")) {
+                    cursoServiceImplement.eliminarCurso(nombreCurso);
+                    System.out.println("Curso eliminado.");
+                } else {
+                    System.out.println("Operación cancelada.");
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("no existe el registro seleccionado");
+            }
+        } else {
+            System.out.println("no hay registros que mostrar");
+        }
     }
 
 }

@@ -43,9 +43,7 @@ public class AlumnoServiceImplement implements AlumnoService {
                 // Insertar la persona y obtener el id generado
                 try ( PreparedStatement psPersona = connectC.prepareStatement(sqlPersona, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-                    DateTimeFormatter formatterEs = DateTimeFormatter
-                            .ofLocalizedDate(FormatStyle.SHORT)
-                            .withLocale(new Locale("es", "ES"));
+                    DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                     String fechaString = alumno.getFechaCreacion().format(formatterEs);
 
                     psPersona.setString(1, alumno.getDNI());
@@ -124,9 +122,7 @@ public class AlumnoServiceImplement implements AlumnoService {
                     psPersona.setString(2, alumnoModificado.getApellidoMaterno());
                     psPersona.setInt(3, alumnoModificado.getEdad());
                     psPersona.setString(4, alumnoModificado.getApellidoPaterno());
-                    DateTimeFormatter formatterEs = DateTimeFormatter
-                            .ofLocalizedDate(FormatStyle.SHORT)
-                            .withLocale(new Locale("es", "ES"));
+                    DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                     String fechaString = alumnoModificado.getFechaModificacion().format(formatterEs);
                     psPersona.setString(5, fechaString);
                     psPersona.setString(6, dni);

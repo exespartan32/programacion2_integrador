@@ -12,6 +12,7 @@ import com.mycompany.integrador.Controllers.Curso_Controller;
 import com.mycompany.integrador.Controllers.Matricula_Controller;
 import com.mycompany.integrador.Controllers.ValorCurso_Controller;
 import com.mycompany.integrador.Controllers.HistorialCuenta_Controller;
+import com.mycompany.integrador.View.MainMenu;
 
 /**
  *
@@ -24,6 +25,15 @@ public class Integrador {
 //        ConexionDB conn = new ConexionDB();
 //        conn.conectarBB();
 //        conn.desconetarDB();
+
+        // 1. Crea una instancia de tu menú
+        MainMenu menu = new MainMenu();
+
+        // 2. Llama al método para mostrarlo
+        menu.mostrarMenuPrincipal();
+        
+        
+        
 
         Alumno_Controller alumno_Controller = new Alumno_Controller();
         Profesor_Controller profesor_Controller = new Profesor_Controller();

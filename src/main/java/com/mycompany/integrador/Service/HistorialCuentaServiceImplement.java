@@ -37,9 +37,7 @@ public class HistorialCuentaServiceImplement implements HistorialCuentaService {
             habilitarClavesForaneas(connectC);
             connectC.setAutoCommit(false);
             try {
-                DateTimeFormatter formatterEs = DateTimeFormatter
-                        .ofLocalizedDate(FormatStyle.SHORT)
-                        .withLocale(new Locale("es", "ES"));
+                DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                 String fechaString = hdc.getFechaCreacion().format(formatterEs);
 
                 PreparedStatement ps = connectC.prepareStatement(sql);
