@@ -33,10 +33,10 @@ public class HistorialCuenta_Controller {
 
     public void pagarCurso() {
         System.out.println("pagar curso");
+        ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
+        System.out.println("seleccione el curso que quiere pagar:");
+        System.out.println("///////////////////////////////////////////////////////////////////");
         try {
-            ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
-            System.out.println("seleccione el curso que quiere pagar:");
-            System.out.println("///////////////////////////////////////////////////////////////////");
             if (listaCursos.size() > 0) {
                 for (int i = 0; i < listaCursos.size(); i++) {
                     int elemento = i + 1;
@@ -44,10 +44,11 @@ public class HistorialCuenta_Controller {
                 }
                 int i_curso = sc.nextInt();
                 Curso curso = listaCursos.get(i_curso - 1);
-
+                String nombreCurso = listaCursos.get(i_curso - 1).getNombreCurso();
                 int saldo = 0;
 
-                ArrayList<Matricula> matricula = matriculaServiceImplement.buscarMatriculaCurso(listaCursos.get(i_curso).getNombreCurso());
+                ArrayList<Matricula> matricula = matriculaServiceImplement.buscarMatriculaCurso(nombreCurso);
+
                 if (matricula.size() > 0) {
                     System.out.println("seleccione el alumno que quiere pagara:");
                     System.out.println("///////////////////////////////////////////////////////////////////");

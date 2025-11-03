@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public interface MatriculaInterface {
 
-    public void matricularAlumno(String DNIAlumno);
+    public void matricularAlumno(String DNIAlumno, String nombreCurso);
 
     public void desvincularAlumno(String DNIAlumno, String nombreCurso);
 

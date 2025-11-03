@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 import com.mycompany.integrador.Service.AlumnoServiceImplement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,41 +34,31 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     AlumnoServiceImplement alumnoServiceImplement = new AlumnoServiceImplement();
 
     @Override
-    public void matricularAlumno(String DNIAlumno) {
-        if (cursoServiceImplement.buscarCurso().size() > 0) {
+    public void matricularAlumno(String DNIAlumno, String nombreCurso) {
+        try ( Connection connectC = conn.conectarDB()) {
             String sql = "INSERT INTO Matricula (DNIAlumno, fechaCreacion, nombreCurso)  VALUES (?,?,?)";
-            Connection connectC = conn.conectarDB();
+            habilitarClavesForaneas(connectC);
+            connectC.setAutoCommit(false);
+
             try {
                 PreparedStatement ps = connectC.prepareStatement(sql);
                 ps.setString(1, DNIAlumno);
                 DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                 String fechaString = LocalDate.now().format(formatterEs);
                 ps.setString(2, fechaString);
+                ps.setString(3, nombreCurso);
 
-                System.out.println("\n seleccine el curso al que desea matriclar el alumno con DNI: " + DNIAlumno);
-                System.out.println("///////////////////////////////////////////////////////////////////");
-                for (int i = 0; i < cursoServiceImplement.buscarCurso().size(); i++) {
-                    System.out.println("Elemento " + i + ": " + cursoServiceImplement.buscarCurso().get(i).toString());
-                }
-                Scanner sc = new Scanner(System.in);
-                int i = sc.nextInt();
-                ps.setString(3, cursoServiceImplement.buscarCurso().get(i).getNombreCurso());
+                ps.execute();
+                connectC.commit();
+                System.out.println("matricula guardada correctamente");
 
-                // si el alumno ya esta matriculado en este curso no se puede volver a matricluar
-                if (buscarMatriculaCurso(alumnoServiceImplement.buscarAlumno(DNIAlumno), cursoServiceImplement.buscarCurso().get(i)) != null) {
-                    System.out.println("el alumno con DNI " + DNIAlumno + " ya esta matriculado en el curso de " + cursoServiceImplement.buscarCurso().get(i).getNombreCurso());
-                } else {
-                    ps.execute();
-                    System.out.println("matricula guardada correctamente");
-                }
             } catch (SQLException e) {
                 System.out.println("Error al ejecutar la consulta: " + e.getMessage());
                 e.printStackTrace();
             }
-        } else {
-            if (cursoServiceImplement.buscarCurso().size() > 0) {
-                System.out.println("no hay cursos para asignar");
-            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MatriculaServiceImplement.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -79,7 +71,7 @@ public class MatriculaServiceImplement implements MatriculaInterface {
             ps.setString(1, DNIAlumno);
             ps.setString(2, nombreCurso);
             habilitarClavesForaneas(connect);
-
+            //System.out.println("ps: "+ ps.toString());
             int filasAfectadas = ps.executeUpdate();
 
             if (filasAfectadas > 0) {
@@ -87,7 +79,6 @@ public class MatriculaServiceImplement implements MatriculaInterface {
             } else {
                 System.out.println("No se encontro el registro asociado");
             }
-
         } catch (SQLException e) {
             System.out.println("error al desvincular el alumno");
             System.out.println("ERROR: " + e.toString());
@@ -102,7 +93,7 @@ public class MatriculaServiceImplement implements MatriculaInterface {
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            connect.commit();
+            //connect.commit();
             while (rs.next()) {
                 LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
                 LocalDate fechaModificacion = null;
@@ -130,7 +121,8 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     }
 
     @Override
-    public ArrayList<Matricula> buscarMatriculaCurso(String nombreCurso) {
+    public ArrayList<Matricula> buscarMatriculaCurso(String nombreCurso
+    ) {
         ArrayList<Matricula> listaMatriculas = new ArrayList<>();
         Connection connect = conn.conectarDB();
         String sql = "SELECT * FROM Matricula WHERE TRIM(nombreCurso) = ?";
@@ -166,7 +158,8 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     }
 
     @Override
-    public ArrayList<Matricula> buscarMatriculaCurso(Alumno alumno) {
+    public ArrayList<Matricula> buscarMatriculaCurso(Alumno alumno
+    ) {
         ArrayList<Matricula> listaMatriculas = new ArrayList<>();
         Connection connect = conn.conectarDB();
         String sql = "SELECT * FROM Matricula WHERE TRIM(DNIAlumno) = ?";
@@ -202,7 +195,8 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     }
 
     @Override
-    public Matricula buscarMatriculaCurso(Alumno alumno, Curso curso) {
+    public Matricula buscarMatriculaCurso(Alumno alumno, Curso curso
+    ) {
         Connection connect = conn.conectarDB();
         String sql = "SELECT * FROM Matricula WHERE TRIM(DNIAlumno) = ? AND TRIM(nombreCurso) = ?";
         Matricula matricula = new Matricula();

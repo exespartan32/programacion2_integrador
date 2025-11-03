@@ -30,7 +30,10 @@ public class ValorCursoServiceImplement implements ValorCursoService {
 
     @Override
     public void asignarPrecio(ValorCurso valorCurso) {
-        if (buscarValorCursos(valorCurso.getNombreCurso()) == null) {
+        //System.out.println("nomber del curso: " + valorCurso.getNombreCurso());
+        //System.out.println("resgistro buscado: " + buscarValorCursos(valorCurso.getNombreCurso()));
+
+        if (buscarValorCursos(valorCurso.getNombreCurso()).getNombreCurso() == null) {
             String sql = "INSERT INTO ValorCurso (nombreCurso, precioCurso, fechaCreacion)  VALUES (?,?,?)";
             Connection connectC = conn.conectarDB();
             try {
@@ -41,7 +44,7 @@ public class ValorCursoServiceImplement implements ValorCursoService {
                 String fechaString = LocalDate.now().format(formatterEs);
                 ps.setString(3, fechaString);
                 ps.execute();
-
+                System.out.println("precio asignado al curso de " + valorCurso.getNombreCurso());
             } catch (SQLException e) {
                 System.out.println("Error al ejecutar la consulta: " + e.getMessage());
                 e.printStackTrace();
@@ -181,7 +184,6 @@ public class ValorCursoServiceImplement implements ValorCursoService {
                 System.out.println("error al ejecutar la consulta" + e.getMessage());
                 e.printStackTrace();
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(ValorCursoServiceImplement.class.getName()).log(Level.SEVERE, null, ex);
         }

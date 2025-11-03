@@ -24,28 +24,20 @@ public class Alumno_Controller {
         LocalDate fechaActual = LocalDate.now();
         System.out.println("--- Creando Nuevo Alumno ---");
         try {
-            sc.nextLine();
             System.out.print("Ingrese el DNI: ");
             String dni = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese los Nombres: ");
             String nombres = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese el Apellido Paterno: ");
             String apellidoPaterno = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese el Apellido Materno: ");
             String apellidoMaterno = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese el Año de ingreso (ej: 2025): ");
             String anioIngreso = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese el Mes de ingreso (ej: octubre): ");
             String mesIngreso = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese la Edad: ");
             int edad = Integer.parseInt(sc.nextLine());
-            sc.nextLine();
             Alumno alumno = new Alumno(anioIngreso, mesIngreso, dni, nombres, apellidoPaterno, apellidoMaterno, edad, fechaActual, TipoPersona.ALUMNO);
             alumnoServiceImplement.guardarAlumno(alumno);
             System.out.println("¡Alumno " + nombres + " guardado con éxito!");
@@ -62,8 +54,14 @@ public class Alumno_Controller {
     }
 
     public void buscarAlumno() {
-        Alumno alumno = alumnoServiceImplement.buscarAlumno("43270183");
-        System.out.println("datos: " + alumno.toString());
+        System.out.print("Ingrese el DNI del alumno a buscar: ");
+        String dni = sc.nextLine();
+        Alumno alumno = alumnoServiceImplement.buscarAlumno(dni);
+        if (alumno != null && alumno.getDNI() != null) {
+            System.out.println("Datos: " + alumno.toString());
+        } else {
+            System.out.println("No se encontró ningún alumno con el DNI: " + dni);
+        }
     }
 
     public void modificarAlumno() {
@@ -77,23 +75,18 @@ public class Alumno_Controller {
                 }
                 int i_alumno = sc.nextInt();
                 String dniAlumno = listaAlumnos.get(i_alumno - 1).getDNI();
-                sc.nextLine();
                 System.out.println("--- Ingrese los nuevos datos para " + listaAlumnos.get(i_alumno - 1).getNombres() + " ---");
+                sc.nextLine();
                 System.out.print("Nuevo Nombre: ");
                 String nombresModificado = sc.nextLine();
-                sc.nextLine();
                 System.out.print("Nuevo Apellido Paterno: ");
                 String apellidoPaternoModificado = sc.nextLine();
-                sc.nextLine();
                 System.out.print("Nuevo Apellido Materno: ");
                 String apellidoMaternoModificado = sc.nextLine();
-                sc.nextLine();
                 System.out.print("Nuevo Año de Ingreso: ");
                 String anioIngresoModificado = sc.nextLine();
-                sc.nextLine();
                 System.out.print("Nuevo Mes de Ingreso: ");
                 String mesIngresoModificado = sc.nextLine();
-                sc.nextLine();
                 System.out.print("Nueva Edad: ");
                 int edadModificado = Integer.parseInt(sc.nextLine());
                 LocalDate fechaCreacionModificado = LocalDate.now();
@@ -123,7 +116,8 @@ public class Alumno_Controller {
                 }
                 int i_alumno = sc.nextInt();
                 String dniAlumno = listaAlumnos.get(i_alumno - 1).getDNI();
-
+                
+                sc.nextLine();
                 System.out.print("¿Está seguro que desea eliminar al alumno con DNI " + dniAlumno + "? (si/no): ");
                 String confirmacion = sc.nextLine();
                 if (confirmacion.equalsIgnoreCase("si")) {

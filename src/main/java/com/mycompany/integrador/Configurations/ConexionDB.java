@@ -30,7 +30,7 @@ public class ConexionDB {
                     System.out.println("No se encontró la base de datos. Creando nueva...");
                     this.inicializarTablas();
                 } else {
-                    System.out.println("Base de datos existente detectada.");
+                    //System.out.println("Base de datos existente detectada.");
                 }
             } else {
                 System.out.println("ERROR! no se pudo conectar a base de datos");

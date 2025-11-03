@@ -111,7 +111,7 @@ public class CursoServiceImplement implements CursoService {
             ps.setString(1, nombreCurso);
 
             int filasAfectadas = ps.executeUpdate();
-            connect.commit();
+//            connect.commit();
 
             if (filasAfectadas > 0) {
                 System.out.println("curso eliminado correctamente");

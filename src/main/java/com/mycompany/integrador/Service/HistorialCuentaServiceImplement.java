@@ -32,7 +32,7 @@ public class HistorialCuentaServiceImplement implements HistorialCuentaService {
 
     @Override
     public void pagarCurso(HistorialDeCuentas hdc) {
-        String sql = "insert into HistorialDeCuentas (DNIAlumno, nombreCurso, pagoAlumno, saldoAlumno, descripcion, fechaCreacion, pagado) values (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into HistorialDeCuentas (DNIAlumno, nombreCurso, pagoAlumno, saldoAlumno, descripcionPago, fechaCreacion, pagado) values (?, ?, ?, ?, ?, ?, ?)";
         try ( Connection connectC = conn.conectarDB()) {
             habilitarClavesForaneas(connectC);
             connectC.setAutoCommit(false);
@@ -119,34 +119,32 @@ public class HistorialCuentaServiceImplement implements HistorialCuentaService {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                while (rs.next()) {
-                    LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-                    LocalDate fechaModificacion = null;
-                    if (rs.getString("fechaModificacion") != null) {
-                        fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-                    }
-                    LocalDate fechaEliminacion = null;
-                    if (rs.getString("fechaEliminacion") != null) {
-                        fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-                    }
-                    boolean pagado = rs.getInt("pagado") == 1;
-
-                    ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(rs.getString("nombreCurso"));
-                    int precioCurso = valorCurso.getPrecioCurso();
-
-                    historialDeCuentas = new HistorialDeCuentas(
-                            id,
-                            rs.getString("DNIAlumno"),
-                            rs.getString("nombreCurso"),
-                            fechaCreacion,
-                            fechaModificacion,
-                            fechaEliminacion,
-                            pagado,
-                            precioCurso,
-                            rs.getInt("pagoAlumno"),
-                            rs.getInt("saldoAlumno"),
-                            rs.getString("descripcionPago"));
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
                 }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                boolean pagado = rs.getInt("pagado") == 1;
+
+                ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(rs.getString("nombreCurso"));
+                int precioCurso = valorCurso.getPrecioCurso();
+
+                historialDeCuentas = new HistorialDeCuentas(
+                        id,
+                        rs.getString("DNIAlumno"),
+                        rs.getString("nombreCurso"),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        pagado,
+                        precioCurso,
+                        rs.getInt("pagoAlumno"),
+                        rs.getInt("saldoAlumno"),
+                        rs.getString("descripcionPago"));
             } else {
                 System.out.println("no se encontro ningun pago con este id");
             }

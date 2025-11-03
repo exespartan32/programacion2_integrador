@@ -148,7 +148,7 @@ public class ProfesorServiceImplement implements ProfesorService {
 
     @Override
     public void eliminarProfesor(String dni) {
-        String sql = "DELETE FROM Profesor WHERE DNI = ?";
+        String sql = "DELETE FROM Profesor WHERE DNIProfesor = ?";
         Connection connect = conn.conectarDB();
         try {
             PreparedStatement ps = connect.prepareStatement(sql);

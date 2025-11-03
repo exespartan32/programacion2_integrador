@@ -26,22 +26,16 @@ public class Profesor_Controller {
             System.out.println("--- Creando Nuevo Profesor ---");
             System.out.print("Ingrese el DNI: ");
             String dni = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese los Nombres: ");
             String nombres = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese el Apellido Paterno: ");
             String apellidoPaterno = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese el Apellido Materno: ");
             String apellidoMaterno = sc.nextLine();
-            sc.nextLine();
             System.out.print("Ingrese la Edad: ");
             int edad = Integer.parseInt(sc.nextLine());
-            sc.nextLine();
             System.out.print("Ingrese el Sueldo: ");
             int sueldo = Integer.parseInt(sc.nextLine());
-            sc.nextLine();
             System.out.print("¿Tiene presentismo? (si/no): ");
             boolean presentismo = sc.nextLine().equalsIgnoreCase("si");
 
@@ -62,8 +56,14 @@ public class Profesor_Controller {
     }
 
     public void buscarProfesor() {
-        Profesor profesor = profesorServiceImplement.buscarProfesor("132123132");
-        System.out.println(profesor.toString());
+        System.out.print("Ingrese el DNI del profesor a buscar: ");
+        String dni = sc.nextLine();
+        Profesor profesor = profesorServiceImplement.buscarProfesor(dni);
+        if (profesor != null && profesor.getDNI() != null) {
+            System.out.println("Datos: " + profesor.toString());
+        } else {
+            System.out.println("No se encontró ningún profesor con el DNI: " + dni);
+        }
     }
 
     public void modificarDatosProfesor() {
@@ -78,22 +78,18 @@ public class Profesor_Controller {
                 int i_profesor = sc.nextInt();
                 String dniProfesor = listaProfesores.get(i_profesor - 1).getDNI();
 
+                sc.nextLine();
                 System.out.println("--- Ingrese los nuevos datos para " + listaProfesores.get(i_profesor - 1).getNombres() + " ---");
                 System.out.print("Nuevo Nombre: ");
                 String nombresModificado = sc.nextLine();
-                sc.nextLine();
                 System.out.print("Nuevo Apellido Paterno: ");
                 String apellidoPaternoModificado = sc.nextLine();
-                sc.nextLine();
                 System.out.print("Nuevo Apellido Materno: ");
                 String apellidoMaternoModificado = sc.nextLine();
-                sc.nextLine();
                 System.out.print("Nueva Edad: ");
                 int edadModificado = Integer.parseInt(sc.nextLine());
-                sc.nextLine();
                 System.out.print("Nuevo Sueldo: ");
                 int sueldoModificado = Integer.parseInt(sc.nextLine());
-                sc.nextLine();
                 System.out.print("¿Tiene presentismo? (si/no): ");
                 boolean presentismoModificado = sc.nextLine().equalsIgnoreCase("si");
                 LocalDate fechaModificacion = LocalDate.now();
@@ -132,7 +128,6 @@ public class Profesor_Controller {
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("no existe el registro seleccionado");
             }
-
         } else {
             System.out.println("no hay registros que mostrar");
         }

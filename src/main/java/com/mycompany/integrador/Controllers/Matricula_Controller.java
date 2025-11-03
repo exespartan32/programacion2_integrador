@@ -24,18 +24,52 @@ public class Matricula_Controller {
     CursoServiceImplement cursoServiceImplement = new CursoServiceImplement();
     Scanner sc = new Scanner(System.in);
 
+    public void matriculaPrueba() {
+        matriculaServiceImplement.matricularAlumno("43270183", "maquillaje");
+    }
+
     public void matricularAlumnoEnCurso() {
         if (alumnoServiceImplement.buscarAlumno().size() <= 0) {
             System.out.println("no hay alumnos para asignar");
         } else {
-            System.out.println("seleccine el alumno a matricular");
-            System.out.println("///////////////////////////////////////////////////////////////////");
-            for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
+            try {
+                System.out.println("seleccine el alumno a matricular");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                ArrayList<Alumno> listaAlumno = alumnoServiceImplement.buscarAlumno();
+                for (int i = 0; i < listaAlumno.size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + listaAlumno.get(i).toString());
+                }
+                int i_alumno = sc.nextInt();
+                String dniAlumno = listaAlumno.get(i_alumno - 1).getDNI();
+
+                ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
+                System.out.println("\n seleccine el curso al que desea matriclar el alumno con DNI: " + dniAlumno);
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                if (listaCursos.size() <= 0) {
+                    System.out.println("no hay cursos donde matricular el alumno");
+                } else {
+                    for (int j = 0; j < listaCursos.size(); j++) {
+                        int elemento = j + 1;
+                        System.out.println("Elemento " + elemento + ": " + listaCursos.get(j).toString());
+                    }
+
+                    Scanner sc = new Scanner(System.in);
+                    int i_curso = sc.nextInt();
+                    String nombreCurso = listaCursos.get(i_curso - 1).getNombreCurso();
+
+                    // si el alumno ya esta matriculado en este curso no se puede volver a matricluar
+                    if (matriculaServiceImplement.buscarMatriculaCurso(alumnoServiceImplement.buscarAlumno(dniAlumno), listaCursos.get(i_curso - 1)) == null) {
+                        System.out.println("el alumno con DNI " + dniAlumno + " ya esta matriculado en el curso de " + listaCursos.get(i_curso - 1).getNombreCurso());
+                    } else {
+                        System.out.println("se matricula el alumno con dni " + dniAlumno + " en el curso de " + nombreCurso);
+                        matriculaServiceImplement.matricularAlumno(dniAlumno, nombreCurso);
+                    }
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("no existe el registro seleccionado");
             }
-            int i = sc.nextInt();
-            matriculaServiceImplement.matricularAlumno(alumnoServiceImplement.buscarAlumno().get(i - 1).getDNI());
+
         }
     }
 
@@ -117,7 +151,7 @@ public class Matricula_Controller {
                     System.out.println("Elemento " + elemento + ": " + matriculaServiceImplement.buscarMatriculaCurso(alumno).get(j).getNombreCurso());
                 }
                 int i_curso = sc.nextInt();
-                Curso curso = cursoServiceImplement.buscarCurso().get(i_curso);
+                Curso curso = cursoServiceImplement.buscarCurso().get(i_curso - 1);
 
                 matriculaServiceImplement.desvincularAlumno(alumno.getDNI(), curso.getNombreCurso());
             } catch (IndexOutOfBoundsException e) {

@@ -23,14 +23,11 @@ public class Usuario_Controller {
         System.out.println("--- Creando Nuevo Usuario ---");
         System.out.print("Ingrese el Email: ");
         String email = sc.nextLine();
-        sc.nextLine();
         System.out.print("Ingrese el Nombre de Usuario: ");
         String nombreUsuario = sc.nextLine();
-        sc.nextLine();
         System.out.print("Ingrese la Contraseña: ");
         String contrasenia = sc.nextLine();
-        sc.nextLine();
-        Usuario usuario = new Usuario(email, nombreUsuario, contrasenia, LocalDate.now());
+        Usuario usuario = new Usuario(email, nombreUsuario, contrasenia, LocalDate.now(), null, null);
         usuarioServiceImplement.guardarUsuario(usuario);
         System.out.println("¡Usuario " + nombreUsuario + " guardado con éxito!");
     }
@@ -45,19 +42,17 @@ public class Usuario_Controller {
                 System.out.println("Elemento " + elemento + ": " + listaUsuario.get(i));
             }
             int i_usuario = Integer.parseInt(sc.nextLine()); // Usar nextLine para evitar saltos
-            int elemento = i_usuario - 1;
-            Usuario usuario = listaUsuario.get(elemento);
+            Usuario usuario = listaUsuario.get(i_usuario - 1);
             int id_usuario = usuario.getIdUsuario();
 
+            //System.out.println("datos: " + usuario.toString());
+            //sc.nextLine();
             System.out.print("Nuevo Email: ");
             usuario.setEmail(sc.nextLine());
-            sc.nextLine();
             System.out.print("Nuevo Nombre de Usuario: ");
             usuario.setNombreUsuario(sc.nextLine());
-            sc.nextLine();
             System.out.print("Nueva Contraseña: ");
             usuario.setContrasenia(sc.nextLine());
-            sc.nextLine();
             usuario.setFechaModificacion(LocalDate.now());
 
             usuarioServiceImplement.modificarUsuario(id_usuario, usuario);

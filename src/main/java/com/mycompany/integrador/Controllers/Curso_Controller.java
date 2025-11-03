@@ -25,9 +25,7 @@ public class Curso_Controller {
         try {
             LocalDate fechaActual = LocalDate.now();
             System.out.println("--- Creando Nuevo Curso ---");
-            sc.nextLine();
             System.out.print("Ingrese el Nombre del Curso: ");
-            sc.nextLine();
             String nombreCurso = sc.nextLine();
             System.out.print("Ingrese la Duración en Meses: ");
             int duracionMeses = Integer.parseInt(sc.nextLine());
@@ -95,7 +93,7 @@ public class Curso_Controller {
                 }
                 int i_curso = sc.nextInt();
                 String nombreCurso = listaCursos.get(i_curso - 1).getNombreCurso();
-
+                sc.nextLine();
                 System.out.print("¿Está seguro que desea eliminar el curso " + nombreCurso + "? (si/no): ");
                 String confirmacion = sc.nextLine();
                 if (confirmacion.equalsIgnoreCase("si")) {
