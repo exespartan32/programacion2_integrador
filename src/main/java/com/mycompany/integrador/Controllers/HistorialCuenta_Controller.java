@@ -32,77 +32,85 @@ public class HistorialCuenta_Controller {
     Scanner sc = new Scanner(System.in);
 
     public void pagarCurso() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("seleccione el curso que quiere pagar:");
-        System.out.println("///////////////////////////////////////////////////////////////////");
-        ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
-        for (int i = 0; i < listaCursos.size(); i++) {
-            int elemento = i + 1;
-            System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
-        }
-        int i_curso = sc.nextInt();
-        Curso curso = listaCursos.get(i_curso - 1);
-
-        int saldo = 0;
-
-        ArrayList<Matricula> matricula = matriculaServiceImplement.buscarMatriculaCurso(listaCursos.get(i_curso).getNombreCurso());
-        if (matricula.size() > 0) {
-            System.out.println("seleccione el alumno que quiere pagara:");
+        System.out.println("pagar curso");
+        try {
+            ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
+            System.out.println("seleccione el curso que quiere pagar:");
             System.out.println("///////////////////////////////////////////////////////////////////");
-            for (int i = 0; i < matricula.size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + matricula.get(i).getDNIAlumno());
-            }
-            int i_matricula = sc.nextInt();
-            Alumno alumno = alumnoServiceImplement.buscarAlumno(matricula.get(i_matricula - 1).getDNIAlumno());
+            if (listaCursos.size() > 0) {
+                for (int i = 0; i < listaCursos.size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
+                }
+                int i_curso = sc.nextInt();
+                Curso curso = listaCursos.get(i_curso - 1);
 
-            if (!historialCuentaServiceImplement.cursoPagado(curso.getNombreCurso(), alumno.getDNI())) {
-                saldo = historialCuentaServiceImplement.verSaldo(alumno.getDNI());
+                int saldo = 0;
 
-                System.out.println("ingrese el pago realizado");
-                int pago = sc.nextInt();
+                ArrayList<Matricula> matricula = matriculaServiceImplement.buscarMatriculaCurso(listaCursos.get(i_curso).getNombreCurso());
+                if (matricula.size() > 0) {
+                    System.out.println("seleccione el alumno que quiere pagara:");
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    for (int i = 0; i < matricula.size(); i++) {
+                        int elemento = i + 1;
+                        System.out.println("Elemento " + elemento + ": " + matricula.get(i).getDNIAlumno());
+                    }
+                    int i_matricula = sc.nextInt();
+                    Alumno alumno = alumnoServiceImplement.buscarAlumno(matricula.get(i_matricula - 1).getDNIAlumno());
 
-                ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(curso.getNombreCurso());
-                int precioCurso = valorCurso.getPrecioCurso();
+                    if (!historialCuentaServiceImplement.cursoPagado(curso.getNombreCurso(), alumno.getDNI())) {
+                        saldo = historialCuentaServiceImplement.verSaldo(alumno.getDNI());
 
-                boolean pagado = false;
-                if (saldo > 0) {
-                    // tiene saldo a favor
-                    saldo = pago + saldo - precioCurso;
-                    if (pago > precioCurso) {
-                        pagado = true;
+                        System.out.println("ingrese el pago realizado");
+                        int pago = sc.nextInt();
+
+                        ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(curso.getNombreCurso());
+                        int precioCurso = valorCurso.getPrecioCurso();
+
+                        boolean pagado = false;
+                        if (saldo > 0) {
+                            // tiene saldo a favor
+                            saldo = pago + saldo - precioCurso;
+                            if (pago > precioCurso) {
+                                pagado = true;
+                            }
+                        } else {
+                            // tiene una deuda
+                            saldo = saldo + pago;
+                            if (saldo >= 0) {
+                                pagado = true;
+                            }
+                        }
+
+                        sc.nextLine();
+                        System.out.println("escribe la descripcion");
+                        String descripcion = sc.nextLine();
+
+                        //pago >= precioCurso && saldo == 0;
+                        HistorialDeCuentas historialDeCuentas = new HistorialDeCuentas(
+                                alumno.getDNI(),
+                                curso.getNombreCurso(),
+                                LocalDate.now(),
+                                pagado,
+                                precioCurso,
+                                pago,
+                                saldo,
+                                descripcion
+                        );
+                        historialCuentaServiceImplement.pagarCurso(historialDeCuentas);
+                    } else {
+                        System.out.println("el alumno " + alumno.getNombres() + " con dni " + alumno.getDNI() + " ya pago el curso de " + curso.getNombreCurso());
                     }
                 } else {
-                    // tiene una deuda
-                    saldo = saldo + pago;
-                    if (saldo >= 0) {
-                        pagado = true;
-                    }
+                    System.out.println("no hay alumnos matriculados en este curso");
                 }
-
-                sc.nextLine();
-                System.out.println("escribe la descripcion");
-                String descripcion = sc.nextLine();
-
-                //pago >= precioCurso && saldo == 0;
-                HistorialDeCuentas historialDeCuentas = new HistorialDeCuentas(
-                        alumno.getDNI(),
-                        curso.getNombreCurso(),
-                        LocalDate.now(),
-                        pagado,
-                        precioCurso,
-                        pago,
-                        saldo,
-                        descripcion
-                );
-                historialCuentaServiceImplement.pagarCurso(historialDeCuentas);
             } else {
-                System.out.println("el alumno " + alumno.getNombres() + " con dni " + alumno.getDNI() + " ya pago el curso de " + curso.getNombreCurso());
+                System.out.println("no hay regisros que mostrar");
             }
-        } else {
-            System.out.println("no hay alumnos matriculados en este curso");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("no existe el registro seleccionado");
         }
+
     }
 
     public void verTodosLosPagos() {
@@ -119,33 +127,41 @@ public class HistorialCuenta_Controller {
         } else {
             System.out.println("seleccine el alumno");
             System.out.println("///////////////////////////////////////////////////////////////////");
-            for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
-            }
-            Scanner sc = new Scanner(System.in);
-            int i_alumno = sc.nextInt();
-            ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago(alumnoServiceImplement.buscarAlumno().get(i_alumno - 1).getDNI());
-            for (int i = 0; i < listaPagos.size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + listaPagos.get(i));
+            try {
+                for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
+                }
+                Scanner sc = new Scanner(System.in);
+                int i_alumno = sc.nextInt();
+                ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago(alumnoServiceImplement.buscarAlumno().get(i_alumno - 1).getDNI());
+                for (int i = 0; i < listaPagos.size(); i++) {
+                    int elemento = i + 1;
+                    System.out.println("Elemento " + elemento + ": " + listaPagos.get(i));
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("no existe el registro seleccionado");
             }
         }
     }
 
     public void verPagoCurso() {
-        System.out.println("seleccione el curso del que quiete buscar la matricula");
-        System.out.println("///////////////////////////////////////////////////////////////////");
-        for (int i = 0; i < cursoServiceImplement.buscarCurso().size(); i++) {
-            int elemento = i + 1;
-            System.out.println("Elemento " + elemento + ": " + cursoServiceImplement.buscarCurso().get(i).toString());
-        }
+        try {
+            System.out.println("seleccione el curso del que quiete buscar la matricula");
+            System.out.println("///////////////////////////////////////////////////////////////////");
+            for (int i = 0; i < cursoServiceImplement.buscarCurso().size(); i++) {
+                int elemento = i + 1;
+                System.out.println("Elemento " + elemento + ": " + cursoServiceImplement.buscarCurso().get(i).toString());
+            }
 
-        int i_curso = sc.nextInt();
-        ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago(cursoServiceImplement.buscarCurso().get(i_curso - 1).getNombreCurso(), true);
-        for (int i = 0; i < listaPagos.size(); i++) {
-            int elemento = i + 1;
-            System.out.println("Elemento " + elemento + ": " + listaPagos.get(i));
+            int i_curso = sc.nextInt();
+            ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago(cursoServiceImplement.buscarCurso().get(i_curso - 1).getNombreCurso(), true);
+            for (int i = 0; i < listaPagos.size(); i++) {
+                int elemento = i + 1;
+                System.out.println("Elemento " + elemento + ": " + listaPagos.get(i));
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("no existe el registro seleccionado");
         }
     }
 

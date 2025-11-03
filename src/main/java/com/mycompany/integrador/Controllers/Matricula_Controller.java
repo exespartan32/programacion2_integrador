@@ -31,10 +31,11 @@ public class Matricula_Controller {
             System.out.println("seleccine el alumno a matricular");
             System.out.println("///////////////////////////////////////////////////////////////////");
             for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
-                System.out.println("Elemento " + i + 1 + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
+                int elemento = i + 1;
+                System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
             }
             int i = sc.nextInt();
-            matriculaServiceImplement.matricularAlumno(alumnoServiceImplement.buscarAlumno().get(i).getDNI());
+            matriculaServiceImplement.matricularAlumno(alumnoServiceImplement.buscarAlumno().get(i - 1).getDNI());
         }
     }
 
@@ -57,7 +58,7 @@ public class Matricula_Controller {
                 for (int j = 0; j < listaMatriculas.size(); j++) {
                     System.out.println("=> " + matriculaServiceImplement.buscarMatriculaCurso(alumno).get(j).toString());
                 }
-            }catch (IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 System.out.println("no existe el registro seleccionado");
             }
         }
@@ -119,7 +120,7 @@ public class Matricula_Controller {
                 Curso curso = cursoServiceImplement.buscarCurso().get(i_curso);
 
                 matriculaServiceImplement.desvincularAlumno(alumno.getDNI(), curso.getNombreCurso());
-            }catch (IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 System.out.println("no existe el registro seleccionado");
             }
         }

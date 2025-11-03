@@ -20,8 +20,19 @@ public class Usuario_Controller {
     Scanner sc = new Scanner(System.in);
 
     public void nuevoUsuario() {
-        Usuario usuario = new Usuario("exemay777@gmail.com", "exeSpartan32666", "contraseña", LocalDate.now());
+        System.out.println("--- Creando Nuevo Usuario ---");
+        System.out.print("Ingrese el Email: ");
+        String email = sc.nextLine();
+        sc.nextLine();
+        System.out.print("Ingrese el Nombre de Usuario: ");
+        String nombreUsuario = sc.nextLine();
+        sc.nextLine();
+        System.out.print("Ingrese la Contraseña: ");
+        String contrasenia = sc.nextLine();
+        sc.nextLine();
+        Usuario usuario = new Usuario(email, nombreUsuario, contrasenia, LocalDate.now());
         usuarioServiceImplement.guardarUsuario(usuario);
+        System.out.println("¡Usuario " + nombreUsuario + " guardado con éxito!");
     }
 
     public void modificarDatosUsuario() {
@@ -33,15 +44,22 @@ public class Usuario_Controller {
                 int elemento = i + 1;
                 System.out.println("Elemento " + elemento + ": " + listaUsuario.get(i));
             }
-            int i_usuario = sc.nextInt();
+            int i_usuario = Integer.parseInt(sc.nextLine()); // Usar nextLine para evitar saltos
             int elemento = i_usuario - 1;
             Usuario usuario = listaUsuario.get(elemento);
             int id_usuario = usuario.getIdUsuario();
 
-            usuario.setContrasenia("nuevo contraseña --- ");
-            usuario.setEmail("nuevo email ----");
-            usuario.setNombreUsuario("nuevo nombre de usuario ---- ");
+            System.out.print("Nuevo Email: ");
+            usuario.setEmail(sc.nextLine());
+            sc.nextLine();
+            System.out.print("Nuevo Nombre de Usuario: ");
+            usuario.setNombreUsuario(sc.nextLine());
+            sc.nextLine();
+            System.out.print("Nueva Contraseña: ");
+            usuario.setContrasenia(sc.nextLine());
+            sc.nextLine();
             usuario.setFechaModificacion(LocalDate.now());
+
             usuarioServiceImplement.modificarUsuario(id_usuario, usuario);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("no existe el registro seleccionado");
