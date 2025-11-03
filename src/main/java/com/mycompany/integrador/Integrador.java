@@ -4,6 +4,7 @@
  */
 package com.mycompany.integrador;
 
+import com.mycompany.integrador.Configurations.ConexionDB;
 import com.mycompany.integrador.Controllers.Alumno_Controller;
 import com.mycompany.integrador.Controllers.Profesor_Controller;
 import com.mycompany.integrador.Controllers.Usuario_Controller;
@@ -19,7 +20,7 @@ import com.mycompany.integrador.Controllers.HistorialCuenta_Controller;
 public class Integrador {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+//        System.out.println("Hello World!");
 //        ConexionDB conn = new ConexionDB();
 //        conn.conectarBB();
 //        conn.desconetarDB();
