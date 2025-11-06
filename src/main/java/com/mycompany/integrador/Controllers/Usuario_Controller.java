@@ -38,11 +38,17 @@ public class Usuario_Controller {
         try {
             ArrayList<Usuario> listaUsuario = usuarioServiceImplement.buscarUsuario();
             for (int i = 0; i < listaUsuario.size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + listaUsuario.get(i));
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                System.out.println("|                    Elemento " + i + ":                            |");
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("| email " + listaUsuario.get(i).getEmail());
+                System.out.println("| nombre de usuario " + listaUsuario.get(i).getNombreUsuario());
+                System.out.println("| contraseña " + listaUsuario.get(i).getContrasenia());
+                System.out.println("------------------------------------------------------------------");
             }
-            int i_usuario = Integer.parseInt(sc.nextLine()); // Usar nextLine para evitar saltos
-            Usuario usuario = listaUsuario.get(i_usuario - 1);
+            System.out.println("elemento Nº ");
+            int i_usuario = Integer.parseInt(sc.nextLine());
+            Usuario usuario = listaUsuario.get(i_usuario);
             int id_usuario = usuario.getIdUsuario();
 
             //System.out.println("datos: " + usuario.toString());
@@ -67,12 +73,17 @@ public class Usuario_Controller {
         try {
             ArrayList<Usuario> listaUsuario = usuarioServiceImplement.buscarUsuario();
             for (int i = 0; i < listaUsuario.size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + listaUsuario.get(i));
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                System.out.println("|                    Elemento " + i + ":                            |");
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("| email " + listaUsuario.get(i).getEmail());
+                System.out.println("| nombre de usuario " + listaUsuario.get(i).getNombreUsuario());
+                System.out.println("| contraseña " + listaUsuario.get(i).getContrasenia());
+                System.out.println("------------------------------------------------------------------");
             }
+            System.out.println("elemento Nº ");
             int i_usuario = sc.nextInt();
-            int elemento = i_usuario - 1;
-            Usuario usuario = listaUsuario.get(elemento);
+            Usuario usuario = listaUsuario.get(i_usuario);
             int id_usuario = usuario.getIdUsuario();
             usuarioServiceImplement.eliminarUsuario(id_usuario);
         } catch (IndexOutOfBoundsException e) {
@@ -85,7 +96,13 @@ public class Usuario_Controller {
         ArrayList<Usuario> listaUsuarios = usuarioServiceImplement.buscarUsuario();
         System.out.println("datos encontrados:");
         for (int j = 0; j < listaUsuarios.size(); j++) {
-            System.out.println("=> " + listaUsuarios.get(j));
+            System.out.println("///////////////////////////////////////////////////////////////////");
+            System.out.println("|                    Elemento " + j + ":                            |");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("| email " + listaUsuarios.get(j).getEmail());
+            System.out.println("| nombre de usuario " + listaUsuarios.get(j).getNombreUsuario());
+            System.out.println("| contraseña " + listaUsuarios.get(j).getContrasenia());
+            System.out.println("------------------------------------------------------------------");
         }
     }
 
@@ -94,7 +111,13 @@ public class Usuario_Controller {
         int id_usuario = sc.nextInt();
         try {
             Usuario usuario = usuarioServiceImplement.buscarUsuario(id_usuario);
-            System.out.println("datos encontrados: " + usuario.toString());
+            System.out.println("///////////////////////////////////////////////////////////////////");
+            System.out.println("|                         datos encontrados                       |");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("| email " + usuario.getEmail());
+            System.out.println("| nombre de usuario " + usuario.getNombreUsuario());
+            System.out.println("| contraseña " + usuario.getContrasenia());
+            System.out.println("------------------------------------------------------------------");
         } catch (NullPointerException e) {
             System.out.println("no existe un registro con ese id");
         }
@@ -107,7 +130,14 @@ public class Usuario_Controller {
         try {
             Usuario usuario = usuarioServiceImplement.buscarUsuario(nombreUsuario);
             if (usuario.getEmail() != null) {
-                System.out.println("datos encontrados: " + usuario.toString());
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                System.out.println("|                         datos encontrados                       |");
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("| email " + usuario.getEmail());
+                System.out.println("| nombre de usuario " + usuario.getNombreUsuario());
+                System.out.println("| contraseña " + usuario.getContrasenia());
+                System.out.println("------------------------------------------------------------------");
+
             }
         } catch (NullPointerException e) {
             System.out.println("no existe un registro con ese id");

@@ -49,7 +49,13 @@ public class Alumno_Controller {
     public void buscarTodosAlumnos() {
         ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.buscarAlumno();
         for (int i = 0; i < listaAlumnos.size(); i++) {
-            System.out.println("Elemento " + i + ": " + listaAlumnos.get(i));
+            System.out.println("///////////////////////////////////////////////////////////////////");
+            System.out.println("|                    Elemento " + i + ":                            |");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("| nombre: " + listaAlumnos.get(i).getNombres());
+            System.out.println("| apellidos: " + listaAlumnos.get(i).getApellidoPaterno() + " " + listaAlumnos.get(i).getApellidoMaterno());
+            System.out.println("| DNI: " + listaAlumnos.get(i).getDNI());
+            System.out.println("------------------------------------------------------------------------");
         }
     }
 
@@ -70,12 +76,18 @@ public class Alumno_Controller {
             try {
                 System.out.println("seleccione el alumno que desea modificar");
                 for (int j = 0; j < listaAlumnos.size(); j++) {
-                    int elemento = j + 1;
-                    System.out.println("elemento " + elemento + " => " + listaAlumnos.get(j).toString());
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                    Elemento " + j + ":                            |");
+                    System.out.println("-------------------------------------------------------------------");
+                    System.out.println("| nombre: " + listaAlumnos.get(j).getNombres());
+                    System.out.println("| apellidos: " + listaAlumnos.get(j).getApellidoPaterno() + " " + listaAlumnos.get(j).getApellidoMaterno());
+                    System.out.println("| DNI: " + listaAlumnos.get(j).getDNI());
+                    System.out.println("-------------------------------------------------------------------");
                 }
+                System.out.print("elemento Nº ");
                 int i_alumno = sc.nextInt();
-                String dniAlumno = listaAlumnos.get(i_alumno - 1).getDNI();
-                System.out.println("--- Ingrese los nuevos datos para " + listaAlumnos.get(i_alumno - 1).getNombres() + " ---");
+                String dniAlumno = listaAlumnos.get(i_alumno).getDNI();
+                System.out.println("--- Ingrese los nuevos datos para " + listaAlumnos.get(i_alumno).getNombres() + " ---");
                 sc.nextLine();
                 System.out.print("Nuevo Nombre: ");
                 String nombresModificado = sc.nextLine();
@@ -91,7 +103,14 @@ public class Alumno_Controller {
                 int edadModificado = Integer.parseInt(sc.nextLine());
                 LocalDate fechaCreacionModificado = LocalDate.now();
 
-                Alumno alumnoModificado = new Alumno(anioIngresoModificado, mesIngresoModificado, nombresModificado, apellidoPaternoModificado, apellidoMaternoModificado, edadModificado, fechaCreacionModificado);
+                Alumno alumnoModificado = new Alumno(
+                        anioIngresoModificado,
+                        mesIngresoModificado,
+                        nombresModificado,
+                        apellidoPaternoModificado,
+                        apellidoMaternoModificado,
+                        edadModificado,
+                        fechaCreacionModificado);
                 alumnoServiceImplement.modificarALumno(dniAlumno, alumnoModificado);
                 System.out.println("¡Alumno modificado con éxito!");
             } catch (NumberFormatException e) {
@@ -111,20 +130,31 @@ public class Alumno_Controller {
             try {
                 System.out.println("seleccione el alumno que desea modificar");
                 for (int j = 0; j < listaAlumnos.size(); j++) {
-                    int elemento = j + 1;
-                    System.out.println("elemento " + elemento + " => " + listaAlumnos.get(j).toString());
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                    Elemento " + j + ":                            |");
+                    System.out.println("-------------------------------------------------------------------");
+                    System.out.println("| nombre: " + listaAlumnos.get(j).getNombres());
+                    System.out.println("| apellidos: " + listaAlumnos.get(j).getApellidoPaterno() + " " + listaAlumnos.get(j).getApellidoMaterno());
+                    System.out.println("| DNI: " + listaAlumnos.get(j).getDNI());
+                    System.out.println("-------------------------------------------------------------------");
+
                 }
+                System.out.print("elemento Nº ");
                 int i_alumno = sc.nextInt();
-                String dniAlumno = listaAlumnos.get(i_alumno - 1).getDNI();
-                
+                String dniAlumno = listaAlumnos.get(i_alumno).getDNI();
+
                 sc.nextLine();
                 System.out.print("¿Está seguro que desea eliminar al alumno con DNI " + dniAlumno + "? (si/no): ");
-                String confirmacion = sc.nextLine();
-                if (confirmacion.equalsIgnoreCase("si")) {
-                    alumnoServiceImplement.borrarAlumno(dniAlumno);
-                    System.out.println("Alumno eliminado.");
+                String confirmacion = sc.nextLine().toLowerCase();
+                if (confirmacion == "si" || confirmacion == "no") {
+                    if (confirmacion.equalsIgnoreCase("si")) {
+                        alumnoServiceImplement.borrarAlumno(dniAlumno);
+                        System.out.println("Alumno eliminado.");
+                    } else {
+                        System.out.println("Operación cancelada.");
+                    }
                 } else {
-                    System.out.println("Operación cancelada.");
+                    System.out.println("opcion incorrecta. debe colocar si o no");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Error: La edad y el sueldo deben ser números.");

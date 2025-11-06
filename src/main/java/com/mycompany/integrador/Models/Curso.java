@@ -79,6 +79,10 @@ public class Curso {
     public String toString() {
         return "Curso{" + "nombreCurso=" + nombreCurso + ", mesesDuracion=" + mesesDuracion + ", fechaCreacion=" + fechaCreacion + ", fechaModificacion=" + fechaModificacion + ", fechaEliminacion=" + fechaEliminacion + '}';
     }
+
+    public String getDniProfesor() {
+        return dniProfesor;
+    }
     
     
 }

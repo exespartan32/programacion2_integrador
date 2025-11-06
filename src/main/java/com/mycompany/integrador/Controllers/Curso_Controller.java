@@ -29,7 +29,6 @@ public class Curso_Controller {
             String nombreCurso = sc.nextLine();
             System.out.print("Ingrese la Duración en Meses: ");
             int duracionMeses = Integer.parseInt(sc.nextLine());
-
             Curso curso = new Curso(nombreCurso, duracionMeses, fechaActual, null, null);
             cursoServiceImplement.guardarCurso(curso);
             System.out.println("¡Curso " + nombreCurso + " guardado con éxito!");
@@ -41,7 +40,13 @@ public class Curso_Controller {
     public void buscarTodosLosCursos() {
         ArrayList<Curso> litaCursos = cursoServiceImplement.buscarCurso();
         for (int i = 0; i < litaCursos.size(); i++) {
-            System.out.println("Elemento " + i + ": " + litaCursos.get(i).toString());
+            System.out.println("///////////////////////////////////////////////////////////////////");
+            System.out.println("|                    Elemento " + i + ":                            |");
+            System.out.println("-------------------------------------------------------------------");
+            System.out.println("| curso: " + litaCursos.get(i).getNombreCurso());
+            System.out.println("| meses de duracion: " + litaCursos.get(i).getMesesDuracion());
+            System.out.println("| DNI del profesor a cargo: " + litaCursos.get(i).getDniProfesor());
+            System.out.println("-------------------------------------------------------------------");
         }
     }
 
@@ -57,19 +62,23 @@ public class Curso_Controller {
                 System.out.println("seleccione el curso que desea modificar");
                 System.out.println("////////////////////////////////////////////");
                 for (int i = 0; i < listaCursos.size(); i++) {
-                    int elemento = i + 1;
-                    System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                    Elemento " + i + ":                            |");
+                    System.out.println("-------------------------------------------------------------------");
+                    System.out.println("| curso: " + listaCursos.get(i).getNombreCurso());
+                    System.out.println("| meses de duracion: " + listaCursos.get(i).getMesesDuracion());
+                    System.out.println("| DNI del profesor a cargo: " + listaCursos.get(i).getDniProfesor());
+                    System.out.println("-------------------------------------------------------------------");
                 }
+                System.out.print("elemento Nº ");
                 int i_curso = sc.nextInt();
-                String nombreCurso = listaCursos.get(i_curso - 1).getNombreCurso();
-
+                String nombreCurso = listaCursos.get(i_curso).getNombreCurso();
                 System.out.println("--- Ingrese los nuevos datos ---");
                 sc.nextLine();
                 System.out.print("Nuevo Nombre del Curso: ");
                 String nuevoNombre = sc.nextLine();
                 System.out.print("Nueva Duración en Meses: ");
                 int nuevaDuracion = Integer.parseInt(sc.nextLine());
-
                 Curso cursoModificado = new Curso(nuevoNombre, nuevaDuracion, LocalDate.now());
                 cursoServiceImplement.modificarCurso(nombreCurso, cursoModificado);
                 System.out.println("¡Curso modificado con éxito!");
@@ -88,19 +97,29 @@ public class Curso_Controller {
                 System.out.println("seleccione el curso que desea eliminar");
                 System.out.println("////////////////////////////////////////////");
                 for (int i = 0; i < listaCursos.size(); i++) {
-                    int elemento = i + 1;
-                    System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                    Elemento " + i + ":                            |");
+                    System.out.println("-------------------------------------------------------------------");
+                    System.out.println("| curso: " + listaCursos.get(i).getNombreCurso());
+                    System.out.println("| meses de duracion: " + listaCursos.get(i).getMesesDuracion());
+                    System.out.println("| DNI del profesor a cargo: " + listaCursos.get(i).getDniProfesor());
+                    System.out.println("-------------------------------------------------------------------");
                 }
+                System.out.print("elemento Nº ");
                 int i_curso = sc.nextInt();
-                String nombreCurso = listaCursos.get(i_curso - 1).getNombreCurso();
+                String nombreCurso = listaCursos.get(i_curso).getNombreCurso();
                 sc.nextLine();
                 System.out.print("¿Está seguro que desea eliminar el curso " + nombreCurso + "? (si/no): ");
-                String confirmacion = sc.nextLine();
-                if (confirmacion.equalsIgnoreCase("si")) {
-                    cursoServiceImplement.eliminarCurso(nombreCurso);
-                    System.out.println("Curso eliminado.");
+                String confirmacion = sc.nextLine().toLowerCase();
+                if (confirmacion == "si" || confirmacion == "no") {
+                    if (confirmacion.equalsIgnoreCase("si")) {
+                        cursoServiceImplement.eliminarCurso(nombreCurso);
+                        System.out.println("Curso eliminado.");
+                    } else {
+                        System.out.println("Operación cancelada.");
+                    }
                 } else {
-                    System.out.println("Operación cancelada.");
+                    System.out.println("opcion incorrecta debe colocar si o no");
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("no existe el registro seleccionado");

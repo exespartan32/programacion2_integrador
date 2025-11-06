@@ -39,35 +39,38 @@ public class HistorialCuenta_Controller {
         try {
             if (listaCursos.size() > 0) {
                 for (int i = 0; i < listaCursos.size(); i++) {
-                    int elemento = i + 1;
-                    System.out.println("Elemento " + elemento + ": " + listaCursos.get(i).getNombreCurso());
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                    Elemento " + i + ":                            |");
+                    System.out.println("-------------------------------------------------------------------");
+                    System.out.println("| nombre dl curso: " + listaCursos.get(i).getNombreCurso());
+                    System.out.println("-------------------------------------------------------------------");
                 }
+                System.out.print("elemento Nº ");
                 int i_curso = sc.nextInt();
-                Curso curso = listaCursos.get(i_curso - 1);
-                String nombreCurso = listaCursos.get(i_curso - 1).getNombreCurso();
+                Curso curso = listaCursos.get(i_curso);
+                String nombreCurso = listaCursos.get(i_curso).getNombreCurso();
                 int saldo = 0;
-
                 ArrayList<Matricula> matricula = matriculaServiceImplement.buscarMatriculaCurso(nombreCurso);
-
                 if (matricula.size() > 0) {
                     System.out.println("seleccione el alumno que quiere pagara:");
                     System.out.println("///////////////////////////////////////////////////////////////////");
                     for (int i = 0; i < matricula.size(); i++) {
-                        int elemento = i + 1;
-                        System.out.println("Elemento " + elemento + ": " + matricula.get(i).getDNIAlumno());
+                        System.out.println("///////////////////////////////////////////////////////////////////");
+                        System.out.println("|                    Elemento " + i + ":                            |");
+                        System.out.println("-------------------------------------------------------------------");
+                        System.out.println("| DNI alumno: " + matricula.get(i).getDNIAlumno());
+                        System.out.println("-------------------------------------------------------------------");
                     }
+                    System.out.print("Elemento Nº ");
                     int i_matricula = sc.nextInt();
-                    Alumno alumno = alumnoServiceImplement.buscarAlumno(matricula.get(i_matricula - 1).getDNIAlumno());
+                    Alumno alumno = alumnoServiceImplement.buscarAlumno(matricula.get(i_matricula).getDNIAlumno());
 
                     if (!historialCuentaServiceImplement.cursoPagado(curso.getNombreCurso(), alumno.getDNI())) {
                         saldo = historialCuentaServiceImplement.verSaldo(alumno.getDNI());
-
                         System.out.println("ingrese el pago realizado");
                         int pago = sc.nextInt();
-
                         ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(curso.getNombreCurso());
                         int precioCurso = valorCurso.getPrecioCurso();
-
                         boolean pagado = false;
                         if (saldo > 0) {
                             // tiene saldo a favor
@@ -82,12 +85,9 @@ public class HistorialCuenta_Controller {
                                 pagado = true;
                             }
                         }
-
                         sc.nextLine();
                         System.out.println("escribe la descripcion");
                         String descripcion = sc.nextLine();
-
-                        //pago >= precioCurso && saldo == 0;
                         HistorialDeCuentas historialDeCuentas = new HistorialDeCuentas(
                                 alumno.getDNI(),
                                 curso.getNombreCurso(),
@@ -117,8 +117,16 @@ public class HistorialCuenta_Controller {
     public void verTodosLosPagos() {
         ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago();
         for (int i = 0; i < listaPagos.size(); i++) {
-            int elemento = i + 1;
-            System.out.println("Elemento " + elemento + ": " + listaPagos.get(i));
+            System.out.println("///////////////////////////////////////////////////////////////////////");
+            System.out.println("|                   Elemento " + i + ": " + listaPagos.get(i) + "                        |");
+            System.out.println("----------------------------------------------------------------------");
+            System.out.println("| DNI del alumno:" + listaPagos.get(i).getDniAlumno());
+            System.out.println("| nombre del curso:" + listaPagos.get(i).getNombreCurso());
+            System.out.println("| pago del alumno:" + listaPagos.get(i).getPago());
+            System.out.println("| saldo del alumno:" + listaPagos.get(i).getSaldo());
+            System.out.println("| descripcion del pago:" + listaPagos.get(i).getDescripcionPago());
+            System.out.println("| esta pagado? :" + listaPagos.get(i).isPagado());
+            System.out.println("----------------------------------------------------------------------");
         }
     }
 
@@ -129,13 +137,18 @@ public class HistorialCuenta_Controller {
             System.out.println("seleccine el alumno");
             System.out.println("///////////////////////////////////////////////////////////////////");
             try {
-                for (int i = 0; i < alumnoServiceImplement.buscarAlumno().size(); i++) {
-                    int elemento = i + 1;
-                    System.out.println("Elemento " + elemento + ": " + alumnoServiceImplement.buscarAlumno().get(i).toString());
+                ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.buscarAlumno();
+                for (int i = 0; i < listaAlumnos.size(); i++) {
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                    Elemento   " + i + ":                            |");
+                    System.out.println("| nombre: " + listaAlumnos.get(i).getNombres());
+                    System.out.println("| apellidos: " + listaAlumnos.get(i).getApellidoPaterno() + " " + listaAlumnos.get(i).getApellidoMaterno());
+                    System.out.println("| DNI: " + listaAlumnos.get(i).getDNI());
+                    System.out.println("--------------------------------------------------------------------");
                 }
-                Scanner sc = new Scanner(System.in);
+                System.out.print("elemento Nº ");
                 int i_alumno = sc.nextInt();
-                ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago(alumnoServiceImplement.buscarAlumno().get(i_alumno - 1).getDNI());
+                ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago(alumnoServiceImplement.buscarAlumno().get(i_alumno).getDNI());
                 for (int i = 0; i < listaPagos.size(); i++) {
                     int elemento = i + 1;
                     System.out.println("Elemento " + elemento + ": " + listaPagos.get(i));
@@ -154,12 +167,20 @@ public class HistorialCuenta_Controller {
                 int elemento = i + 1;
                 System.out.println("Elemento " + elemento + ": " + cursoServiceImplement.buscarCurso().get(i).toString());
             }
-
+            System.out.print("elemento Nº ");
             int i_curso = sc.nextInt();
-            ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago(cursoServiceImplement.buscarCurso().get(i_curso - 1).getNombreCurso(), true);
+            ArrayList<HistorialDeCuentas> listaPagos = historialCuentaServiceImplement.buscarPago(cursoServiceImplement.buscarCurso().get(i_curso).getNombreCurso(), true);
             for (int i = 0; i < listaPagos.size(); i++) {
-                int elemento = i + 1;
-                System.out.println("Elemento " + elemento + ": " + listaPagos.get(i));
+                System.out.println("//////////////////////////////////////////////////////////////////////");
+                System.out.println("|                      Elemento " + i + ": " + listaPagos.get(i) + "         |");
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println("| DNI del alumno:" + listaPagos.get(i).getDniAlumno());
+                System.out.println("| nombre del curso:" + listaPagos.get(i).getNombreCurso());
+                System.out.println("| pago del alumno:" + listaPagos.get(i).getPago());
+                System.out.println("| saldo del alumno:" + listaPagos.get(i).getSaldo());
+                System.out.println("| descripcion del pago:" + listaPagos.get(i).getDescripcionPago());
+                System.out.println("| esta pagado? :" + listaPagos.get(i).isPagado());
+                System.out.println("----------------------------------------------------------------------");
             }
         } catch (IndexOutOfBoundsException e) {
             System.out.println("no existe el registro seleccionado");

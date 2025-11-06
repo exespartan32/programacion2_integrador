@@ -51,7 +51,13 @@ public class Profesor_Controller {
         ArrayList<Profesor> listaProfesores = profesorServiceImplement.buscarProfesor();
 
         for (int i = 0; i < listaProfesores.size(); i++) {
-            System.out.println("Elemento " + i + ": " + listaProfesores.get(i));
+            System.out.println("///////////////////////////////////////////////////////////////////");
+            System.out.println("|                    Elemento " + i + ":                            |");
+            System.out.println("------------------------------ ------------------------------------");
+            System.out.println("| nombre: " + listaProfesores.get(i).getNombres());
+            System.out.println("| apellidos: " + listaProfesores.get(i).getApellidoPaterno() + " " + listaProfesores.get(i).getApellidoMaterno());
+            System.out.println("| DNI: " + listaProfesores.get(i).getDNI());
+            System.out.println("-------------------------------------------------------------------");
         }
     }
 
@@ -60,7 +66,12 @@ public class Profesor_Controller {
         String dni = sc.nextLine();
         Profesor profesor = profesorServiceImplement.buscarProfesor(dni);
         if (profesor != null && profesor.getDNI() != null) {
-            System.out.println("Datos: " + profesor.toString());
+            System.out.println("| Datos: ");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("| nombre: " + profesor.getNombres());
+            System.out.println("| apellidos: " + profesor.getApellidoPaterno() + " " + profesor.getApellidoMaterno());
+            System.out.println("| DNI: " + profesor.getDNI());
+            System.out.println("-------------------------------------------------");
         } else {
             System.out.println("No se encontró ningún profesor con el DNI: " + dni);
         }
@@ -72,14 +83,20 @@ public class Profesor_Controller {
             if (listaProfesores.size() > 0) {
                 System.out.println("seleccione el profesor que desea modificar");
                 for (int j = 0; j < listaProfesores.size(); j++) {
-                    int elemento = j + 1;
-                    System.out.println("elemento " + elemento + " => " + listaProfesores.get(j).toString());
+                    System.out.println("////////////////////////////////////////////////////////////////////");
+                    System.out.println("|                      Elemento " + j + ":                               |");
+                    System.out.println("--------------------------------------------------------------------");
+                    System.out.println("| nombre: " + listaProfesores.get(j).getNombres());
+                    System.out.println("| apellidos: " + listaProfesores.get(j).getApellidoPaterno() + " " + listaProfesores.get(j).getApellidoMaterno());
+                    System.out.println("| DNI: " + listaProfesores.get(j).getDNI());
+                    System.out.println("--------------------------------------------------------------------");
                 }
+                System.out.println("elemento Nº ");
                 int i_profesor = sc.nextInt();
-                String dniProfesor = listaProfesores.get(i_profesor - 1).getDNI();
+                String dniProfesor = listaProfesores.get(i_profesor).getDNI();
 
                 sc.nextLine();
-                System.out.println("--- Ingrese los nuevos datos para " + listaProfesores.get(i_profesor - 1).getNombres() + " ---");
+                System.out.println("--- Ingrese los nuevos datos para " + listaProfesores.get(i_profesor).getNombres() + " ---");
                 System.out.print("Nuevo Nombre: ");
                 String nombresModificado = sc.nextLine();
                 System.out.print("Nuevo Apellido Paterno: ");
@@ -119,12 +136,24 @@ public class Profesor_Controller {
                 System.out.println("seleccione el profesor que desea eliminar");
                 System.out.println("///////////////////////////////////////////////////////////////////");
                 for (int j = 0; j < listaProfesores.size(); j++) {
-                    int elemento = j + 1;
-                    System.out.println("elemento " + elemento + " => " + listaProfesores.get(j).toString());
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                    Elemento " + j + ":                            |");
+                    System.out.println("--------------------------------------------------------------------");
+                    System.out.println("| nombre: " + listaProfesores.get(j).getNombres());
+                    System.out.println("| apellidos: " + listaProfesores.get(j).getApellidoPaterno() + " " + listaProfesores.get(j).getApellidoMaterno());
+                    System.out.println("| DNI: " + listaProfesores.get(j).getDNI());
+                    System.out.println("---------------------------------------------------------- ---------");
                 }
+                System.out.print("elemento Nº ");
                 int i_profesor = sc.nextInt();
                 String dniProfesor = listaProfesores.get(i_profesor - 1).getDNI();
-                profesorServiceImplement.eliminarProfesor(dniProfesor);
+                System.out.print("¿Está seguro que desea eliminar al prefesor con DNI " + dniProfesor + "? (si/no): ");
+                String confirmacion = sc.nextLine().toLowerCase();
+                if (confirmacion == "si" || confirmacion == "no") {
+                    profesorServiceImplement.eliminarProfesor(dniProfesor);
+                } else {
+                    System.out.println("opcion incorrecta. debe colocar si o no");
+                }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("no existe el registro seleccionado");
             }
