@@ -11,6 +11,7 @@ import java.time.LocalDate;
  * @author exequiel
  */
 public class Curso {
+
     private String nombreCurso;
     private int mesesDuracion;
     private LocalDate fechaCreacion;
@@ -21,6 +22,15 @@ public class Curso {
     public Curso() {
     }
 
+    public Curso(String nombreCurso, int mesesDuracion, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion, String dniProfesor) {
+        this.nombreCurso = nombreCurso;
+        this.mesesDuracion = mesesDuracion;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
+        this.fechaEliminacion = fechaEliminacion;
+        this.dniProfesor = dniProfesor;
+    }
+
     public Curso(String nombreCurso, int mesesDuracion, LocalDate fechaCreacion, LocalDate fechaModificacion, LocalDate fechaEliminacion) {
         this.nombreCurso = nombreCurso;
         this.mesesDuracion = mesesDuracion;
@@ -28,7 +38,7 @@ public class Curso {
         this.fechaModificacion = fechaModificacion;
         this.fechaEliminacion = fechaEliminacion;
     }
-
+    
     public Curso(String nombreCurso, int mesesDuracion, LocalDate fechaModificacion) {
         this.nombreCurso = nombreCurso;
         this.mesesDuracion = mesesDuracion;
@@ -83,6 +93,5 @@ public class Curso {
     public String getDniProfesor() {
         return dniProfesor;
     }
-    
-    
+
 }

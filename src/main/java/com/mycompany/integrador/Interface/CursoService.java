@@ -22,6 +22,8 @@ public interface CursoService {
     public ArrayList<Curso> buscarCurso();
 
     public Curso buscarCurso(String nombreCurso);
+    
+    public Curso buscarCurso(String dniProfesor, int estado);
 
     public boolean existeCurso(String nombreCurso);
 

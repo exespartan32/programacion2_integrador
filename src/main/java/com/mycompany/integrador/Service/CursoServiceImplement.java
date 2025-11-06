@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -27,12 +28,13 @@ public class CursoServiceImplement implements CursoService {
 
     ConexionDB conn = new ConexionDB();
     ProfesorServiceImplement profesorServiceImplement = new ProfesorServiceImplement();
+    Scanner sc = new Scanner(System.in);
 
     @Override
     public void guardarCurso(Curso curso) {
-        ArrayList<Profesor> litaProfesores = profesorServiceImplement.buscarProfesor();
+        ArrayList<Profesor> listaProfesores = profesorServiceImplement.buscarProfesor();
 
-        if (litaProfesores.size() > 0) {
+        if (listaProfesores.size() > 0) {
             if (existeCurso(curso.getNombreCurso())) {
                 System.out.println("ERROR: El curso de " + curso.getNombreCurso() + " ya esta registrado. No se permite la insercion duplicada.");
             } else {
@@ -47,29 +49,42 @@ public class CursoServiceImplement implements CursoService {
                     ps.setInt(2, curso.getMesesDuracion());
                     ps.setString(3, fechaString);
 
-                    System.out.println("seleccine el profesor que asignara a este curso");
+                    System.out.println("seleccione el profesor que desea asignara a este curso");
                     System.out.println("///////////////////////////////////////////////////////////////////");
-                    for (int i = 0; i < litaProfesores.size(); i++) {
-                        System.out.println("Elemento " + i + ": " + litaProfesores.get(i).toString());
+                    for (int j = 0; j < listaProfesores.size(); j++) {
+                        System.out.println("///////////////////////////////////////////////////////////////////");
+                        System.out.println("|                         Elemento " + j + ":                            |");
+                        System.out.println("-------------------------------------------------------------------");
+                        System.out.println("| nombre: " + listaProfesores.get(j).getNombres());
+                        System.out.println("| apellidos: " + listaProfesores.get(j).getApellidoPaterno() + " " + listaProfesores.get(j).getApellidoMaterno());
+                        System.out.println("| DNI: " + listaProfesores.get(j).getDNI());
+                        System.out.println("------------------------------------------------------------------");
                     }
-                    Scanner sc = new Scanner(System.in);
-                    int i = sc.nextInt();
-                    ps.setString(4, litaProfesores.get(i).getDNI());
-
-                    ps.execute();
-
-                    System.out.println("curso guardado correctamente");
+                    System.out.print("elemento Nº ");
+                    try {
+                        int i_profesor = sc.nextInt();
+                        String dniProfesor = listaProfesores.get(i_profesor).getDNI();
+                        ps.setString(4, dniProfesor);
+                        ps.execute();
+                        System.out.println("curso guardado correctamente");
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("------------------------------------------------------------------");
+                        System.out.println("ERROR!!: no existe el registro seleccionado");
+                        System.out.println("------------------------------------------------------------------");
+                    } catch (InputMismatchException e) {
+                        System.out.println("------------------------------------------------------------------");
+                        System.out.println("ERROR!!: debe ser un numero.");
+                        System.out.println("------------------------------------------------------------------");
+                    }
 
                 } catch (SQLException e) {
                     System.out.println("Error al ejecutar la consulta: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
-
         } else {
             System.out.println("no hay ningun profesor disponible para dar este curso");
         }
-
     }
 
     @Override
@@ -148,7 +163,9 @@ public class CursoServiceImplement implements CursoService {
                         rs.getInt("mesesDuracion"),
                         LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy")),
                         fechaModificacion,
-                        fechaEliminacion);
+                        fechaEliminacion,
+                        rs.getString("DNIProfesor")
+                );
                 listaCursos.add(curso);
             }
         } catch (SQLException e) {
@@ -161,7 +178,7 @@ public class CursoServiceImplement implements CursoService {
     @Override
     public Curso buscarCurso(String nombreCurso) {
         Connection connect = conn.conectarDB();
-        String sql = "SELECT * FROM Curso WHERE = ?";
+        String sql = "SELECT * FROM Curso WHERE nombreCurso = ?";
         Curso curso = new Curso();
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
@@ -181,7 +198,9 @@ public class CursoServiceImplement implements CursoService {
                         rs.getInt("mesesDuracion"),
                         LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy")),
                         fechaModificacion,
-                        fechaEliminacion);
+                        fechaEliminacion,
+                        rs.getString("DNIProfesor")
+                );
             }
         } catch (SQLException e) {
             System.out.println("error al ejecutar la consulta" + e.getMessage());
@@ -204,6 +223,40 @@ public class CursoServiceImplement implements CursoService {
             e.printStackTrace();
         }
         return existe;
+    }
+
+    @Override
+    public Curso buscarCurso(String dniProfesor, int estado) {
+        Curso curso = new Curso();
+        String sql = "SELECT * FROM Curso WHERE DNIProfesor = ?";
+        Connection connectC = conn.conectarDB();
+        try ( PreparedStatement ps = connectC.prepareStatement(sql)) {
+            ps.setString(1, dniProfesor);
+            ResultSet rs = ps.executeQuery();
+
+            System.out.println("consulta: " + ps);
+
+            LocalDate fechaModificacion = null;
+            if (rs.getString("fechaModificacion") != null) {
+                fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+            }
+            LocalDate fechaEliminacion = null;
+            if (rs.getString("fechaEliminacion") != null) {
+                fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+            }
+            curso = new Curso(
+                    rs.getString("nombreCurso"),
+                    rs.getInt("mesesDuracion"),
+                    LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy")),
+                    fechaModificacion,
+                    fechaEliminacion,
+                    rs.getString("DNIProfesor")
+            );
+        } catch (SQLException e) {
+            System.out.println("error al ejecutar la consulta" + e.getMessage());
+            e.printStackTrace();
+        }
+        return curso;
     }
 
     private static void habilitarClavesForaneas(Connection conn) throws SQLException {

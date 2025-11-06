@@ -212,7 +212,7 @@ public class MainMenu {
                     cursoController.buscarTodosLosCursos();
                     break;
                 case 3:
-                    cursoController.buscarCurso();
+                    cursoController.buscarCursoPorNombreCurso();
                     break;
                 case 4:
                     cursoController.modificarCurso();
@@ -379,6 +379,7 @@ public class MainMenu {
             System.out.println("4. Buscar Precio de un Curso (Seleccionando)");
             System.out.println("5. Modificar Precio de un Curso");
             System.out.println("6. Ver el Precio de Todos los Cursos");
+            System.out.println("7. Eliminar Precio De Curso");
             System.out.println("0. Volver al Menú Principal");
             System.out.print("Seleccione una opción: ");
 
@@ -407,7 +408,10 @@ public class MainMenu {
                     valorCursoController.modificarPrecio();
                     break;
                 case 6:
-                    valorCursoController.verTodosLosPagos();
+                    valorCursoController.verTodosLosPrecios();
+                    break;
+                case 7:
+                    valorCursoController.eliminarPrecioDeUnCurso();
                     break;
                 case 0:
                     System.out.println("Volviendo al menú principal...");

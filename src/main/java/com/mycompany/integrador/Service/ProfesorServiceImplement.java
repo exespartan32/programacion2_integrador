@@ -38,11 +38,9 @@ public class ProfesorServiceImplement implements ProfesorService {
                     habilitarClavesForaneas(connectC);
                     connectC.setAutoCommit(false);
                     int idGenerado = -1;
-
                     try ( PreparedStatement psPersona = connectC.prepareStatement(sqlPersona, PreparedStatement.RETURN_GENERATED_KEYS)) {
                         DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                         String fechaString = profesor.getFechaCreacion().format(formatterEs);
-
                         psPersona.setString(1, profesor.getDNI());
                         psPersona.setString(2, profesor.getNombres());
                         psPersona.setString(3, profesor.getApellidoMaterno());
@@ -63,16 +61,15 @@ public class ProfesorServiceImplement implements ProfesorService {
                     if (idGenerado == -1) {
                         throw new SQLException("No se pudo obtener el ID de la persona insertado.");
                     }
-
                     // insertar el profesor asociado
                     try ( PreparedStatement psProfesor = connectC.prepareStatement(sqlProfesor)) {
                         psProfesor.setString(1, profesor.getDNI());
                         psProfesor.setInt(2, profesor.getSueldo());
                         psProfesor.setInt(3, (profesor.isPresentismo()) ? 0 : 1);
                         psProfesor.executeUpdate();
+                        connectC.commit();
                     }
 
-                    connectC.commit();
                     System.out.println("Profesor creado correctamente con ID: " + idGenerado);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
@@ -148,21 +145,18 @@ public class ProfesorServiceImplement implements ProfesorService {
 
     @Override
     public void eliminarProfesor(String dni) {
-        String sql = "DELETE FROM Profesor WHERE DNIProfesor = ?";
+        String sql = "DELETE FROM Persona WHERE DNI = ?";
         Connection connect = conn.conectarDB();
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             habilitarClavesForaneas(connect);
             ps.setString(1, dni);
-
             int filasAfectadas = ps.executeUpdate();
-
             if (filasAfectadas > 0) {
                 System.out.println("profesor eliminado correctamente");
             } else {
                 System.out.println("No se encontro un profesor con el DNI " + dni);
             }
-
         } catch (Exception e) {
             System.out.println("error al eliminar el profesor");
             System.out.println("ERROR: " + e.toString());

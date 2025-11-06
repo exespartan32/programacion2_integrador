@@ -158,9 +158,7 @@ public class AlumnoServiceImplement implements AlumnoService {
             PreparedStatement ps = connect.prepareStatement(sql);
             habilitarClavesForaneas(connect);
             ps.setString(1, dni);
-
             int filasAfectadas = ps.executeUpdate();
-
             if (filasAfectadas > 0) {
                 System.out.println("alumno eliminado correctamente");
             } else {

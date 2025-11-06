@@ -7,11 +7,15 @@ package com.mycompany.integrador.Controllers;
 import com.mycompany.integrador.Service.MatriculaServiceImplement;
 import com.mycompany.integrador.Service.AlumnoServiceImplement;
 import com.mycompany.integrador.Service.CursoServiceImplement;
+import com.mycompany.integrador.Service.ProfesorServiceImplement;
 import java.util.Scanner;
 import com.mycompany.integrador.Models.Alumno;
+import com.mycompany.integrador.Models.Profesor;
 import com.mycompany.integrador.Models.Curso;
 import com.mycompany.integrador.Models.Matricula;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import javax.crypto.AEADBadTagException;
 
 /**
  *
@@ -22,6 +26,7 @@ public class Matricula_Controller {
     MatriculaServiceImplement matriculaServiceImplement = new MatriculaServiceImplement();
     AlumnoServiceImplement alumnoServiceImplement = new AlumnoServiceImplement();
     CursoServiceImplement cursoServiceImplement = new CursoServiceImplement();
+    ProfesorServiceImplement profesorServiceImplement = new ProfesorServiceImplement();
     Scanner sc = new Scanner(System.in);
 
     public void matriculaPrueba() {
@@ -30,22 +35,27 @@ public class Matricula_Controller {
 
     public void matricularAlumnoEnCurso() {
         if (alumnoServiceImplement.buscarAlumno().size() <= 0) {
-            System.out.println("no hay alumnos para asignar");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("no hay alumnos que mostrar");
+            System.out.println("primero agregue alumnos en el sistema");
+            System.out.println("------------------------------------------------------------------");
         } else {
             try {
                 System.out.println("seleccine el alumno a matricular");
                 System.out.println("///////////////////////////////////////////////////////////////////");
                 ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.buscarAlumno();
                 for (int i = 0; i < listaAlumnos.size(); i++) {
-                    System.out.println("/////////////////////////////////////////////////////////////////////////");
-                    System.out.println("|                               Elemento " + i + ":                       |");
-                    System.out.println("-------------------------------------------------------------------------");
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + i + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
                     System.out.println("| nombre: " + listaAlumnos.get(i).getNombres());
                     System.out.println("| apellidos: " + listaAlumnos.get(i).getApellidoPaterno() + " " + listaAlumnos.get(i).getApellidoMaterno());
                     System.out.println("| DNI: " + listaAlumnos.get(i).getDNI());
-                    System.out.println("-------------------------------------------------------------------------");
+                    System.out.println("| año de ingreso: " + listaAlumnos.get(i).getAnioIngreso());
+                    System.out.println("| mes de ingreso " + listaAlumnos.get(i).getMesIngreso());
+                    System.out.println("------------------------------------------------------------------");
                 }
-                System.out.println("elemento Nº ");
+                System.out.print("elemento Nº ");
                 int i_alumno = sc.nextInt();
                 String dniAlumno = listaAlumnos.get(i_alumno).getDNI();
 
@@ -53,18 +63,27 @@ public class Matricula_Controller {
                 System.out.println("\n seleccine el curso al que desea matriclar el alumno con DNI: " + dniAlumno);
                 System.out.println("///////////////////////////////////////////////////////////////////");
                 if (listaCursos.size() <= 0) {
+                    System.out.println("------------------------------------------------------------------");
                     System.out.println("no hay cursos donde matricular el alumno");
+                    System.out.println("primero agregue cursos al sistema");
+                    System.out.println("------------------------------------------------------------------");
                 } else {
                     for (int j = 0; j < listaCursos.size(); j++) {
-                        System.out.println("////////////////////////////////////////////////////////////////////////");
-                        System.out.println("|                          Elemento " + j + ":                            |");
-                        System.out.println("-------------------------------------------------------------------------");
+                        System.out.println("///////////////////////////////////////////////////////////////////");
+                        System.out.println("|                           Elemento " + j + ":                           |");
+                        System.out.println("------------------------------------------------------------------");
                         System.out.println("| nombre del curso: " + listaCursos.get(j).getNombreCurso());
                         System.out.println("| meses de duracion: " + listaCursos.get(j).getMesesDuracion());
-                        System.out.println("| DNI del profesor a cargo: " + listaCursos.get(j).getDniProfesor());
-                        System.out.println("-------------------------------------------------------------------------");
+
+                        Profesor profesor = profesorServiceImplement.buscarProfesor(listaCursos.get(j).getDniProfesor());
+                        System.out.println("| nombre del profesor a cargo: " + profesor.getNombres());
+                        System.out.println("| apellidos del profesor a cargo: " + profesor.getApellidoPaterno() + " " + profesor.getApellidoMaterno());
+                        System.out.println("| DNI del profesor a cargo: " + profesor.getDNI());
+                        System.out.println("| presentismo del profesor a cargo: " + profesor.isPresentismo());
+                        System.out.println("| sueldo del profesor a cargo: " + profesor.getSueldo());
+                        System.out.println("------------------------------------------------------------------");
                     }
-                    System.out.println("elemento Nº ");
+                    System.out.print("elemento Nº ");
                     int i_curso = sc.nextInt();
                     String nombreCurso = listaCursos.get(i_curso).getNombreCurso();
 
@@ -72,12 +91,18 @@ public class Matricula_Controller {
                     if (matriculaServiceImplement.buscarMatriculaCurso(alumnoServiceImplement.buscarAlumno(dniAlumno), listaCursos.get(i_curso)) == null) {
                         System.out.println("el alumno con DNI " + dniAlumno + " ya esta matriculado en el curso de " + listaCursos.get(i_curso).getNombreCurso());
                     } else {
-                        System.out.println("se matricula el alumno con dni " + dniAlumno + " en el curso de " + nombreCurso);
+                        //System.out.println("se matricula el alumno con dni " + dniAlumno + " en el curso de " + nombreCurso);
                         matriculaServiceImplement.matricularAlumno(dniAlumno, nombreCurso);
                     }
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("no existe el registro seleccionado");
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("------------------------------------------------------------------");
+            } catch (InputMismatchException e) {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("------------------------------------------------------------------");
             }
 
         }
@@ -85,73 +110,108 @@ public class Matricula_Controller {
 
     public void buscarMatriculaDeAlumno() {
         if (alumnoServiceImplement.buscarAlumno().size() <= 0) {
-            System.out.println("no hay alumnos para mostrar");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("no hay alumnos que mostrar");
+            System.out.println("primero agregue alumnos en el sistema");
+            System.out.println("------------------------------------------------------------------");
         } else {
             try {
                 System.out.println("seleccione el alumno del que quiete buscar la matricula");
                 System.out.println("///////////////////////////////////////////////////////////////////");
                 ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.buscarAlumno();
                 for (int i = 0; i < listaAlumnos.size(); i++) {
-                    System.out.println("/////////////////////////////////////////////////////////////////////////");
-                    System.out.println("|                           Elemento " + i + ":                            |");
-                    System.out.println("------------------------------------------------------------------------");
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + i + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
                     System.out.println("| nombre: " + listaAlumnos.get(i).getNombres());
                     System.out.println("| apellidos: " + listaAlumnos.get(i).getApellidoPaterno() + " " + listaAlumnos.get(i).getApellidoMaterno());
                     System.out.println("| DNI: " + listaAlumnos.get(i).getDNI());
-                    System.out.println("------------------------------------------------------------------------");
+                    System.out.println("| año de ingreso: " + listaAlumnos.get(i).getAnioIngreso());
+                    System.out.println("| mes de ingreso " + listaAlumnos.get(i).getMesIngreso());
+                    System.out.println("------------------------------------------------------------------");
                 }
                 System.out.println("elemento Nº ");
                 int i_alumno = sc.nextInt();
                 Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno);
                 matriculaServiceImplement.buscarMatriculaCurso(alumno);
                 ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
-                System.out.println("datos encontrados:");
 
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("|                       datos encontrados:                        |");
+                System.out.println("------------------------------------------------------------------");
                 for (int j = 0; j < listaMatriculas.size(); j++) {
-                    System.out.println("//////////////////////////////////////////////////////////////////////////");
-                    System.out.println("|                         Elemento " + j + ":                              |");
-                    System.out.println("------------------------------------------------------------------------");
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + j + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
                     System.out.println("| nombre: " + listaAlumnos.get(i_alumno).getNombres());
                     System.out.println("| apellidos: " + listaAlumnos.get(i_alumno).getApellidoPaterno() + " " + listaAlumnos.get(j).getApellidoMaterno());
                     System.out.println("| DNI: " + listaAlumnos.get(i_alumno).getDNI());
                     System.out.println("| esta matriculado en: " + listaMatriculas.get(j).getNombreCurso());
-                    System.out.println("------------------------------------------------------------------------");
+                    System.out.println("-------------------------------------------------------------------");
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("no existe el registro seleccionado");
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("------------------------------------------------------------------");
+            } catch (InputMismatchException e) {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("------------------------------------------------------------------");
             }
         }
     }
 
     public void buscarMatriculaDeCurso() {
-        if (cursoServiceImplement.buscarCurso().size() <= 0) {
-            System.out.println("no hay cursos para mostrar");
-        } else {
-            System.out.println("seleccione el curso del que quiete buscar la matricula");
-            System.out.println("///////////////////////////////////////////////////////////////////");
-            ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
-            for (int i = 0; i < listaCursos.size(); i++) {
-                System.out.println("//////////////////////////////////////////////////////////////////////////////");
-                System.out.println("|                              Elemento " + i + ":                               |");
-                System.out.println("------------------------------------------------------------------------------");
-                System.out.println("| curso: " + listaCursos.get(i).getNombreCurso());
-                System.out.println("| meses de duracion: " + listaCursos.get(i).getMesesDuracion());
-                System.out.println("| DNI del profesor a cargo: " + listaCursos.get(i).getDniProfesor());
-                System.out.println("------------------------------------------------------------------------------");
+        try {
+            if (cursoServiceImplement.buscarCurso().size() <= 0) {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("no hay cursos para mostrar");
+                System.out.println("primero agregue cursos al sistema");
+                System.out.println("------------------------------------------------------------------");
+            } else {
+                System.out.println("seleccione el curso del que quiete buscar la matricula");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
+                for (int i = 0; i < listaCursos.size(); i++) {
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + i + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("| curso: " + listaCursos.get(i).getNombreCurso());
+                    System.out.println("| meses de duracion: " + listaCursos.get(i).getMesesDuracion());
+                    
+                    Profesor profesor = profesorServiceImplement.buscarProfesor(listaCursos.get(i).getDniProfesor());
+                    System.out.println("| nombre del profesor a cargo: " + profesor.getNombres());
+                    System.out.println("| apellidos del profesor a cargo: " + profesor.getApellidoPaterno() + " " + profesor.getApellidoMaterno());
+                    System.out.println("| DNI del profesor a cargo: " + profesor.getDNI());
+                    System.out.println("| presentismo del profesor a cargo: " + profesor.isPresentismo());
+                    System.out.println("| sueldo del profesor a cargo: " + profesor.getSueldo());
+                    System.out.println("-------------------------------------------------------------------");
+                }
+                System.out.print("elemento Nº ");
+                int i_alumno = sc.nextInt();
+                Curso curso = cursoServiceImplement.buscarCurso().get(i_alumno);
+                ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(curso.getNombreCurso());
+
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("|                       datos encontrados:                        |");
+                System.out.println("------------------------------------------------------------------");
+                for (int j = 0; j < listaMatriculas.size(); j++) {
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + j + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("| DNI del alumno: " + listaMatriculas.get(j).getDNIAlumno());
+                    System.out.println("| esta matriculado en: " + listaMatriculas.get(j).getNombreCurso());
+                    System.out.println("------------------------------------------------------------------");
+                }
             }
-            System.out.println("elemento Nº ");
-            int i_alumno = sc.nextInt();
-            Curso curso = cursoServiceImplement.buscarCurso().get(i_alumno);
-            ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(curso.getNombreCurso());
-            System.out.println("datos encontrados:");
-            for (int j = 0; j < listaMatriculas.size(); j++) {
-                System.out.println("/////////////////////////////////////////////////////////////////////////");
-                System.out.println("|                          Elemento " + j + ":                              |");
-                System.out.println("------------------------------------------------------------------------");
-                System.out.println("| DNI del alumno: " + listaMatriculas.get(j).getDNIAlumno());
-                System.out.println("| esta matriculado en: " + listaMatriculas.get(j).getNombreCurso());
-                System.out.println("------------------------------------------------------------------------");
-            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("ERROR!!: no existe el registro seleccionado");
+            System.out.println("------------------------------------------------------------------");
+        } catch (InputMismatchException e) {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("ERROR!!: debe ser un numero.");
+            System.out.println("------------------------------------------------------------------");
         }
     }
 
@@ -159,66 +219,92 @@ public class Matricula_Controller {
         if (matriculaServiceImplement.buscarMatriculaCurso().size() > 0) {
             ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso();
             for (int j = 0; j < listaMatriculas.size(); j++) {
-                System.out.println("| Elemento " + j + ": ");
-                System.out.println("------------------------------------------------------------------------");
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                System.out.println("|                           Elemento " + j + ":                           |");
+                System.out.println("------------------------------------------------------------------");
                 System.out.println("| DNI del alumno: " + listaMatriculas.get(j).getDNIAlumno());
                 System.out.println("| esta matriculado en: " + listaMatriculas.get(j).getNombreCurso());
-                System.out.println("------------------------------------------------------------------------");
+                System.out.println("------------------------------------------------------------------");
             }
         } else {
+            System.out.println("------------------------------------------------------------------");
             System.out.println("no hay registros para mostrar");
+            System.out.println("------------------------------------------------------------------");
         }
     }
 
     public void darDeBajaAlumno() {
         if (alumnoServiceImplement.buscarAlumno().size() <= 0) {
-            System.out.println("no hay alumnos para mostrar");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("no hay alumnos que mostrar");
+            System.out.println("primero agregue alumnos en el sistema");
+            System.out.println("------------------------------------------------------------------");
         } else {
             try {
-                System.out.println("seleccione el alumno del que quiete buscar la matricula");
+                System.out.println("seleccione el alumno que quiere dar de baja");
                 System.out.println("///////////////////////////////////////////////////////////////////");
                 ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.buscarAlumno();
 
                 for (int i = 0; i < listaAlumnos.size(); i++) {
-                    System.out.println("| Elemento " + i + ": ");
-                    System.out.println("------------------------------------------------------------------------");
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + i + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
                     System.out.println("| nombre: " + listaAlumnos.get(i).getNombres());
                     System.out.println("| apellidos: " + listaAlumnos.get(i).getApellidoPaterno() + " " + listaAlumnos.get(i).getApellidoMaterno());
                     System.out.println("| DNI: " + listaAlumnos.get(i).getDNI());
-                    System.out.println("------------------------------------------------------------------------");
+                    System.out.println("------------------------------------------------------------------");
                 }
                 System.out.println("elemento Nº ");
                 int i_alumno = sc.nextInt();
                 Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno);
                 ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
 
-                System.out.println("seleccione el curso del que quiere der de baja el alumno:");
-                System.out.println("///////////////////////////////////////////////////////////////////");
-                for (int j = 0; j < listaMatriculas.size(); j++) {
-                    System.out.println("| Elemento " + j + ": ");
-                    System.out.println("------------------------------------------------------------------------");
-                    System.out.println("| DNI del alumno: " + listaMatriculas.get(j).getDNIAlumno());
-                    System.out.println("| esta matriculado en: " + listaMatriculas.get(j).getNombreCurso());
-                    System.out.println("------------------------------------------------------------------------");
-                }
-                int i_curso = sc.nextInt();
-                Curso curso = cursoServiceImplement.buscarCurso().get(i_curso);
+                if (listaMatriculas.size() > 0) {
+                    System.out.println("seleccione el curso del que quiere der de baja el alumno:");
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    for (int j = 0; j < listaMatriculas.size(); j++) {
+                        System.out.println("///////////////////////////////////////////////////////////////////");
+                        System.out.println("|                           Elemento " + j + ":                           |");
+                        System.out.println("------------------------------------------------------------------");
+                        System.out.println("| DNI del alumno: " + listaMatriculas.get(j).getDNIAlumno());
+                        System.out.println("| esta matriculado en: " + listaMatriculas.get(j).getNombreCurso());
+                        System.out.println("------------------------------------------------------------------");
+                    }
+                    int i_curso = sc.nextInt();
+                    Curso curso = cursoServiceImplement.buscarCurso().get(i_curso);
 
-                System.out.print("¿Está seguro que desea dar de baja el alumno "
-                        + alumno.getNombres() + " "
-                        + alumno.getApellidoPaterno() + " "
-                        + alumno.getApellidoMaterno() + " con dni "
-                        + alumno.getDNI() + " del curso de "
-                        + curso.getNombreCurso() + "? (si/no): ");
+                    System.out.print("¿Está seguro que desea dar de baja el alumno "
+                            + alumno.getNombres() + " "
+                            + alumno.getApellidoPaterno() + " "
+                            + alumno.getApellidoMaterno() + " con dni "
+                            + alumno.getDNI() + " del curso de "
+                            + curso.getNombreCurso() + "? (si/no): ");
 
-                String confirmacion = sc.nextLine().toLowerCase();
-                if (confirmacion == "si" || confirmacion == "no") {
-                    matriculaServiceImplement.desvincularAlumno(alumno.getDNI(), curso.getNombreCurso());
+                    String confirmacion = sc.nextLine();
+                    if (confirmacion.equalsIgnoreCase("si") || confirmacion.equalsIgnoreCase("no")) {
+                        if (confirmacion.equalsIgnoreCase("si")) {
+                            matriculaServiceImplement.desvincularAlumno(alumno.getDNI(), curso.getNombreCurso());
+                        } else {
+                            System.out.println("Operación cancelada.");
+                        }
+                    } else {
+                        System.out.println("------------------------------------------------------------------");
+                        System.out.println("ERROR!!: opcion incorrecta. debe colocar si o no");
+                        System.out.println("------------------------------------------------------------------");
+                    }
                 } else {
-                    System.out.println("opcion incorrecta debe colocar si o no");
+                    System.out.println("--------------------------------------------------------------------");
+                    System.out.println("ERROR!!: el alumno seleccionado no esta matriculado en ningun curso");
+                    System.out.println("--------------------------------------------------------------------");
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("no existe el registro seleccionado");
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("------------------------------------------------------------------");
+            } catch (InputMismatchException e) {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("------------------------------------------------------------------");
             }
         }
     }

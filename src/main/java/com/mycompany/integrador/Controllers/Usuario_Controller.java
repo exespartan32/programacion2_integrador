@@ -8,6 +8,7 @@ import com.mycompany.integrador.Service.UsuarioServiceImplement;
 import com.mycompany.integrador.Models.Usuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -33,75 +34,120 @@ public class Usuario_Controller {
     }
 
     public void modificarDatosUsuario() {
-        System.out.println("seleccione el usuario que desea modificar:");
-        System.out.println("///////////////////////////////////////////////////////////////////");
-        try {
-            ArrayList<Usuario> listaUsuario = usuarioServiceImplement.buscarUsuario();
-            for (int i = 0; i < listaUsuario.size(); i++) {
-                System.out.println("///////////////////////////////////////////////////////////////////");
-                System.out.println("|                    Elemento " + i + ":                            |");
+        ArrayList<Usuario> listaUsuarios = usuarioServiceImplement.buscarUsuario();
+        if (listaUsuarios.size() > 0) {
+            System.out.println("seleccione el usuario que desea modificar:");
+            System.out.println("///////////////////////////////////////////////////////////////////");
+            try {
+                ArrayList<Usuario> listaUsuario = usuarioServiceImplement.buscarUsuario();
+                for (int i = 0; i < listaUsuario.size(); i++) {
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + i + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("| email " + listaUsuario.get(i).getEmail());
+                    System.out.println("| nombre de usuario " + listaUsuario.get(i).getNombreUsuario());
+                    System.out.println("| contraseña " + listaUsuario.get(i).getContrasenia());
+                    System.out.println("------------------------------------------------------------------");
+                }
+                System.out.println("elemento Nº ");
+                int i_usuario = Integer.parseInt(sc.nextLine());
+                Usuario usuario = listaUsuario.get(i_usuario);
+                int id_usuario = usuario.getIdUsuario();
+
+                //System.out.println("datos: " + usuario.toString());
+                //sc.nextLine();
+                System.out.print("Nuevo Email: ");
+                usuario.setEmail(sc.nextLine());
+                System.out.print("Nuevo Nombre de Usuario: ");
+                usuario.setNombreUsuario(sc.nextLine());
+                System.out.print("Nueva Contraseña: ");
+                usuario.setContrasenia(sc.nextLine());
+                usuario.setFechaModificacion(LocalDate.now());
+
+                usuarioServiceImplement.modificarUsuario(id_usuario, usuario);
+            } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("| email " + listaUsuario.get(i).getEmail());
-                System.out.println("| nombre de usuario " + listaUsuario.get(i).getNombreUsuario());
-                System.out.println("| contraseña " + listaUsuario.get(i).getContrasenia());
+                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("------------------------------------------------------------------");
+            } catch (InputMismatchException e) {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: debe ser un numero.");
                 System.out.println("------------------------------------------------------------------");
             }
-            System.out.println("elemento Nº ");
-            int i_usuario = Integer.parseInt(sc.nextLine());
-            Usuario usuario = listaUsuario.get(i_usuario);
-            int id_usuario = usuario.getIdUsuario();
-
-            //System.out.println("datos: " + usuario.toString());
-            //sc.nextLine();
-            System.out.print("Nuevo Email: ");
-            usuario.setEmail(sc.nextLine());
-            System.out.print("Nuevo Nombre de Usuario: ");
-            usuario.setNombreUsuario(sc.nextLine());
-            System.out.print("Nueva Contraseña: ");
-            usuario.setContrasenia(sc.nextLine());
-            usuario.setFechaModificacion(LocalDate.now());
-
-            usuarioServiceImplement.modificarUsuario(id_usuario, usuario);
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("no existe el registro seleccionado");
+        } else {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("no hay usuarios guardados en el sistema");
+            System.out.println("------------------------------------------------------------------");
         }
     }
 
     public void eliminarUsuario() {
-        System.out.println("seleccione el usuario que desea eliminar:");
-        System.out.println("///////////////////////////////////////////////////////////////////");
-        try {
-            ArrayList<Usuario> listaUsuario = usuarioServiceImplement.buscarUsuario();
-            for (int i = 0; i < listaUsuario.size(); i++) {
-                System.out.println("///////////////////////////////////////////////////////////////////");
-                System.out.println("|                    Elemento " + i + ":                            |");
+        ArrayList<Usuario> listaUsuarios = usuarioServiceImplement.buscarUsuario();
+        if (listaUsuarios.size() > 0) {
+            System.out.println("seleccione el usuario que desea eliminar:");
+            System.out.println("///////////////////////////////////////////////////////////////////");
+            try {
+                ArrayList<Usuario> listaUsuario = usuarioServiceImplement.buscarUsuario();
+                for (int i = 0; i < listaUsuario.size(); i++) {
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + i + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("| email " + listaUsuario.get(i).getEmail());
+                    System.out.println("| nombre de usuario " + listaUsuario.get(i).getNombreUsuario());
+                    System.out.println("| contraseña " + listaUsuario.get(i).getContrasenia());
+                    System.out.println("------------------------------------------------------------------");
+                }
+                System.out.println("elemento Nº ");
+                int i_usuario = sc.nextInt();
+                Usuario usuario = listaUsuario.get(i_usuario);
+                int id_usuario = usuario.getIdUsuario();
+                System.out.print("¿Está seguro que desea eliminar al usuario " + usuario.getNombreUsuario() + "? (si/no): ");
+                String confirmacion = sc.nextLine();
+                if (confirmacion.equalsIgnoreCase("si") || confirmacion.equalsIgnoreCase("no")) {
+                    if (confirmacion.equalsIgnoreCase("si")) {
+                        usuarioServiceImplement.eliminarUsuario(id_usuario);
+                    } else {
+                        System.out.println("Operación cancelada.");
+                    }
+                } else {
+                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("ERROR!!: opcion incorrecta. debe colocar si o no");
+                    System.out.println("------------------------------------------------------------------");
+                }
+            } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("| email " + listaUsuario.get(i).getEmail());
-                System.out.println("| nombre de usuario " + listaUsuario.get(i).getNombreUsuario());
-                System.out.println("| contraseña " + listaUsuario.get(i).getContrasenia());
+                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("------------------------------------------------------------------");
+            } catch (InputMismatchException e) {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: debe ser un numero.");
                 System.out.println("------------------------------------------------------------------");
             }
-            System.out.println("elemento Nº ");
-            int i_usuario = sc.nextInt();
-            Usuario usuario = listaUsuario.get(i_usuario);
-            int id_usuario = usuario.getIdUsuario();
-            usuarioServiceImplement.eliminarUsuario(id_usuario);
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("no existe el registro seleccionado");
+        } else {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("no hay usuarios guardados en el sistema");
+            System.out.println("------------------------------------------------------------------");
         }
-
     }
 
     public void verTodosLosUsuario() {
         ArrayList<Usuario> listaUsuarios = usuarioServiceImplement.buscarUsuario();
-        System.out.println("datos encontrados:");
-        for (int j = 0; j < listaUsuarios.size(); j++) {
+        if (listaUsuarios.size() > 0) {
             System.out.println("///////////////////////////////////////////////////////////////////");
-            System.out.println("|                    Elemento " + j + ":                            |");
+            System.out.println("|                         datos encontrados                       |");
             System.out.println("------------------------------------------------------------------");
-            System.out.println("| email " + listaUsuarios.get(j).getEmail());
-            System.out.println("| nombre de usuario " + listaUsuarios.get(j).getNombreUsuario());
-            System.out.println("| contraseña " + listaUsuarios.get(j).getContrasenia());
+            for (int j = 0; j < listaUsuarios.size(); j++) {
+                System.out.println("///////////////////////////////////////////////////////////////////");
+                System.out.println("|                           Elemento " + j + ":                           |");
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("| email " + listaUsuarios.get(j).getEmail());
+                System.out.println("| nombre de usuario " + listaUsuarios.get(j).getNombreUsuario());
+                System.out.println("| contraseña " + listaUsuarios.get(j).getContrasenia());
+                System.out.println("------------------------------------------------------------------");
+            }
+        } else {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("no hay usuarios guardados en el sistema");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -119,28 +165,41 @@ public class Usuario_Controller {
             System.out.println("| contraseña " + usuario.getContrasenia());
             System.out.println("------------------------------------------------------------------");
         } catch (NullPointerException e) {
-            System.out.println("no existe un registro con ese id");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("no existe ningun usuario con ese id");
+            System.out.println("------------------------------------------------------------------");
         }
     }
 
     public void buscarUsuarioPorNombreUsuario() {
-        System.out.println("ingrese el nombre del usuario que desea buscar");
-        String nombreUsuario = sc.nextLine();
-
-        try {
-            Usuario usuario = usuarioServiceImplement.buscarUsuario(nombreUsuario);
-            if (usuario.getEmail() != null) {
-                System.out.println("///////////////////////////////////////////////////////////////////");
-                System.out.println("|                         datos encontrados                       |");
+        ArrayList<Usuario> listaUsuarios = usuarioServiceImplement.buscarUsuario();
+        if (listaUsuarios.size() > 0) {
+            System.out.println("ingrese el nombre del usuario que desea buscar");
+            String nombreUsuario = sc.nextLine();
+            try {
+                Usuario usuario = usuarioServiceImplement.buscarUsuario(nombreUsuario);
+                if (usuario.getEmail() != null) {
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                         datos encontrados                       |");
+                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("| email " + usuario.getEmail());
+                    System.out.println("| nombre de usuario " + usuario.getNombreUsuario());
+                    System.out.println("| contraseña " + usuario.getContrasenia());
+                    System.out.println("------------------------------------------------------------------");
+                }
+            } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("| email " + usuario.getEmail());
-                System.out.println("| nombre de usuario " + usuario.getNombreUsuario());
-                System.out.println("| contraseña " + usuario.getContrasenia());
+                System.out.println("ERROR!!: no existe el registro seleccionado");
                 System.out.println("------------------------------------------------------------------");
-
+            } catch (InputMismatchException e) {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("------------------------------------------------------------------");
             }
-        } catch (NullPointerException e) {
-            System.out.println("no existe un registro con ese id");
+        } else {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("no hay usuarios guardados en el sistema");
+            System.out.println("------------------------------------------------------------------");
         }
 
     }
