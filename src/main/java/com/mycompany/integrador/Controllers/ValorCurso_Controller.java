@@ -27,8 +27,9 @@ public class ValorCurso_Controller {
     public void nuevoValorCurso() {
         ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
         if (listaCursos.size() > 0) {
-            System.out.println("seleccione el curso del que quiere asignar el precio:");
-            System.out.println("///////////////////////////////////////////////////////////////////");
+            System.out.println("__________________________________________________________________________________________________");
+            System.out.println("                           seleccione el curso del que quiere asignar el precio:                  ");
+            System.out.println("__________________________________________________________________________________________________");
             for (int i = 0; i < listaCursos.size(); i++) {
                 System.out.println("///////////////////////////////////////////////////////////////////");
                 System.out.println("|                           Elemento " + i + ":                           |");
@@ -52,13 +53,13 @@ public class ValorCurso_Controller {
                 valorCursoServiceImplement.asignarPrecio(valorCurso);
             } catch (NumberFormatException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("Error: el precio debe ser un número.");
+                System.out.println("                   Error: el precio debe ser un número.           ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay cursos que mostrar");
-            System.out.println("primero agregue cursos al sistema");
+            System.out.println("                     no hay cursos que mostrar                    ");
+            System.out.println("                 primero agregue cursos al sistema                ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -78,13 +79,13 @@ public class ValorCurso_Controller {
                 System.out.println("-----------------------------------------------------------");
             } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("No se encontro ningun curso con id " + id);
+                System.out.println("          No se encontro ningun curso con id " + id);
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay precios de cursos que mostrar");
-            System.out.println("primero agregue los precios al sistema");
+            System.out.println("               no hay precios de cursos que mostrar               ");
+            System.out.println("              primero agregue los precios al sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -102,15 +103,16 @@ public class ValorCurso_Controller {
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay precios de cursos que mostrar");
-            System.out.println("primero agregue los precios al sistema");
+            System.out.println("               no hay precios de cursos que mostrar               ");
+            System.out.println("              primero agregue los precios al sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
     }
 
     public void buscarPrecioDeCurso() {
-        System.out.println("seleccione el curso del que quiere ver el precio:");
-        System.out.println("///////////////////////////////////////////////////////////////////");
+        System.out.println("__________________________________________________________________________________________________");
+        System.out.println("                            seleccione el curso del que quiere ver el precio:                     ");
+        System.out.println("__________________________________________________________________________________________________");
         if (valorCursoServiceImplement.buscarValorCursos().size() > 0) {
             try {
                 ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
@@ -129,13 +131,13 @@ public class ValorCurso_Controller {
                 System.out.println(valorCurso.toString());
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("             ERROR!!: no existe el registro seleccionado          ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay precios de cursos que mostrar");
-            System.out.println("primero agregue los precios al sistema");
+            System.out.println("               no hay precios de cursos que mostrar               ");
+            System.out.println("              primero agregue los precios al sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -143,8 +145,9 @@ public class ValorCurso_Controller {
     public void modificarPrecio() {
         if (valorCursoServiceImplement.buscarValorCursos().size() > 0) {
             try {
-                System.out.println("seleccione el curso del que quiere modificar el precio:");
-                System.out.println("///////////////////////////////////////////////////////////////////");
+                System.out.println("__________________________________________________________________________________________________");
+                System.out.println("                     seleccione el curso del que quiere modificar el precio:                      ");
+                System.out.println("__________________________________________________________________________________________________");
                 ArrayList<ValorCurso> listaPreciosCursos = valorCursoServiceImplement.buscarValorCursos();
                 for (int i = 0; i < listaPreciosCursos.size(); i++) {
                     System.out.println("///////////////////////////////////////////////////////////////////");
@@ -163,17 +166,17 @@ public class ValorCurso_Controller {
                 valorCurso.setFechaModificacion(LocalDate.now());
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("             ERROR!!: no existe el registro seleccionado          ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                  ERROR!!: debe ser un numero.                    ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay precios de cursos que mostrar");
-            System.out.println("primero agregue los precios al sistema");
+            System.out.println("               no hay precios de cursos que mostrar               ");
+            System.out.println("              primero agregue los precios al sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -190,8 +193,8 @@ public class ValorCurso_Controller {
             System.out.println("--------------------------------------------------------------");
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay precios de cursos que mostrar");
-            System.out.println("primero agregue los precios al sistema");
+            System.out.println("               no hay precios de cursos que mostrar               ");
+            System.out.println("              primero agregue los precios al sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -199,8 +202,9 @@ public class ValorCurso_Controller {
     public void eliminarPrecioDeUnCurso() {
         if (valorCursoServiceImplement.buscarValorCursos().size() > 0) {
             try {
-                System.out.println("seleccione el curso del que quiere eliminar el precio:");
-                System.out.println("///////////////////////////////////////////////////////////////////");
+                System.out.println("__________________________________________________________________________________________________");
+                System.out.println("                      seleccione el curso del que quiere eliminar el precio:                      ");
+                System.out.println("__________________________________________________________________________________________________");
                 ArrayList<ValorCurso> listaPreciosCursos = valorCursoServiceImplement.buscarValorCursos();
                 for (int i = 0; i < listaPreciosCursos.size(); i++) {
                     System.out.println("///////////////////////////////////////////////////////////////////");
@@ -223,23 +227,23 @@ public class ValorCurso_Controller {
                     }
                 } else {
                     System.out.println("-------------------------------------------------------------------");
-                    System.out.println("ERROR!!: opcion incorrecta. debe colocar si o no");
+                    System.out.println("           ERROR!!: opcion incorrecta. debe colocar si o no         ");
                     System.out.println("-------------------------------------------------------------------");
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("             ERROR!!: no existe el registro seleccionado           ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                     ERROR!!: debe ser un numero.                 ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
-            System.out.println("-------------------------------------------------------------------");
-            System.out.println("no hay precios de cursos que mostrar");
-            System.out.println("primero agregue los precios al sistema");
-            System.out.println("-------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("               no hay precios de cursos que mostrar               ");
+            System.out.println("              primero agregue los precios al sistema              ");
+            System.out.println("------------------------------------------------------------------");
         }
     }
 

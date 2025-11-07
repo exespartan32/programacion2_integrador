@@ -36,9 +36,10 @@ public class Usuario_Controller {
     public void modificarDatosUsuario() {
         ArrayList<Usuario> listaUsuarios = usuarioServiceImplement.buscarUsuario();
         if (listaUsuarios.size() > 0) {
-            System.out.println("seleccione el usuario que desea modificar:");
-            System.out.println("///////////////////////////////////////////////////////////////////");
             try {
+                System.out.println("________________________________________________________________________________");
+                System.out.println("                    seleccione el usuario que desea modificar:                  ");
+                System.out.println("________________________________________________________________________________");
                 ArrayList<Usuario> listaUsuario = usuarioServiceImplement.buscarUsuario();
                 for (int i = 0; i < listaUsuario.size(); i++) {
                     System.out.println("///////////////////////////////////////////////////////////////////");
@@ -53,9 +54,6 @@ public class Usuario_Controller {
                 int i_usuario = Integer.parseInt(sc.nextLine());
                 Usuario usuario = listaUsuario.get(i_usuario);
                 int id_usuario = usuario.getIdUsuario();
-
-                //System.out.println("datos: " + usuario.toString());
-                //sc.nextLine();
                 System.out.print("Nuevo Email: ");
                 usuario.setEmail(sc.nextLine());
                 System.out.print("Nuevo Nombre de Usuario: ");
@@ -63,20 +61,19 @@ public class Usuario_Controller {
                 System.out.print("Nueva Contraseña: ");
                 usuario.setContrasenia(sc.nextLine());
                 usuario.setFechaModificacion(LocalDate.now());
-
                 usuarioServiceImplement.modificarUsuario(id_usuario, usuario);
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("               ERROR!!: no existe el registro seleccionado        ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                ERROR!!: debe ser un numero.                      ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay usuarios guardados en el sistema");
+            System.out.println("                 no hay usuarios guardados en el sistema          ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -84,8 +81,9 @@ public class Usuario_Controller {
     public void eliminarUsuario() {
         ArrayList<Usuario> listaUsuarios = usuarioServiceImplement.buscarUsuario();
         if (listaUsuarios.size() > 0) {
-            System.out.println("seleccione el usuario que desea eliminar:");
-            System.out.println("///////////////////////////////////////////////////////////////////");
+            System.out.println("________________________________________________________________________________");
+            System.out.println("                      seleccione el usuario que desea eliminar:                 ");
+            System.out.println("________________________________________________________________________________");
             try {
                 ArrayList<Usuario> listaUsuario = usuarioServiceImplement.buscarUsuario();
                 for (int i = 0; i < listaUsuario.size(); i++) {
@@ -116,16 +114,17 @@ public class Usuario_Controller {
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("               ERROR!!: no existe el registro seleccionado        ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                ERROR!!: debe ser un numero.                      ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay usuarios guardados en el sistema");
+            System.out.println("               no hay usuarios guardados en el sistema            ");
+            System.out.println("                 primero agregue usuarios al sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -147,7 +146,7 @@ public class Usuario_Controller {
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay usuarios guardados en el sistema");
+            System.out.println("               no hay usuarios guardados en el sistema            ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -166,7 +165,7 @@ public class Usuario_Controller {
             System.out.println("------------------------------------------------------------------");
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no existe ningun usuario con ese id");
+            System.out.println("                 no existe ningun usuario con ese id              ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -189,16 +188,16 @@ public class Usuario_Controller {
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("              ERROR!!: no existe el registro seleccionado         ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                    ERROR!!: debe ser un numero.                  ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay usuarios guardados en el sistema");
+            System.out.println("               no hay usuarios guardados en el sistema            ");
             System.out.println("------------------------------------------------------------------");
         }
 

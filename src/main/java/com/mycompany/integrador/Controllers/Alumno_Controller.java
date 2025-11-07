@@ -43,7 +43,7 @@ public class Alumno_Controller {
             //System.out.println("¡Alumno " + nombres + " guardado con éxito!");
         } catch (NumberFormatException e) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("Error: La edad debe ser un número.");
+            System.out.println("                Error: La edad debe ser un número.                ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -64,8 +64,8 @@ public class Alumno_Controller {
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay alumnos que mostrar");
-            System.out.println("primero agregue alumnos en el sistema");
+            System.out.println("                     no hay alumnos que mostrar                   ");
+            System.out.println("               primero agregue alumnos en el sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
 
@@ -89,13 +89,13 @@ public class Alumno_Controller {
                 System.out.println("------------------------------------------------------------------");
             } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("No se encontro ningún alumno con el DNI: " + dni);
+                System.out.println("                No se encontro ningún alumno con el DNI: " + dni + "       ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay alumnos que mostrar");
-            System.out.println("primero agregue alumnos en el sistema");
+            System.out.println("                     no hay alumnos que mostrar                   ");
+            System.out.println("               primero agregue alumnos en el sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
 
@@ -105,7 +105,9 @@ public class Alumno_Controller {
         ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.buscarAlumno();
         if (listaAlumnos.size() > 0) {
             try {
-                System.out.println("seleccione el alumno que desea modificar");
+                System.out.println("_________________________________________________________________________");
+                System.out.println("                  seleccione el alumno que desea modificar               ");
+                System.out.println("_________________________________________________________________________");
                 for (int j = 0; j < listaAlumnos.size(); j++) {
                     System.out.println("///////////////////////////////////////////////////////////////////");
                     System.out.println("|                           Elemento " + j + ":                           |");
@@ -148,17 +150,17 @@ public class Alumno_Controller {
                 //System.out.println("¡Alumno modificado con éxito!");
             } catch (NumberFormatException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: La edad debe ser números.");
+                System.out.println("                  ERROR!!: La edad debe ser números.              ");
                 System.out.println("------------------------------------------------------------------");
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("              ERROR!!: no existe el registro seleccionado         ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay alumnos que mostrar");
-            System.out.println("primero agregue alumnos en el sistema");
+            System.out.println("                     no hay alumnos que mostrar                   ");
+            System.out.println("               primero agregue alumnos en el sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -167,7 +169,9 @@ public class Alumno_Controller {
         ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.buscarAlumno();
         if (listaAlumnos.size() > 0) {
             try {
-                System.out.println("seleccione el alumno que desea modificar");
+                System.out.println("_________________________________________________________________________");
+                System.out.println("                seleccione el alumno que desea modificar                 ");
+                System.out.println("_________________________________________________________________________");
                 for (int j = 0; j < listaAlumnos.size(); j++) {
                     System.out.println("///////////////////////////////////////////////////////////////////");
                     System.out.println("|                           Elemento " + j + ":                           |");
@@ -179,8 +183,8 @@ public class Alumno_Controller {
                     System.out.println("| mes de ingreso " + listaAlumnos.get(j).getMesIngreso());
                     System.out.println("------------------------------------------------------------------");
                 }
-                System.out.print("elemento Nº ");
                 try {
+                    System.out.print("Seleccionar el Elemento Nº ");
                     int i_alumno = sc.nextInt();
                     String dniAlumno = listaAlumnos.get(i_alumno).getDNI();
                     sc.nextLine();
@@ -195,24 +199,24 @@ public class Alumno_Controller {
                         }
                     } else {
                         System.out.println("------------------------------------------------------------------");
-                        System.out.println("ERROR!!: opcion incorrecta. debe colocar si o no");
+                        System.out.println("         ERROR!!: opcion incorrecta. debe colocar si o no         ");
                         System.out.println("------------------------------------------------------------------");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("------------------------------------------------------------------");
-                    System.out.println("ERROR!!: debe ser un numero.");
+                    System.out.println("                  ERROR!!: debe ser un numero.                     ");
                     System.out.println("------------------------------------------------------------------");
                 }
 
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("            ERROR!!: no existe el registro seleccionado           ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay alumnos que mostrar");
-            System.out.println("primero agregue alumnos en el sistema");
+            System.out.println("                     no hay alumnos que mostrar                   ");
+            System.out.println("               primero agregue alumnos en el sistema              ");
             System.out.println("------------------------------------------------------------------");
         }
     }

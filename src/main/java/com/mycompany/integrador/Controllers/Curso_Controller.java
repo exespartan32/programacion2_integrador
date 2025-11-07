@@ -35,11 +35,11 @@ public class Curso_Controller {
             //System.out.println("¡Curso " + nombreCurso + " guardado con éxito!");
         } catch (NumberFormatException e) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("ERROR!!: La duración debe ser un número.");
+            System.out.println("                ERROR!!: La duración debe ser un número.          ");
             System.out.println("------------------------------------------------------------------");
         } catch (InputMismatchException e) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("ERROR!!: La duracion debe ser un numero.");
+            System.out.println("                ERROR!!: La duracion debe ser un numero.           ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -58,8 +58,8 @@ public class Curso_Controller {
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay cursos que mostrar");
-            System.out.println("primero agregue cursos al sistema");
+            System.out.println("                     no hay cursos que mostrar                    ");
+            System.out.println("                 primero agregue cursos al sistema                ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -80,13 +80,13 @@ public class Curso_Controller {
                 System.out.println("------------------------------------------------------------------");
             } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("no se encontro el curso de " + nombreCurso + " en base de datos");
+                System.out.println("     no se encontro el curso de " + nombreCurso + " en base de datos   ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay cursos que mostrar");
-            System.out.println("primero agregue cursos al sistema");
+            System.out.println("                     no hay cursos que mostrar                    ");
+            System.out.println("                 primero agregue cursos al sistema                ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -95,8 +95,9 @@ public class Curso_Controller {
         ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
         if (listaCursos.size() > 0) {
             try {
-                System.out.println("seleccione el curso que desea modificar");
-                System.out.println("////////////////////////////////////////////");
+                System.out.println("_________________________________________________________________________");
+                System.out.println("                       seleccione el curso que desea modificar            ");
+                System.out.println("_________________________________________________________________________");
                 for (int i = 0; i < listaCursos.size(); i++) {
                     System.out.println("///////////////////////////////////////////////////////////////////");
                     System.out.println("|                           Elemento " + i + ":                           |");
@@ -120,17 +121,17 @@ public class Curso_Controller {
                 //System.out.println("¡Curso modificado con éxito!");
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("             ERROR!!: no existe el registro seleccionado          ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                   ERROR!!: debe ser un numero.                   ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay cursos que mostrar");
-            System.out.println("primero agregue cursos al sistema");
+            System.out.println("                     no hay cursos que mostrar                    ");
+            System.out.println("                 primero agregue cursos al sistema                ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -139,8 +140,9 @@ public class Curso_Controller {
         ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
         if (listaCursos.size() > 0) {
             try {
-                System.out.println("seleccione el curso que desea eliminar");
-                System.out.println("////////////////////////////////////////////");
+                System.out.println("_________________________________________________________________________");
+                System.out.println("                  seleccione el curso que desea eliminar                 ");
+                System.out.println("_________________________________________________________________________");
                 for (int i = 0; i < listaCursos.size(); i++) {
                     System.out.println("///////////////////////////////////////////////////////////////////");
                     System.out.println("|                           Elemento " + i + ":                           |");
@@ -166,27 +168,27 @@ public class Curso_Controller {
                         }
                     } else {
                         System.out.println("------------------------------------------------------------------");
-                        System.out.println("ERROR!!: opcion incorrecta. debe colocar si o no");
+                        System.out.println("           ERROR!!: opcion incorrecta. debe colocar si o no       ");
                         System.out.println("------------------------------------------------------------------");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("------------------------------------------------------------------");
-                    System.out.println("ERROR!!: debe ser un numero.");
+                    System.out.println("                    ERROR!!: debe ser un numero.                  ");
                     System.out.println("------------------------------------------------------------------");
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("               ERROR!!: no existe el registro seleccionado         ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                   ERROR!!: debe ser un numero.                   ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay cursos que mostrar");
-            System.out.println("primero agregue cursos al sistema");
+            System.out.println("                     no hay cursos que mostrar                    ");
+            System.out.println("                 primero agregue cursos al sistema                ");
             System.out.println("------------------------------------------------------------------");
         }
     }

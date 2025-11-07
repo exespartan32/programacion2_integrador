@@ -45,7 +45,7 @@ public class Profesor_Controller {
             System.out.println("¡Profesor " + nombres + " guardado con éxito!");
         } catch (NumberFormatException e) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("Error: La edad y el sueldo deben ser números.");
+            System.out.println("           Error: La edad y el sueldo deben ser números.          ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -66,8 +66,8 @@ public class Profesor_Controller {
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay profesores que mostrar");
-            System.out.println("primero agregue profesores en el sistema");
+            System.out.println("                   no hay profesores que mostrar                  ");
+            System.out.println("             primero agregue profesores en el sistema             ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -90,13 +90,13 @@ public class Profesor_Controller {
                 System.out.println("-------------------------------------------------");
             } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("No se encontró ningún profesor con el DNI: " + dni);
+                System.out.println("       No se encontró ningún profesor con el DNI: " + dni + "            ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay profesores que mostrar");
-            System.out.println("primero agregue profesores en el sistema");
+            System.out.println("                   no hay profesores que mostrar                  ");
+            System.out.println("             primero agregue profesores en el sistema             ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -149,17 +149,17 @@ public class Profesor_Controller {
                 //System.out.println("¡Profesor modificado con éxito!");
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("               ERROR!!: no existe el registro seleccionado        ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                   ERROR!!: debe ser un numero.                   ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay profesores que mostrar");
-            System.out.println("primero agregue profesores en el sistema");
+            System.out.println("                   no hay profesores que mostrar                  ");
+            System.out.println("             primero agregue profesores en el sistema             ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -195,22 +195,22 @@ public class Profesor_Controller {
                     }
                 } else {
                     System.out.println("------------------------------------------------------------------");
-                    System.out.println("ERROR!!: opcion incorrecta. debe colocar si o no");
+                    System.out.println("          ERROR!!: opcion incorrecta. debe colocar si o no        ");
                     System.out.println("------------------------------------------------------------------");
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: no existe el registro seleccionado");
+                System.out.println("               ERROR!!: no existe el registro seleccionado        ");
                 System.out.println("------------------------------------------------------------------");
             } catch (InputMismatchException e) {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("ERROR!!: debe ser un numero.");
+                System.out.println("                   ERROR!!: debe ser un numero.                   ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("no hay profesores que mostrar");
-            System.out.println("primero agregue profesores en el sistema");
+            System.out.println("                   no hay profesores que mostrar                  ");
+            System.out.println("             primero agregue profesores en el sistema             ");
             System.out.println("------------------------------------------------------------------");
         }
     }
