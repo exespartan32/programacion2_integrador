@@ -181,7 +181,7 @@ public class Profesor_Controller {
                     System.out.println("| Sueldo: " + listaProfesores.get(j).getSueldo());
                     System.out.println("------------------------------------------------------------------");
                 }
-                System.out.print("elemento Nº ");
+                System.out.print("Seleccionar el elemento Nº ");
                 int i_profesor = sc.nextInt();
                 sc.nextLine();
                 String dniProfesor = listaProfesores.get(i_profesor).getDNI();

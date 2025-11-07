@@ -17,7 +17,7 @@ public interface ValorCursoService {
 
     public void modificarPrecio(int id, ValorCurso valorCurso);
 
-    public void eliminarPrecio(int id);
+    public void eliminarPrecio(String nombreCurso);
 
     public ArrayList<ValorCurso> buscarValorCursos();
 

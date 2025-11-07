@@ -50,7 +50,7 @@ public class Usuario_Controller {
                     System.out.println("| contraseña " + listaUsuario.get(i).getContrasenia());
                     System.out.println("------------------------------------------------------------------");
                 }
-                System.out.println("elemento Nº ");
+                System.out.print("Seleccionar el elemento Nº ");
                 int i_usuario = Integer.parseInt(sc.nextLine());
                 Usuario usuario = listaUsuario.get(i_usuario);
                 int id_usuario = usuario.getIdUsuario();
@@ -95,10 +95,11 @@ public class Usuario_Controller {
                     System.out.println("| contraseña " + listaUsuario.get(i).getContrasenia());
                     System.out.println("------------------------------------------------------------------");
                 }
-                System.out.println("elemento Nº ");
+                System.out.print("Seleccionbar el elemento Nº ");
                 int i_usuario = sc.nextInt();
                 Usuario usuario = listaUsuario.get(i_usuario);
                 int id_usuario = usuario.getIdUsuario();
+                sc.nextLine();
                 System.out.print("¿Está seguro que desea eliminar al usuario " + usuario.getNombreUsuario() + "? (si/no): ");
                 String confirmacion = sc.nextLine();
                 if (confirmacion.equalsIgnoreCase("si") || confirmacion.equalsIgnoreCase("no")) {
@@ -152,9 +153,9 @@ public class Usuario_Controller {
     }
 
     public void buscarUsuarioPorId() {
-        System.out.println("ingrese el id del usuario que desea buscar");
-        int id_usuario = sc.nextInt();
         try {
+            System.out.print("ingrese el id del usuario que desea buscar");
+            int id_usuario = sc.nextInt();
             Usuario usuario = usuarioServiceImplement.buscarUsuario(id_usuario);
             System.out.println("///////////////////////////////////////////////////////////////////");
             System.out.println("|                         datos encontrados                       |");
@@ -167,13 +168,17 @@ public class Usuario_Controller {
             System.out.println("------------------------------------------------------------------");
             System.out.println("                 no existe ningun usuario con ese id              ");
             System.out.println("------------------------------------------------------------------");
+        } catch (InputMismatchException e) {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("                   ERROR!!: debe ser un numero.                   ");
+            System.out.println("------------------------------------------------------------------");
         }
     }
 
     public void buscarUsuarioPorNombreUsuario() {
         ArrayList<Usuario> listaUsuarios = usuarioServiceImplement.buscarUsuario();
         if (listaUsuarios.size() > 0) {
-            System.out.println("ingrese el nombre del usuario que desea buscar");
+            System.out.print("ingrese el nombre del usuario que desea buscar: ");
             String nombreUsuario = sc.nextLine();
             try {
                 Usuario usuario = usuarioServiceImplement.buscarUsuario(nombreUsuario);

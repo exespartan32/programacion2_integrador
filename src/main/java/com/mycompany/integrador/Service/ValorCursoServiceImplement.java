@@ -33,25 +33,26 @@ public class ValorCursoServiceImplement implements ValorCursoService {
         //System.out.println("nomber del curso: " + valorCurso.getNombreCurso());
         //System.out.println("resgistro buscado: " + buscarValorCursos(valorCurso.getNombreCurso()));
 
-        if (buscarValorCursos(valorCurso.getNombreCurso()).getNombreCurso() == null) {
-            String sql = "INSERT INTO ValorCurso (nombreCurso, precioCurso, fechaCreacion)  VALUES (?,?,?)";
-            Connection connectC = conn.conectarDB();
-            try {
-                PreparedStatement ps = connectC.prepareStatement(sql);
-                ps.setString(1, valorCurso.getNombreCurso());
-                ps.setInt(2, valorCurso.getPrecioCurso());
-                DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
-                String fechaString = LocalDate.now().format(formatterEs);
-                ps.setString(3, fechaString);
-                ps.execute();
-                System.out.println("precio asignado al curso de " + valorCurso.getNombreCurso());
-            } catch (SQLException e) {
-                System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("este curso ya tiene un precio asignado");
+        String sql = "INSERT INTO ValorCurso (nombreCurso, precioCurso, fechaCreacion)  VALUES (?,?,?)";
+        Connection connectC = conn.conectarDB();
+        try {
+            PreparedStatement ps = connectC.prepareStatement(sql);
+            ps.setString(1, valorCurso.getNombreCurso());
+            ps.setInt(2, valorCurso.getPrecioCurso());
+            DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
+            String fechaString = LocalDate.now().format(formatterEs);
+            ps.setString(3, fechaString);
+            ps.execute();
+            System.out.println("precio asignado al curso de " + valorCurso.getNombreCurso());
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+            e.printStackTrace();
         }
+
+//        if (buscarValorCursos(valorCurso.getNombreCurso()).getNombreCurso() == null) {
+//        } else {
+//            System.out.println("este curso ya tiene un precio asignado");
+//        }
     }
 
     @Override
@@ -89,20 +90,20 @@ public class ValorCursoServiceImplement implements ValorCursoService {
     }
 
     @Override
-    public void eliminarPrecio(int id) {
-        if (buscarValorCursos(id) != null) {
-            String sql = "DELETE FROM Curso WHERE nombreCurso = ?";
+    public void eliminarPrecio(String nombreCurso) {
+        if (buscarValorCursos(nombreCurso) != null) {
+            String sql = "DELETE FROM ValorCurso WHERE nombreCurso = ?";
             Connection connect = conn.conectarDB();
+            
             try {
                 PreparedStatement ps = connect.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery();
-
+                ps.setString(1, nombreCurso);
+                habilitarClavesForaneas(connect);
                 int filasAfectadas = ps.executeUpdate();
-
                 if (filasAfectadas > 0) {
                     System.out.println("precio eliminado correctamente");
                 } else {
-                    System.out.println("No se encontro un el registro con id " + id);
+                    System.out.println("No se encontro un el registro");
                 }
             } catch (SQLException e) {
                 System.out.println("error al ejecutar la consulta" + e.getMessage());
@@ -111,7 +112,6 @@ public class ValorCursoServiceImplement implements ValorCursoService {
         } else {
             System.out.println("no se encontro el registro seleccionado");
         }
-
     }
 
     @Override

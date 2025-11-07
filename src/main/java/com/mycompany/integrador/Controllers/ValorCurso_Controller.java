@@ -25,41 +25,52 @@ public class ValorCurso_Controller {
     Scanner sc = new Scanner(System.in);
 
     public void nuevoValorCurso() {
-        ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
-        if (listaCursos.size() > 0) {
-            System.out.println("__________________________________________________________________________________________________");
-            System.out.println("                           seleccione el curso del que quiere asignar el precio:                  ");
-            System.out.println("__________________________________________________________________________________________________");
-            for (int i = 0; i < listaCursos.size(); i++) {
-                System.out.println("///////////////////////////////////////////////////////////////////");
-                System.out.println("|                           Elemento " + i + ":                           |");
-                System.out.println("------------------------------------------------------------------");
-                System.out.println("| curso: " + listaCursos.get(i).getNombreCurso());
-                System.out.println("| meses de duracion: " + listaCursos.get(i).getMesesDuracion());
-                System.out.println("| DNI del profesor a cargo: " + listaCursos.get(i).getDniProfesor());
-                System.out.println("-----------------------------------------------------------------");
-            }
-            int i_curso = sc.nextInt();
-            Curso curso = listaCursos.get(i_curso - 1);
-            System.out.println("ingrese el precio del curso");
-            int precio = sc.nextInt();
-            try {
+        try {
+            ArrayList<Curso> listaCursos = cursoServiceImplement.buscarCurso();
+            if (listaCursos.size() > 0) {
+                System.out.println("__________________________________________________________________________________________________");
+                System.out.println("                           seleccione el curso del que quiere asignar el precio:                  ");
+                System.out.println("__________________________________________________________________________________________________");
+                for (int i = 0; i < listaCursos.size(); i++) {
+                    System.out.println("///////////////////////////////////////////////////////////////////");
+                    System.out.println("|                           Elemento " + i + ":                           |");
+                    System.out.println("------------------------------------------------------------------");
+                    System.out.println("| curso: " + listaCursos.get(i).getNombreCurso());
+                    System.out.println("| meses de duracion: " + listaCursos.get(i).getMesesDuracion());
+                    System.out.println("| DNI del profesor a cargo: " + listaCursos.get(i).getDniProfesor());
+                    System.out.println("-----------------------------------------------------------------");
+                }
+                System.out.print("Seleccionar el elemento Nº ");
+                int i_curso = sc.nextInt();
+                Curso curso = listaCursos.get(i_curso);
+                System.out.println("ingrese el precio del curso");
+                int precio = sc.nextInt();
                 ValorCurso valorCurso = new ValorCurso(
                         listaCursos.get(i_curso).getNombreCurso(),
                         precio,
                         LocalDate.now(),
                         null,
                         null);
-                valorCursoServiceImplement.asignarPrecio(valorCurso);
-            } catch (NumberFormatException e) {
+                ValorCurso valorCursoBusqueda = valorCursoServiceImplement.buscarValorCursos(listaCursos.get(i_curso).getNombreCurso());
+                //System.out.println("data: " + valorCursoBusqueda.toString());
+                if (valorCursoBusqueda.getNombreCurso() == null) {
+                    valorCursoServiceImplement.asignarPrecio(valorCurso);
+                } else {
+                    System.out.println("El curso ya tiene un precio asignado");
+                }
+            } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("                   Error: el precio debe ser un número.           ");
+                System.out.println("                     no hay cursos que mostrar                    ");
+                System.out.println("                 primero agregue cursos al sistema                ");
                 System.out.println("------------------------------------------------------------------");
             }
-        } else {
+        } catch (NumberFormatException e) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("                     no hay cursos que mostrar                    ");
-            System.out.println("                 primero agregue cursos al sistema                ");
+            System.out.println("                   Error: el precio debe ser un número.           ");
+            System.out.println("------------------------------------------------------------------");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("           ERROR!!: no existe el registro seleccionado             ");
             System.out.println("------------------------------------------------------------------");
         }
     }
@@ -125,13 +136,17 @@ public class ValorCurso_Controller {
                     System.out.println("| DNI del profesor a cargo: " + listaCursos.get(i).getDniProfesor());
                     System.out.println("------------------------------------------------------------------");
                 }
-                System.out.println("elemento Nº ");
+                System.out.print("Seleccionar el elemento Nº ");
                 int i_curso = sc.nextInt();
                 ValorCurso valorCurso = valorCursoServiceImplement.buscarValorCursos(listaCursos.get(i_curso).getNombreCurso());
                 System.out.println(valorCurso.toString());
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("             ERROR!!: no existe el registro seleccionado          ");
+                System.out.println("------------------------------------------------------------------");
+            } catch (InputMismatchException e) {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("                  ERROR!!: debe ser un numero.                    ");
                 System.out.println("------------------------------------------------------------------");
             }
         } else {
@@ -157,13 +172,18 @@ public class ValorCurso_Controller {
                     System.out.println("| precio del curso: " + listaPreciosCursos.get(i).getPrecioCurso());
                     System.out.println("-------------------------------------------------------------------");
                 }
-                System.out.println("elemento Nº ");
+                System.out.print("elemento Nº ");
                 int i_curso = sc.nextInt();
                 ValorCurso valorCurso = listaPreciosCursos.get(i_curso);
-                System.out.println("indique el nuevo precio del curso");
+
+                System.out.print("indique el nuevo precio del curso: ");
                 int precioNuevo = sc.nextInt();
+
                 valorCurso.setPrecioCurso(precioNuevo);
                 valorCurso.setFechaModificacion(LocalDate.now());
+
+                valorCursoServiceImplement.modificarPrecio(valorCurso.getIdValorCurso(), valorCurso);
+
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("------------------------------------------------------------------");
                 System.out.println("             ERROR!!: no existe el registro seleccionado          ");
@@ -182,7 +202,8 @@ public class ValorCurso_Controller {
     }
 
     public void buscarPrecioPorCurso() {
-        System.out.println("ingrese el nombre del curso que quiere buscar");
+        //sc.nextLine();
+        System.out.print("ingrese el nombre del curso que quiere buscar: ");
         String nombreCurso = sc.nextLine();
         if (valorCursoServiceImplement.buscarValorCursos().size() > 0) {
             System.out.println("//////////////////////////////////////////////////////////////");
@@ -214,14 +235,15 @@ public class ValorCurso_Controller {
                     System.out.println("| precio del curso: " + listaPreciosCursos.get(i).getPrecioCurso());
                     System.out.println("-------------------------------------------------------------------");
                 }
-                System.out.println("elemento Nº ");
+                System.out.print("Seleccionar el elemento Nº ");
                 int i_curso = sc.nextInt();
-
+                sc.nextLine();
+                String nombreCurso = listaPreciosCursos.get(i_curso).getNombreCurso();
                 System.out.print("¿Está seguro que desea eliminar el precio del curso de " + listaPreciosCursos.get(i_curso).getNombreCurso() + "? (si/no): ");
                 String confirmacion = sc.nextLine();
                 if (confirmacion.equalsIgnoreCase("si") || confirmacion.equalsIgnoreCase("no")) {
                     if (confirmacion.equalsIgnoreCase("si")) {
-                        valorCursoServiceImplement.eliminarPrecio(i_curso);
+                        valorCursoServiceImplement.eliminarPrecio(nombreCurso);
                     } else {
                         System.out.println("Operación cancelada.");
                     }

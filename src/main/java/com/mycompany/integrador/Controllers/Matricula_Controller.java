@@ -128,6 +128,7 @@ public class Matricula_Controller {
                 System.out.println("       seleccione el alumno del que quiete buscar la matricula       ");
                 System.out.println("_____________________________________________________________________");
                 ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.buscarAlumno();
+
                 for (int i = 0; i < listaAlumnos.size(); i++) {
                     System.out.println("///////////////////////////////////////////////////////////////////");
                     System.out.println("|                           Elemento " + i + ":                           |");
@@ -200,12 +201,12 @@ public class Matricula_Controller {
                 int i_alumno = sc.nextInt();
                 Curso curso = cursoServiceImplement.buscarCurso().get(i_alumno);
                 ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(curso.getNombreCurso());
-                Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno);
 
                 System.out.println(" _______________________________________________________________________________________________________________________________");
                 System.out.println("|                                                      Datos Encontrados:                                                        |");
                 System.out.println(" _______________________________________________________________________________________________________________________________");
                 for (int j = 0; j < listaMatriculas.size(); j++) {
+                    Alumno alumno = alumnoServiceImplement.buscarAlumno().get(j);
                     System.out.println("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
                     System.out.println("|                                                           Elemento " + j + ":                                                         |");
                     System.out.println("________________________________________________________________________________________________________________________________");
@@ -283,6 +284,7 @@ public class Matricula_Controller {
                 Alumno alumno = alumnoServiceImplement.buscarAlumno().get(i_alumno);
                 ArrayList<Matricula> listaMatriculas = matriculaServiceImplement.buscarMatriculaCurso(alumno);
 
+                System.out.println("\n\n ====================================================================================");
                 if (listaMatriculas.size() > 0) {
                     System.out.println("______________________________________________________________________");
                     System.out.println("      seleccione el curso del que quiere der de baja el alumno:       ");
@@ -303,7 +305,7 @@ public class Matricula_Controller {
                     System.out.print("Seleccionar el Elemento Nº ");
                     int i_curso = sc.nextInt();
                     Curso curso = cursoServiceImplement.buscarCurso().get(i_curso);
-
+                    sc.nextLine();
                     System.out.print("¿Está seguro que desea dar de baja el alumno "
                             + alumno.getNombres() + " "
                             + alumno.getApellidoPaterno() + " "
